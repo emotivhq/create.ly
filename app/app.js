@@ -18,6 +18,7 @@
 		'ngCookies',
 		'ngAnimate',
 		'ngSanitize',
+		'ngStamplay',
 		'ui.router',
 		'home',
 		'create',

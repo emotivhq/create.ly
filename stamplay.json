@@ -1,0 +1,10 @@
+{
+  "appId": "giftstarter",
+  "apiKey": "8c2e17fffee29f3aa945472a805efe4c3a83a3e0b8b5d3ac564bf6d6514654dc",
+  "public": "./",
+  "ignore": [
+    "stamplay.json",
+    "**/.*",
+    "**/node_modules/**"
+  ]
+}
