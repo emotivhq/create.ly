@@ -1,8 +1,5 @@
 [ ![Codeship Status for emotivhq/create.ly](https://codeship.com/projects/61287480-f91a-0133-5144-5aa3f496384f/status?branch=master)](https://codeship.com/projects/151150)
 
-# create.ly
-A campaign link creator for cool kids.
-
 ## Install and setup Prereqs
 Open terminal and run:
 
