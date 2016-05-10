@@ -1,4 +1,4 @@
-angular.module('create-ly').run(['$templateCache', function($templateCache) {
+angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
   'use strict';
 
   $templateCache.put('app/modules/create/create.html',
@@ -78,7 +78,7 @@ angular.module('create-ly').run(['$templateCache', function($templateCache) {
     "            <md-button ng-click=\"layout.toggleSidenav('left')\" hide-gt-md aria-label=\"Menu\">\n" +
     "                <ng-md-icon icon=\"menu\"></ng-md-icon>\n" +
     "            </md-button>\n" +
-    "            <h3>create-ly</h3>\n" +
+    "            <h3>gsConcierge</h3>\n" +
     "            <span flex></span>\n" +
     "            <md-button aria-label=\"Search\" ng-click=\"showSearch = !showSearch\">\n" +
     "                <ng-md-icon icon=\"search\"></ng-md-icon>\n" +
@@ -139,12 +139,9 @@ angular.module('create-ly').run(['$templateCache', function($templateCache) {
     "                <ng-md-icon icon=\"menu\"></ng-md-icon>\n" +
     "            </md-button>\n" +
     "            <h3>\n" +
-    "                <a href=\"/\">Create.ly</a>\n" +
+    "                <a href=\"/\">Welcome</a>\n" +
     "            </h3>\n" +
     "            <span flex></span>\n" +
-    "            <md-button aria-label=\"Search\" ng-click=\"showSearch = !showSearch\">\n" +
-    "                <ng-md-icon icon=\"search\"></ng-md-icon>\n" +
-    "            </md-button>\n" +
     "            <md-menu>\n" +
     "                <md-button aria-label=\"Open Settings\" ng-click=\"layout.openMenu($mdOpenMenu, $event)\">\n" +
     "                            <md-icon> more_vert </md-icon>\n" +

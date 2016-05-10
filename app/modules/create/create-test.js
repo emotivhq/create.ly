@@ -13,7 +13,7 @@
 		var controller = null, $scope = null;
 
 		beforeEach(function () {
-			module('create-ly');
+			module('gsConcierge');
 		});
 
 		beforeEach(inject(function ($controller, $rootScope) {

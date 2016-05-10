@@ -10,7 +10,7 @@
 	 * Main modules of the application.
 	 */
 
-	angular.module('create-ly', [
+	angular.module('gsConcierge', [
 		'ngResource',
 		'ngAria',
 		 'ngMaterial',

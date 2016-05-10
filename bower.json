@@ -1,6 +1,6 @@
 {
-  "name": "create-ly",
-  "description": "A campaign link creator for cool kids.",
+  "name": "gsConcierge",
+  "description": "A concierge admin app for cool kids.",
   "version": "0.0.1",
   "install": {
     "path": {

@@ -8,7 +8,7 @@
 	* Route of the app
 	*/
 
-angular.module('create-ly')
+angular.module('gsConcierge')
 	.config(['$stateProvider', function ($stateProvider) {
 		$stateProvider
 			

@@ -9,7 +9,7 @@
 	* Service of the app
 	*/
 
-	angular.module('create-ly')
+	angular.module('gsConcierge')
 		.factory('homeService', homeService);
 
 	homeService.$inject = ['$http'];

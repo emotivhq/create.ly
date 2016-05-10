@@ -9,7 +9,7 @@
 	* Controller of the app
 	*/
 	angular
-		.module('create-ly')
+		.module('gsConcierge')
 		.controller('SidenavCtrl', SidenavCtrl)
 		.controller('SettingsCtrl', SettingsCtrl);
 

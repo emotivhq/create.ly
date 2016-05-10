@@ -10,7 +10,7 @@
 	*/
 
 	angular
-		.module('create-ly')
+		.module('gsConcierge')
 		.controller('LayoutCtrl', Layout);
 
 	Layout.$inject = ['$mdSidenav', '$cookies', '$state', '$mdToast', '$mdDialog'];

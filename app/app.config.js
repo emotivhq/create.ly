@@ -11,7 +11,7 @@
 
 
 	angular
-		.module('create-ly')
+		.module('gsConcierge')
 		.config(configure)
 		.run(runBlock);
 

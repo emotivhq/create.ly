@@ -10,7 +10,7 @@
 	*/
 
 	angular
-		.module('create-ly')
+		.module('gsConcierge')
 		.directive('linkCreator', linkCreator);
 
 		function linkCreator () {

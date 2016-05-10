@@ -117,7 +117,7 @@ Code:
  * # moduleNameCtrl
  * Controller of the appName
  */
-angular.module('create-ly')
+angular.module('gsConcierge')
 	.controller('ModuleNameCtrl', ModuleNameCtrl);
 
 	ModuleNameCtrl.$inject = ['Array of Dependencies optional'];
@@ -144,7 +144,7 @@ Code:
  * # moduleNameRoute
  * Route of the appName
  */
-angular.module('appName')
+angular.module('gsConcierge')
 	.config(function ($stateProvider) {
 		$stateProvider
 			.state('moduleName', {
@@ -200,7 +200,7 @@ Code:
 	 * Main module of the application.
 	 */
 
-	angular.module('create-ly', [
+	angular.module('gsConcierge', [
 		'ngResource',
 		'ngAria',
 		 'ngMaterial',
@@ -236,7 +236,7 @@ Code:
 
 
 	angular
-		.module('ang-modular')
+		.module('gsConcierge')
 		.config(configure)
 		.run(runBlock);
 

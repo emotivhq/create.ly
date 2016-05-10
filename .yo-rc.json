@@ -1,6 +1,6 @@
 {
   "generator-angm": {
-    "appName": "create-ly",
+    "appName": "gsConcierge",
     "angularCookies": true,
     "angularAnimate": true,
     "angularSanitize": true,

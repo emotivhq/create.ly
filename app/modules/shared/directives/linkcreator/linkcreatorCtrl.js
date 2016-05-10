@@ -10,7 +10,7 @@
 	*/
 
 	angular
-		.module('create-ly')
+		.module('gsConcierge')
 		.controller('LinkCreatorCtrl', LinkCreator );
 
 		LinkCreator.$inject = [];

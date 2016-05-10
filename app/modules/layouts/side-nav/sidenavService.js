@@ -10,7 +10,7 @@
 	 */
 
 	angular
-		.module('create-ly')
+		.module('gsConcierge')
 		.factory('MenuService', Menu);
 		// Inject your dependencies as .$inject = ['$http', 'someSevide'];
 		// function Name ($http, someSevide) {...}

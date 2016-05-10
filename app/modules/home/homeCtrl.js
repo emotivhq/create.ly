@@ -10,7 +10,7 @@
 	*/
 
 	angular
-		.module('create-ly')
+		.module('gsConcierge')
 		.controller('HomeCtrl', Home);
 
 	Home.$inject = ['homeService'];
