@@ -9,7 +9,7 @@ Open terminal and run:
 ```bash
 $ cd apps
 $ npm install -g yo stamplay-cli grunt-cli bower bower-installer generator-angm
-$ git clone git@github.com:emotivhq/gs-concierge.git ; cd gs-concierge
+$ git clone git@github.com:emotivhq/gs-concierge.git ; cd gs-concierge ; npm install
 ```
 
 ## Running project in dev
