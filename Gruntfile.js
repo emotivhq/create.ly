@@ -1,3 +1,5 @@
+var createSourceMaps = false;
+
 // Grunt tasks
 
 module.exports = function (grunt) {
@@ -58,21 +60,46 @@ module.exports = function (grunt) {
 
 				],
 				dest: 'app/assets/js/<%= pkg.name %>-angularbundle.js'
-			}
+			},
+			modules: {
+                options: {
+                    sourceMap: createSourceMaps,
+                    sourceMapName: './app/assets/css/modules.css.map',
+                    sourceMapStyle: 'link'
+                },
+                src: ['./app/assets/css/modules/**/*.css'],
+                dest: './app/assets/css/modules.css'
+            },
+			ui: {
+                options: {
+                    sourceMap: createSourceMaps,
+                    sourceMapName: './app/assets/css/ui.css.map',
+                    sourceMapStyle: 'link'
+                },
+                src: ['./app/assets/css/ui/**/*.css'],
+                dest: './app/assets/css/ui.css'
+            }
 		},
-
 		uglify: {
 			options: {
 				banner: '<%= banner %>',
 				report: 'min'
 			},
+			modules: {
+				src: ['./app/assets/css/modules.css'],
+				dest: './app/assets/css/modules.min.css'
+			},
+			ui: {
+				src: ['./app/assets/css/ui.css'],
+				dest: './app/assets/css/ui.min.css'
+			},
 			base: {
 				src: ['<%= concat.base.dest %>'],
-				dest: 'app/assets/js/<%= pkg.name %>-angscript.min.js'
+				dest: './app/assets/js/<%= pkg.name %>-angscript.min.js'
 			},
 			basePlugin: {
-				src: [ 'src/plugins/**/*.js' ],
-				dest: 'app/assets/js/plugins/',
+				src: [ './src/plugins/**/*.js' ],
+				dest: './app/assets/js/plugins/',
 				expand: true,
 				flatten: true,
 				ext: '.min.js'
@@ -105,7 +132,11 @@ module.exports = function (grunt) {
 				tasks: ['jshint:app'],
 				options: {
 					livereload: true
-				}
+				},
+				css: {
+					files: ["app/**/*.{scss,sass,css}"],
+					tasks: ["sass"]
+				},
 			}
 		},
 
@@ -146,12 +177,38 @@ module.exports = function (grunt) {
 					standAlone: false
 				}
 			}
-		}
+		},
+
+        sass: {
+            options: {
+				sourceMap: createSourceMaps
+            },
+            modules: {
+                files: [{
+                    expand: true,
+                    cwd: './app/modules',
+                    src: ['**/*.{scss,sass}'],
+                    dest: './app/assets/css/modules',
+                    ext: '.css'
+                }]
+            },
+            ui: {
+                files: [{
+                    expand: true,
+                    cwd: './app/ui',
+                    src: ['**/*.{scss,sass}'],
+                    dest: './app/assets/css',
+                    ext: '.css'
+                }]
+            }
+        }
 
 
 
 	});
 
+	grunt.loadNpmTasks('grunt-contrib-sass');
+	grunt.loadNpmTasks('grunt-contrib-concat');
 	require('time-grunt')(grunt);
 	require('load-grunt-tasks')(grunt);
 
@@ -159,7 +216,10 @@ module.exports = function (grunt) {
 	grunt.option('force', true);
 
 	// Register grunt tasks
+	
+	// build but don't run
 	grunt.registerTask("build", [
+		"styles",
 		"jshint",
 		"exec",
 		"concat",
@@ -167,8 +227,9 @@ module.exports = function (grunt) {
 		"injector:production"
 	]);
 
-	// Register grunt tasks
+	// Build and run at port 8080
 	grunt.registerTask("run", [
+		"styles",
 		"jshint",
 		"exec",
 		"concat",
@@ -179,6 +240,9 @@ module.exports = function (grunt) {
 	]);
 
 	// Development task(s).
-	grunt.registerTask('dev', ['injector:dev', 'concurrent']);
+	grunt.registerTask('dev', ['styles', 'injector:dev', 'concurrent']);
+
+	// Sass task(s).
+	grunt.registerTask('styles', ['sass:ui', 'sass:modules', 'concat:modules', 'concat:ui']);
 
 };

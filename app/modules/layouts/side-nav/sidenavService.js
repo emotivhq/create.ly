@@ -23,7 +23,8 @@
 				
 					{
 						link: 'create',
-							name: 'Create'
+							name: 'Create',
+							icon: 'create',
 					},
 			    
 			];
