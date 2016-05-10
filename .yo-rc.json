@@ -1,0 +1,25 @@
+{
+  "generator-angm": {
+    "appName": "create-ly",
+    "angularCookies": true,
+    "angularAnimate": true,
+    "angularSanitize": true,
+    "angularMaterial": true,
+    "directives": [
+      {
+        "name": "linkcreator"
+      }
+    ],
+    "modules": [
+      {
+        "name": "create"
+      }
+    ],
+    "menu": [
+      {
+        "link": "create",
+        "title": "Create"
+      }
+    ]
+  }
+}
