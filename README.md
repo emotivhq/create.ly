@@ -263,41 +263,35 @@ By default, new scripts are added to the `index.html` file. Using Grunt-injector
 
 # Bower Components
 
-The following packages are always installed by the angm-generator:
+The following packages are included:
 
 * "json3"
 * "es5-shim"
-* "bootstrap"
 * "angular"
 * "angular-resource"
 * "angular-aria"
 * "angular-mocks"
 * "angular-touch"
-* "angular-bootstrap"
 * "angular-ui-router"
-
-> NOTE: Angular Material have the following dependencies:
 * angular-material-icons
 * angular-material
 * angular-messages
-
-
-The following modules are optional on first install:
-
 * "angular-cookies"
 * "angular-animate"
 * "angular-sanitize"
+* "angular-stamplay"
 
-All of these can be updated with `bower update` as new versions of AngularJS are released. Always on first install the generator will use the last stable version of all libraries.
+All of these can be updated with `bower update` as new versions of AngularJS are released. 
+Always on first install the generator will use the last stable version of all libraries.
 
 
 # Testing
 
-We implemented only one kind of test at this moment: Unit tests. On next weeks e2e tests will be available too.
+Only one kind of test is supported at the moment: Unit tests. 
 
 ## Running Tests
 
-The tests are written in **Jasmine**, which we run with the [Karma Test Runner][karma]. We provide a Karma configuration file pre-configured with some default options to run them.
+Tests are written in **Jasmine**, which you run with the [Karma Test Runner][karma]. There is a Karma configuration file pre-configured with some default options to run them.
 
 * the configuration is found at `karma.conf.js`
 * the unit tests are found on each module created named as `moduleName-test.js`.
