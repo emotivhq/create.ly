@@ -9,7 +9,7 @@
 	 * Service of the app
 	 */
 
-  	angular
+	angular
 		.module('create-ly')
 		.factory('MenuService', Menu);
 		// Inject your dependencies as .$inject = ['$http', 'someSevide'];
@@ -26,13 +26,13 @@
 							name: 'Create'
 					},
 			    
-		  	];
+			];
 
 			return {
 				listMenu: function () {
 					return menu;
 				}
-		  	}
+			};
 
 		}
 

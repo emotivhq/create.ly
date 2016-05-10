@@ -1,3 +1,5 @@
+[ ![Codeship Status for emotivhq/create.ly](https://codeship.com/projects/61287480-f91a-0133-5144-5aa3f496384f/status?branch=master)](https://codeship.com/projects/151150)
+
 # create.ly
 A campaign link creator for cool kids.
 
@@ -6,7 +8,7 @@ Open terminal and run:
 
 ```bash
 $ cd apps
-$ npm install -g yo stamplay-cli grunt-cli bower generator-angm
+$ npm install -g yo stamplay-cli grunt-cli bower bower-installer generator-angm
 $ git clone git@github.com:emotivhq/create.ly.git ; cd create.ly
 ```
 
@@ -17,7 +19,14 @@ Open terminal and run:
 $ grunt dev
 ```
 
-## Running project 
+## Running project (built - like in prod)
+Open terminal and run:
+
+```bash
+$ grunt run
+```
+
+## Building project (no run)
 Open terminal and run:
 
 ```bash

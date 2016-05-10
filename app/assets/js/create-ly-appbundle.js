@@ -51,7 +51,12 @@
 
 	function configure($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
 
-		$locationProvider.hashPrefix('!');
+	/*$mdThemingProvider.theme('default')
+		.primaryPalette('red')
+		.accentPalette('indigo');
+	*/
+    
+    $locationProvider.hashPrefix('!');
 
 		// This is required for Browser Sync to work poperly
 		$httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
@@ -84,7 +89,7 @@
 	 * Module of the app
 	 */
 
-  	angular.module('create', []);
+	angular.module('create', []);
 
 })();
 
@@ -165,7 +170,7 @@ angular.module('create-ly')
 	* Controller of the app
 	*/
 
-  	angular
+	angular
 		.module('create')
 		.controller('CreateCtrl', Create);
 
@@ -211,7 +216,7 @@ angular.module('create-ly')
 	function Home(homeService) {
 		/*jshint validthis: true */
 		var vm = this;
-		vm.title = "Hello, create-ly!";
+		vm.title = "Hello, Giver!";
 		vm.version = "1.0.0";
 		vm.listFeatures = homeService.getFeaturesList();
 
@@ -458,7 +463,7 @@ angular.module('create-ly')
 	 * Service of the app
 	 */
 
-  	angular
+	angular
 		.module('create')
 		.factory('CreateService', Create);
 		// Inject your dependencies as .$inject = ['$http', 'someSevide'];
@@ -526,7 +531,7 @@ angular.module('create-ly')
 	 * Service of the app
 	 */
 
-  	angular
+	angular
 		.module('create-ly')
 		.factory('MenuService', Menu);
 		// Inject your dependencies as .$inject = ['$http', 'someSevide'];
@@ -543,13 +548,13 @@ angular.module('create-ly')
 							name: 'Create'
 					},
 			    
-		  	];
+			];
 
 			return {
 				listMenu: function () {
 					return menu;
 				}
-		  	}
+			};
 
 		}
 
@@ -566,7 +571,7 @@ angular.module('create-ly')
 	 * Service of the app
 	 */
 
-  	angular
+	angular
 		.module('create-ly')
 		.factory('MenuService', Menu);
 		// Inject your dependencies as .$inject = ['$http', 'someSevide'];
@@ -583,13 +588,13 @@ angular.module('create-ly')
 							name: 'Create'
 					},
 			    
-		  	];
+			];
 
 			return {
 				listMenu: function () {
 					return menu;
 				}
-		  	}
+			};
 
 		}
 
@@ -619,7 +624,7 @@ angular.module('create-ly')
 				
 				templateUrl:'app/modules/shared/directives/linkcreator/linkcreator.html',
 				
-			}
+			};
 
 			return directive;
 

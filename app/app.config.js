@@ -19,7 +19,12 @@
 
 	function configure($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
 
-		$locationProvider.hashPrefix('!');
+	/*$mdThemingProvider.theme('default')
+		.primaryPalette('red')
+		.accentPalette('indigo');
+	*/
+    
+    $locationProvider.hashPrefix('!');
 
 		// This is required for Browser Sync to work poperly
 		$httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';

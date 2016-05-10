@@ -22,7 +22,7 @@
 				
 				templateUrl:'app/modules/shared/directives/linkcreator/linkcreator.html',
 				
-			}
+			};
 
 			return directive;
 

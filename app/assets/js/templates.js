@@ -17,13 +17,13 @@ angular.module('create-ly').run(['$templateCache', function($templateCache) {
     "    <md-card class=\"text-center\">\n" +
     "        <md-card-content>\n" +
     "            <h1>{{ vm.title }}</h1>\n" +
-    "            <h3>{{ vm.version }}</h3>\n" +
-    "            <p>This is a template for a simple home screen website. Use it as a starting point to create something more unique.</p>\n" +
+    "            <h3>Link Creator v{{ vm.version }}</h3>\n" +
+    "            <p>This is a simple home screen. Use it as a starting point to create something more unique. \n" +
+    "            Modules get automagically created links on the left...like Create </p>\n" +
     "            <code>app/modules/home/home.html</code>\n" +
     "            <br>\n" +
-    "            <p><a href=\"http://www.github.com/newaeonweb/generator-angm\" class=\"btn btn-primary\" role=\"button\">Learn more »</a></p>\n" +
     "            <md-divider class=\"margin-top-20\"></md-divider>\n" +
-    "            <h1 class=\"margin-top-50\">Features</h1>\n" +
+    "            <h2 class=\"margin-top-50\">Stack Features</h2>\n" +
     "            <ul>\n" +
     "                <li class=\" text-center\" ng-repeat=\"item in vm.listFeatures\">\n" +
     "                    <p><ng-md-icon icon=\"check\"></ng-md-icon> {{item.feature}}</p>\n" +
@@ -42,7 +42,7 @@ angular.module('create-ly').run(['$templateCache', function($templateCache) {
     "            <div layout=\"column\" class=\"md-toolbar-tools-bottom inset\">\n" +
     "                <div layout=\"row\">\n" +
     "                    <div flex=\"80\" style=\"margin-top: 10px;\">\n" +
-    "                        <div>create-ly</div>\n" +
+    "                        <div>GiftStarter</div>\n" +
     "                    </div>\n" +
     "                </div>\n" +
     "            </div>\n" +
@@ -139,7 +139,7 @@ angular.module('create-ly').run(['$templateCache', function($templateCache) {
     "                <ng-md-icon icon=\"menu\"></ng-md-icon>\n" +
     "            </md-button>\n" +
     "            <h3>\n" +
-    "                <a href=\"/\">create-ly</a>\n" +
+    "                <a href=\"/\">Create.ly</a>\n" +
     "            </h3>\n" +
     "            <span flex></span>\n" +
     "            <md-button aria-label=\"Search\" ng-click=\"showSearch = !showSearch\">\n" +

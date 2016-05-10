@@ -164,6 +164,15 @@ module.exports = function (grunt) {
 		"exec",
 		"concat",
 		"ngtemplates",
+		"injector:production"
+	]);
+
+	// Register grunt tasks
+	grunt.registerTask("run", [
+		"jshint",
+		"exec",
+		"concat",
+		"ngtemplates",
 		"injector:production",
 		"concurrent",
 		"clean"
