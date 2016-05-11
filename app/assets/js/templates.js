@@ -81,7 +81,7 @@ angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
     "                </div>\n" +
     "            </md-toolbar>\n" +
     "            <md-stepper-card-content class=\"md-no-padding\">\n" +
-    "                <md-steppers md-dynamic-height md-stretch-steppers=\"always\" md-selected=\"vm.selectedStep\" md-busy-text=\"'Processing...'\" md-busy=\"vm.showBusyText\">\n" +
+    "                <md-steppers md-dynamic-height md-stretch-steppers=\"always\" md-selected=\"vm.selectedStep\" md-busy-text=\"'Fetching data & other things...'\" md-busy=\"vm.showBusyText\">\n" +
     "                    <md-step label=\"Enter Url\" md-complete=\"vm.stepData[0].data.completed\" ng-disabled=\"vm.stepProgress < 1\">\n" +
     "                        <md-step-body>\n" +
     "                            <form name=\"step1\" ng-submit=\"vm.submitCurrentStep(vm.stepData[0].data)\">\n" +
@@ -91,7 +91,7 @@ angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
     "                                            <span class=\"md-subhead\">Creating a custom GiftStarter campaign has never been so easy. Simply copy/paste any link into the input below.</span>\n" +
     "                                            <md-input-container class=\"md-block\">\n" +
     "                                                <label>Paste a valid URL</label>\n" +
-    "                                                <input name=\"product_url\" ng-model=\"vm.stepData[0].data.product_url\" ng-model=\"product_url\" ng-pattern=\"/^.+@.+\\..+$/\" ng-disabled=\"vm.stepData[0].data.completed\" required></input>\n" +
+    "                                                <input name=\"product_url\" ng-model=\"vm.stepData[0].data.product_url\" ng-pattern=\"/^.+@.+\\..+$/\" ng-disabled=\"vm.stepData[0].data.completed\" required></input>\n" +
     "                                                <div ng-messages=\"step1.product_url.$error\">\n" +
     "                                                    <div ng-message=\"required\">\n" +
     "                                                        A valid URL is required\n" +
@@ -112,7 +112,7 @@ angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
     "                    </md-step>\n" +
     "                    <md-step label=\"Review details\" md-complete=\"vm.stepData[1].data.completed\" ng-disabled=\"vm.stepProgress < 2\">\n" +
     "                        <md-step-body>\n" +
-    "                            <em-embed urlsearch=\"{{input_product_url}}\" maxwidth=\"100%\" onempty=\"tryAgain()\"></em-embed>\n" +
+    "                            <em-embed urlsearch=\"{{vm.stepData[0].data._product_url}}\" maxwidth=\"100%\" onempty=\"tryAgain()\"></em-embed>\n" +
     "                        </md-step-body>\n" +
     "                    </md-step>\n" +
     "                    <md-step label=\"Customize\" md-complete=\"vm.stepData[2].data.completed\" ng-disabled=\"vm.stepProgress < 3\">\n" +
@@ -262,11 +262,11 @@ angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
   $templateCache.put('app/modules/home/home.html',
     "<md-sidenav layout=\"column\" class=\"md-sidenav-left md-whiteframe-z2\" md-component-id=\"left\" md-is-locked-open=\"$mdMedia('gt-md')\">\n" +
     "    <div ng-controller=\"SidenavCtrl as vm\" ng-cloak>\n" +
-    "        <md-toolbar class=\"md-tall md-hue-2\">\n" +
+    "        <md-toolbar class=\"md-tall md-accent\">\n" +
     "            <div layout=\"column\" class=\"md-toolbar-tools-bottom inset\">\n" +
     "                <div layout=\"row\">\n" +
     "                    <div flex=\"80\" style=\"margin-top: 0;\">\n" +
-    "                        <img src=\"/app/assets/images/logo-web-white.png\" style=\"max-width: 80%;\">\n" +
+    "                        <img src=\"/app/assets/images/logo-web-white.png\" class=\"logo\">\n" +
     "                    </div>\n" +
     "                </div>\n" +
     "            </div>\n" +
@@ -280,13 +280,7 @@ angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
     "            </md-list-item>\n" +
     "            <md-divider></md-divider>\n" +
     "            <md-subheader>Admin</md-subheader>\n" +
-    "            <md-list-item ui-sref=\"home.dashboard\">\n" +
-    "                <div class=\"inset\">\n" +
-    "                    <ng-md-icon icon=\"apps\"></ng-md-icon>\n" +
-    "                </div>\n" +
-    "                <p> Dashboard </p>\n" +
-    "            </md-list-item>\n" +
-    "            <md-list-item ng-repeat=\"item in vm.admin\" ng-click=\"vm.showSettingsBottom($event)\" >\n" +
+    "            <md-list-item ng-repeat=\"item in vm.admin\" ng-click=\"vm.navigateTo(item.link)\" >\n" +
     "                <div class=\"inset\">\n" +
     "                    <ng-md-icon icon=\"{{item.icon}}\"></ng-md-icon>\n" +
     "                </div>\n" +
@@ -297,7 +291,7 @@ angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
     "</md-sidenav>\n" +
     "\n" +
     "<div layout=\"column\" class=\"relative\" layout-fill role=\"main\" ng-controller=\"LayoutCtrl as layout\" ng-cloak>\n" +
-    "    <md-toolbar ng-show=\"!showSearch\">\n" +
+    "    <md-toolbar class=\"md-accent\" ng-show=\"!showSearch\">\n" +
     "        <div class=\"md-toolbar-tools\">\n" +
     "            <md-button ng-click=\"layout.toggleSidenav('left')\" hide-gt-md aria-label=\"Menu\">\n" +
     "                <ng-md-icon icon=\"menu\"></ng-md-icon>\n" +
@@ -353,7 +347,7 @@ angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('app/modules/layouts/main-page/main-page.html',
-    "    <md-toolbar ng-show=\"!showSearch\">\n" +
+    "    <md-toolbar class=\"md-accent\" ng-show=\"!showSearch\">\n" +
     "        <div class=\"md-toolbar-tools\">\n" +
     "            <md-button ng-click=\"layout.toggleSidenav('left')\" hide-gt-md aria-label=\"Menu\">\n" +
     "                <ng-md-icon icon=\"menu\"></ng-md-icon>\n" +
@@ -415,7 +409,7 @@ angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('app/modules/layouts/side-nav/sidenav.html',
-    "        <md-toolbar class=\"md-tall md-hue-2\">\n" +
+    "        <md-toolbar class=\"md-tall\">\n" +
     "            <div layout=\"column\" class=\"md-toolbar-tools-bottom inset\">\n" +
     "                <div layout=\"row\">\n" +
     "                    <div flex=\"20\">\n" +

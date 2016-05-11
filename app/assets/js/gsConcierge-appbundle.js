@@ -59,11 +59,11 @@
 		
 		$mdThemingProvider
 			.theme('default')
-			.primaryPalette('blue', {
-				'default': '600'
+			.primaryPalette('light-blue', {
+				'default': '900'
 			})
-			.accentPalette('indigo', {
-				'default': '500'
+			.accentPalette('blue-grey', {
+				'default': '900'
 			})
 			.warnPalette('defaultPrimary');
 
@@ -109,12 +109,19 @@
 
 	}
 
-	runBlock.$inject = ['$rootScope'];
+	runBlock.$inject = ['$rootScope', '$window'];
 
-	function runBlock($rootScope) {
+	function runBlock($rootScope, $window) {
 		'use strict';
 
-		console.log('AngularJS run() function...');
+		$rootScope.$on('$stateChangeStart',
+	    function(event, toState, toParams, fromState, fromParams) {
+	      window.Intercom("shutdown");
+	      if (toState.external) {
+	        event.preventDefault();
+	        $window.open(toState.url, '_self');
+	      }
+	    });
 	}
 
 
@@ -186,7 +193,7 @@ angular.module('create')
 angular.module('gsConcierge')
 	.config(['$stateProvider', function ($stateProvider) {
 		$stateProvider
-			
+		
 			.state('home', {
 				url: '',
 				abstract: true,
@@ -197,6 +204,10 @@ angular.module('gsConcierge')
 			.state('home.dashboard', {
 				url:'/dashboard',
 				templateUrl: 'app/modules/home/dashboard.html'
+			})
+			.state('home.external', {
+				url: 'https://giftstarter.com',
+				external: true
 			});
 			
 	}]);
@@ -227,9 +238,11 @@ angular.module('gsConcierge')
 		function Create($scope, $q, $timeout, $mdToast) {
 			/*jshint validthis: true */
 			var vm = this;
+			window.Intercom("boot", {
+			  app_id: "q5i7p4f9"
+			});
 
 			$scope.input_product_url = 'https://';
-			$scope.product_url = '';
 			$scope.show_product_preview = false;
 			$scope.showHints = true;
 			
@@ -253,7 +266,7 @@ angular.module('gsConcierge')
 			
 			vm.selectedStep = 0;
 			vm.stepProgress = 1;
-			vm.maxStep = 3;
+			vm.maxStep = 4;
 			vm.showBusyText = false;
 			// Setup the initial step data
 			vm.stepData = [
@@ -502,9 +515,14 @@ angular.module('gsConcierge')
 
 		vm.admin = [
 			{
-				link: 'showListBottomSheet($event)',
-				title: 'Settings',
-				icon: 'settings'
+				link: 'home.dashboard',
+				title: 'Dashboard',
+				icon: 'dashboard'
+			},
+			{
+				link: 'home.external',
+				title: 'GiftStarter.com',
+				icon: 'redeem'
 			}
 		];
 
@@ -719,8 +737,8 @@ angular.module('gsConcierge')
 				
 					{
 						link: 'create',
-							name: 'Create',
-							icon: 'create',
+							name: 'Create campaign link',
+							icon: 'open_in_browser',
 					},
 			    
 			];

@@ -44,9 +44,14 @@
 
 		vm.admin = [
 			{
-				link: 'showListBottomSheet($event)',
-				title: 'Settings',
-				icon: 'settings'
+				link: 'home.dashboard',
+				title: 'Dashboard',
+				icon: 'dashboard'
+			},
+			{
+				link: 'home.external',
+				title: 'GiftStarter.com',
+				icon: 'redeem'
 			}
 		];
 

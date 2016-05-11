@@ -24,6 +24,9 @@
 		function Create($scope, $q, $timeout, $mdToast) {
 			/*jshint validthis: true */
 			var vm = this;
+			window.Intercom("boot", {
+			  app_id: "q5i7p4f9"
+			});
 
 			$scope.tryAgain = function() {
 				$mdToast.show(
@@ -37,7 +40,6 @@
 			$scope.showProductUrlHint = false;
 			$scope.urlPattern = /^(http|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:\/~\+#]*[\w\-\@?^=%&amp;\/~\+#])?/i;
 
-			
 			vm.selectedStep = 0;
 			vm.stepProgress = 1;
 			vm.maxStep = 4;

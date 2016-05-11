@@ -21,3 +21,7 @@
     bottom: 7px;
     opacity: 1; }
 
+.logo {
+  max-height: 35px;
+  margin-left: 35px;
+  margin-top: 5px; }
