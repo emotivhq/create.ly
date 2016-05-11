@@ -1,78 +1,11 @@
-<style>
-    .create .hint {
-  /* Position the hint */
-  position: absolute;
-  left: 2px;
-  right: auto;
-  bottom: 7px;
-  /* Copy styles from ng-messages */
-  font-size: 12px;
-  line-height: 14px;
-  transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
-  /* Set our own color */
-  color: grey;
-}
-
-.create .hint.ng-hide,
-.create .hint.ng-enter,
-.create .hint.ng-leave.ng-leave-active {
-  bottom: 26px;
-  opacity: 0;
-}
-
-.create .hint.ng-leave,
-.create .hint.ng-enter.ng-enter-active {
-  bottom: 7px;
-  opacity: 1;
-}
-</style>
-
-<div layout="row" layout-margin layout="column" data-ng-controller="CreateCtrl" ng-cloak class="create">
-    <div flex>
-        <md-card>
-            <md-card-title>
-                <md-card-title-text>
-                    <span class="md-headline">Enter any product URL</span>
-                </md-card-title-text>
-            </md-card-title>
-            <md-card-content>
-                <div>
-                    <form name="productForm">
-                        <md-input-container class="md-block">
-                            <!--<label>Enter <em>any</em> product URL:</label>-->
-                            <input name="product_url" ng-model="input_product_url" required ng-pattern="/^.+@.+\..+$/"></input>
-                            
-                            <div class="hint" ng-show="showHints">example: http://www.patagonia.com/us/product/womens-nano-puff-jacket?p=84216-0</div>
-                            <div ng-messages="productForm.product_url.$error" ng-show="!showHints">
-                                <div ng-message-exp="['required', 'pattern']">
-                                    That doesn't look like an product url... Are ou sure you entered the right thing?
-                                </div>
-                            </div>
-                        </md-input-container>
-                        <md-button class="md-raised md-primary" ng-click="showProductPreview()">Preview Product</md-button>
-                    </form>
-                </div>
-            </md-card-content>
-        </md-card>
-    </div>
-    <div flex ng-show="show_product_preview">
-        <h2>Preview Campaign</h2>
-        <p>Below is the information we were able to grab from the url you provided.</p>
-        <div>
-            <em-embed urlsearch="{{product_url}}" maxwidth="100%" onempty="tryAgain()"></em-embed>
-            <!-- https://github.com/Urigo/angular-embedly -->
-        </div>
-        <md-button class="md-raised md-primary" ng-click="hideProductPreview()">Close Preview</md-button>
-    </div>
-</div>
-<div layout="row" layout-margin layout="column" data-ng-controller="CreateCtrl" ng-cloak>
+<div layout="row" layout-margin layout-padding layout="column" data-ng-controller="CreateCtrl" ng-cloak class="create">
     <div flex>
         <md-card>
             <md-toolbar>
                 <div class="md-toolbar-tools">
                     <h2>
-                        <md-icon md-svg-icon="md-menu"></md-icon>
-                        <span>Create custom campaign</span>
+                        <!--<md-icon md-svg-icon="md-menu"></md-icon>-->
+                        <span>Create a campaign for a any product</span>
                     </h2>
                 </div>
             </md-toolbar>
@@ -83,14 +16,14 @@
                             <form name="step1" ng-submit="vm.submitCurrentStep(vm.stepData[0].data)">
                                 <md-content class="md-padding">
                                     <div layout="row" layout-align="center top">
-                                        <div flex="nogrow" style="width: 400px">
-                                            <span class="md-subhead">Creating a custom GiftStarter campaign has never been so easy. Simply copy/paste any link into the input below.</span>
+                                        <div flex="nogrow" style="width: 50%">
+                                            <span class="md-subhead">Paste any product url</span>
                                             <md-input-container class="md-block">
-                                                <label>Paste a valid URL</label>
-                                                <input name="product_url" ng-model="vm.stepData[0].data.product_url" ng-model="product_url" ng-pattern="/^.+@.+\..+$/" ng-disabled="vm.stepData[0].data.completed" required></input>
-                                                <div ng-messages="step1.product_url.$error">
-                                                    <div ng-message="required">
-                                                        A valid URL is required
+                                                <input name="product_url" ng-model="vm.stepData[0].data.product_url" md-select-on-focus ng-pattern="urlPattern" ng-disabled="vm.stepData[0].data.completed" required></input>
+                                                <div class="hint" ng-show="showProductUrlHint">example: http://www.patagonia.com/us/product/womens-nano-puff-jacket?p=84216-0</div>
+                                                <div ng-messages="step1.product_url.$error" role="alert">
+                                                    <div ng-message-exp="['required','pattern']">
+                                                        That doesn't look like a product url... Are you sure you entered or pasted the right thing?
                                                     </div>
                                                 </div>
                                             </md-input-container>
