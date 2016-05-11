@@ -228,6 +228,7 @@ angular.module('gsConcierge')
 			var vm = this;
 
 			$scope.input_product_url = 'https://';
+			$scope.product_url = '';
 			$scope.show_product_preview = false;
 			$scope.showHints = true;
 			

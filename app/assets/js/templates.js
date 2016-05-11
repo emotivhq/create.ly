@@ -35,7 +35,7 @@ angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
     "        <h2>Preview Campaign</h2>\n" +
     "        <p>Below is the information we were able to grab from the url you provided.</p>\n" +
     "        <div>\n" +
-    "            <em-embed urlsearch=\"{{input_product_url}}\" maxwidth=\"100%\" onempty=\"tryAgain()\"></em-embed>\n" +
+    "            <em-embed urlsearch=\"{{product_url}}\" maxwidth=\"100%\" onempty=\"tryAgain()\"></em-embed>\n" +
     "            <!-- https://github.com/Urigo/angular-embedly -->\n" +
     "        </div>\n" +
     "        <md-button class=\"md-raised md-primary\" ng-click=\"hideProductPreview()\">Close Preview</md-button>\n" +
@@ -54,7 +54,7 @@ angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
     "            </md-toolbar>\n" +
     "            <md-stepper-card-content class=\"md-no-padding\">\n" +
     "                <md-steppers md-dynamic-height md-stretch-steppers=\"always\" md-selected=\"vm.selectedStep\" md-busy-text=\"'Processing...'\" md-busy=\"vm.showBusyText\">\n" +
-    "                    <md-step label=\"Login detail\" md-complete=\"vm.stepData[0].data.completed\" ng-disabled=\"vm.stepProgress < 1\">\n" +
+    "                    <md-step label=\"Enter Url\" md-complete=\"vm.stepData[0].data.completed\" ng-disabled=\"vm.stepProgress < 1\">\n" +
     "                        <md-step-body>\n" +
     "                            <form name=\"step1\" ng-submit=\"vm.submitCurrentStep(vm.stepData[0].data)\">\n" +
     "                                <md-content class=\"md-padding\">\n" +
@@ -63,7 +63,7 @@ angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
     "                                            <span class=\"md-subhead\">Creating a custom GiftStarter campaign has never been so easy. Simply copy/paste any link into the input below.</span>\n" +
     "                                            <md-input-container class=\"md-block\">\n" +
     "                                                <label>Paste a valid URL</label>\n" +
-    "                                                <input name=\"product_url\" ng-model=\"vm.stepData[0].data.product_url\" ng-model=\"input_product_url\" ng-pattern=\"/^.+@.+\\..+$/\" ng-disabled=\"vm.stepData[0].data.completed\" required></input>\n" +
+    "                                                <input name=\"product_url\" ng-model=\"vm.stepData[0].data.product_url\" ng-model=\"product_url\" ng-pattern=\"/^.+@.+\\..+$/\" ng-disabled=\"vm.stepData[0].data.completed\" required></input>\n" +
     "                                                <div ng-messages=\"step1.product_url.$error\">\n" +
     "                                                    <div ng-message=\"required\">\n" +
     "                                                        A valid URL is required\n" +
