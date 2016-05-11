@@ -2,7 +2,7 @@
 * gsConcierge - v0.0.1 - MIT LICENSE 2016-05-11. 
 * @author Emotiv
 */
-.inputdemoErrorsAdvanced .hint {
+.create .hint {
   /* Position the hint */
   position: absolute;
   left: 2px;
@@ -14,10 +14,10 @@
   transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
   /* Set our own color */
   color: grey; }
-  .inputdemoErrorsAdvanced .hint.ng-hide, .inputdemoErrorsAdvanced .hint.ng-enter, .inputdemoErrorsAdvanced .hint.ng-leave.ng-leave-active {
+  .create .hint.ng-hide, .create .hint.ng-enter, .create .hint.ng-leave.ng-leave-active {
     bottom: 26px;
     opacity: 0; }
-  .inputdemoErrorsAdvanced .hint.ng-leave, .inputdemoErrorsAdvanced .hint.ng-enter.ng-enter-active {
+  .create .hint.ng-leave, .create .hint.ng-enter.ng-enter-active {
     bottom: 7px;
     opacity: 1; }
 

@@ -2,30 +2,58 @@ angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
   'use strict';
 
   $templateCache.put('app/modules/create/create.html',
-    "<div layout=\"row\" layout-margin layout=\"column\" data-ng-controller=\"CreateCtrl\" ng-cloak>\n" +
+    "<style>\n" +
+    "    .create .hint {\n" +
+    "  /* Position the hint */\n" +
+    "  position: absolute;\n" +
+    "  left: 2px;\n" +
+    "  right: auto;\n" +
+    "  bottom: 7px;\n" +
+    "  /* Copy styles from ng-messages */\n" +
+    "  font-size: 12px;\n" +
+    "  line-height: 14px;\n" +
+    "  transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);\n" +
+    "  /* Set our own color */\n" +
+    "  color: grey;\n" +
+    "}\n" +
+    "\n" +
+    ".create .hint.ng-hide,\n" +
+    ".create .hint.ng-enter,\n" +
+    ".create .hint.ng-leave.ng-leave-active {\n" +
+    "  bottom: 26px;\n" +
+    "  opacity: 0;\n" +
+    "}\n" +
+    "\n" +
+    ".create .hint.ng-leave,\n" +
+    ".create .hint.ng-enter.ng-enter-active {\n" +
+    "  bottom: 7px;\n" +
+    "  opacity: 1;\n" +
+    "}\n" +
+    "</style>\n" +
+    "\n" +
+    "<div layout=\"row\" layout-margin layout=\"column\" data-ng-controller=\"CreateCtrl\" ng-cloak class=\"create\">\n" +
     "    <div flex>\n" +
     "        <md-card>\n" +
     "            <md-card-title>\n" +
     "                <md-card-title-text>\n" +
-    "                    <span class=\"md-headline\">Create a custom campaign</span>\n" +
-    "                    <span class=\"md-subhead\">Creating a custom GiftStarter campaign has never been so easy. Simply copy/paste any product link into the input below.</span>\n" +
+    "                    <span class=\"md-headline\">Enter any product URL</span>\n" +
     "                </md-card-title-text>\n" +
     "            </md-card-title>\n" +
     "            <md-card-content>\n" +
     "                <div>\n" +
     "                    <form name=\"productForm\">\n" +
-    "                        <md-input-container>\n" +
-    "                            <label>Enter <em>any</em> product URL:</label>\n" +
+    "                        <md-input-container class=\"md-block\">\n" +
+    "                            <!--<label>Enter <em>any</em> product URL:</label>-->\n" +
     "                            <input name=\"product_url\" ng-model=\"input_product_url\" required ng-pattern=\"/^.+@.+\\..+$/\"></input>\n" +
-    "\n" +
-    "                            <!--<div class=\"hint\" ng-show=\"showHints\">example: https://www.organicbeardsupply.com/products/organic-beard-oil-spice-scent-1oz-dropper</div>-->\n" +
-    "                            <!--<div ng-messages=\"productForm.product_url.$error\" ng-show=\"!showHints\">-->\n" +
-    "                            <!--    <div ng-message-exp=\"['required', 'pattern']\">-->\n" +
-    "                            <!--        That doesn't look like an product url... Are ou sure you entered the right thing?-->\n" +
-    "                            <!--    </div>-->\n" +
-    "                            <!--</div>-->\n" +
+    "                            \n" +
+    "                            <div class=\"hint\" ng-show=\"showHints\">example: http://www.patagonia.com/us/product/womens-nano-puff-jacket?p=84216-0</div>\n" +
+    "                            <div ng-messages=\"productForm.product_url.$error\" ng-show=\"!showHints\">\n" +
+    "                                <div ng-message-exp=\"['required', 'pattern']\">\n" +
+    "                                    That doesn't look like an product url... Are ou sure you entered the right thing?\n" +
+    "                                </div>\n" +
+    "                            </div>\n" +
     "                        </md-input-container>\n" +
-    "                        <md-button class=\"md-raised md-primary\" ng-click=\"showProductPreview()\">Get Product Info</md-button>\n" +
+    "                        <md-button class=\"md-raised md-primary\" ng-click=\"showProductPreview()\">Preview Product</md-button>\n" +
     "                    </form>\n" +
     "                </div>\n" +
     "            </md-card-content>\n" +
@@ -54,7 +82,7 @@ angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
     "            </md-toolbar>\n" +
     "            <md-stepper-card-content class=\"md-no-padding\">\n" +
     "                <md-steppers md-dynamic-height md-stretch-steppers=\"always\" md-selected=\"vm.selectedStep\" md-busy-text=\"'Processing...'\" md-busy=\"vm.showBusyText\">\n" +
-    "                    <md-step label=\"Login detail\" md-complete=\"vm.stepData[0].data.completed\" ng-disabled=\"vm.stepProgress < 1\">\n" +
+    "                    <md-step label=\"Enter Url\" md-complete=\"vm.stepData[0].data.completed\" ng-disabled=\"vm.stepProgress < 1\">\n" +
     "                        <md-step-body>\n" +
     "                            <form name=\"step1\" ng-submit=\"vm.submitCurrentStep(vm.stepData[0].data)\">\n" +
     "                                <md-content class=\"md-padding\">\n" +

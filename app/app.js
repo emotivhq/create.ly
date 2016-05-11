@@ -19,6 +19,7 @@
 		'ngAnimate',
 		'ngSanitize',
 		'ngStamplay',
+		'ngMessages',
 		'angular-embedly',
 		'md-steppers',
 		'ui.router',

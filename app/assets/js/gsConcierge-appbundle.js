@@ -23,6 +23,7 @@
 		'ngAnimate',
 		'ngSanitize',
 		'ngStamplay',
+		'ngMessages',
 		'angular-embedly',
 		'md-steppers',
 		'ui.router',
@@ -232,7 +233,8 @@ angular.module('gsConcierge')
 			$scope.showHints = true;
 			
 			$scope.showProductPreview = function() {
-				$scope.show_product_preview = true;
+				//$scope.show_product_preview = true;
+				$scope.showHints = false;
 			};
 			
 			$scope.hideProductPreview = function() {
