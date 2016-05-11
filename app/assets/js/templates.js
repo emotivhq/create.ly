@@ -2,81 +2,14 @@ angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
   'use strict';
 
   $templateCache.put('app/modules/create/create.html',
-    "<style>\n" +
-    "    .create .hint {\n" +
-    "  /* Position the hint */\n" +
-    "  position: absolute;\n" +
-    "  left: 2px;\n" +
-    "  right: auto;\n" +
-    "  bottom: 7px;\n" +
-    "  /* Copy styles from ng-messages */\n" +
-    "  font-size: 12px;\n" +
-    "  line-height: 14px;\n" +
-    "  transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);\n" +
-    "  /* Set our own color */\n" +
-    "  color: grey;\n" +
-    "}\n" +
-    "\n" +
-    ".create .hint.ng-hide,\n" +
-    ".create .hint.ng-enter,\n" +
-    ".create .hint.ng-leave.ng-leave-active {\n" +
-    "  bottom: 26px;\n" +
-    "  opacity: 0;\n" +
-    "}\n" +
-    "\n" +
-    ".create .hint.ng-leave,\n" +
-    ".create .hint.ng-enter.ng-enter-active {\n" +
-    "  bottom: 7px;\n" +
-    "  opacity: 1;\n" +
-    "}\n" +
-    "</style>\n" +
-    "\n" +
-    "<div layout=\"row\" layout-margin layout=\"column\" data-ng-controller=\"CreateCtrl\" ng-cloak class=\"create\">\n" +
-    "    <div flex>\n" +
-    "        <md-card>\n" +
-    "            <md-card-title>\n" +
-    "                <md-card-title-text>\n" +
-    "                    <span class=\"md-headline\">Enter any product URL</span>\n" +
-    "                </md-card-title-text>\n" +
-    "            </md-card-title>\n" +
-    "            <md-card-content>\n" +
-    "                <div>\n" +
-    "                    <form name=\"productForm\">\n" +
-    "                        <md-input-container class=\"md-block\">\n" +
-    "                            <!--<label>Enter <em>any</em> product URL:</label>-->\n" +
-    "                            <input name=\"product_url\" ng-model=\"input_product_url\" required ng-pattern=\"/^.+@.+\\..+$/\"></input>\n" +
-    "                            \n" +
-    "                            <div class=\"hint\" ng-show=\"showHints\">example: http://www.patagonia.com/us/product/womens-nano-puff-jacket?p=84216-0</div>\n" +
-    "                            <div ng-messages=\"productForm.product_url.$error\" ng-show=\"!showHints\">\n" +
-    "                                <div ng-message-exp=\"['required', 'pattern']\">\n" +
-    "                                    That doesn't look like an product url... Are ou sure you entered the right thing?\n" +
-    "                                </div>\n" +
-    "                            </div>\n" +
-    "                        </md-input-container>\n" +
-    "                        <md-button class=\"md-raised md-primary\" ng-click=\"showProductPreview()\">Preview Product</md-button>\n" +
-    "                    </form>\n" +
-    "                </div>\n" +
-    "            </md-card-content>\n" +
-    "        </md-card>\n" +
-    "    </div>\n" +
-    "    <div flex ng-show=\"show_product_preview\">\n" +
-    "        <h2>Preview Campaign</h2>\n" +
-    "        <p>Below is the information we were able to grab from the url you provided.</p>\n" +
-    "        <div>\n" +
-    "            <em-embed urlsearch=\"{{product_url}}\" maxwidth=\"100%\" onempty=\"tryAgain()\"></em-embed>\n" +
-    "            <!-- https://github.com/Urigo/angular-embedly -->\n" +
-    "        </div>\n" +
-    "        <md-button class=\"md-raised md-primary\" ng-click=\"hideProductPreview()\">Close Preview</md-button>\n" +
-    "    </div>\n" +
-    "</div>\n" +
-    "<div layout=\"row\" layout-margin layout=\"column\" data-ng-controller=\"CreateCtrl\" ng-cloak>\n" +
+    "<div layout=\"row\" layout-margin layout-padding layout=\"column\" data-ng-controller=\"CreateCtrl\" ng-cloak class=\"create\">\n" +
     "    <div flex>\n" +
     "        <md-card>\n" +
     "            <md-toolbar>\n" +
     "                <div class=\"md-toolbar-tools\">\n" +
     "                    <h2>\n" +
-    "                        <md-icon md-svg-icon=\"md-menu\"></md-icon>\n" +
-    "                        <span>Create custom campaign</span>\n" +
+    "                        <!--<md-icon md-svg-icon=\"md-menu\"></md-icon>-->\n" +
+    "                        <span>Create a campaign for a any product</span>\n" +
     "                    </h2>\n" +
     "                </div>\n" +
     "            </md-toolbar>\n" +
@@ -87,23 +20,23 @@ angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
     "                            <form name=\"step1\" ng-submit=\"vm.submitCurrentStep(vm.stepData[0].data)\">\n" +
     "                                <md-content class=\"md-padding\">\n" +
     "                                    <div layout=\"row\" layout-align=\"center top\">\n" +
-    "                                        <div flex=\"nogrow\" style=\"width: 400px\">\n" +
-    "                                            <span class=\"md-subhead\">Creating a custom GiftStarter campaign has never been so easy. Simply copy/paste any link into the input below.</span>\n" +
+    "                                        <div flex=\"nogrow\" style=\"width: 50%\">\n" +
+    "                                            <span class=\"md-subhead\">Paste any product url</span><br/>\n" +
     "                                            <md-input-container class=\"md-block\">\n" +
-    "                                                <label>Paste a valid URL</label>\n" +
-    "                                                <input name=\"product_url\" ng-model=\"vm.stepData[0].data.product_url\" ng-pattern=\"/^.+@.+\\..+$/\" ng-disabled=\"vm.stepData[0].data.completed\" required></input>\n" +
-    "                                                <div ng-messages=\"step1.product_url.$error\">\n" +
-    "                                                    <div ng-message=\"required\">\n" +
-    "                                                        A valid URL is required\n" +
+    "                                                <input name=\"product_url\" ng-model=\"vm.stepData[0].data.product_url\" md-select-on-focus ng-pattern=\"urlPattern\" ng-disabled=\"vm.stepData[0].data.completed\" required></input>\n" +
+    "                                                <div class=\"hint\" ng-show=\"showProductUrlHint\">example: http://www.patagonia.com/us/product/womens-nano-puff-jacket?p=84216-0</div>\n" +
+    "                                                <div ng-messages=\"step1.product_url.$error\" role=\"alert\">\n" +
+    "                                                    <div ng-message-exp=\"['required','pattern']\">\n" +
+    "                                                        That doesn't look like a product url... Are you sure you entered or pasted the right thing?\n" +
     "                                                    </div>\n" +
     "                                                </div>\n" +
     "                                            </md-input-container>\n" +
+    "                                            <span class=\"md-caption\">to test, copy and paste <pre>http://www.patagonia.com/us/product/womens-nano-puff-jacket?p=84216-0</pre> above</span>\n" +
     "                                        </div>\n" +
     "                                    </div>\n" +
     "                                </md-content>\n" +
     "                                <md-step-actions layout=\"row\">\n" +
     "                                    <div flex layout=\"row\" layout-align=\"end top\">\n" +
-    "                                        <md-button class=\"md-warn\">Cancel</md-button>\n" +
     "                                        <md-button type=\"submit\" ng-disabled=\"!vm.stepData[0].data.product_url || vm.showBusyText\" class=\"md-primary md-raised\">Next</md-button>\n" +
     "                                    </div>\n" +
     "                                </md-step-actions>\n" +
@@ -112,7 +45,23 @@ angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
     "                    </md-step>\n" +
     "                    <md-step label=\"Review details\" md-complete=\"vm.stepData[1].data.completed\" ng-disabled=\"vm.stepProgress < 2\">\n" +
     "                        <md-step-body>\n" +
-    "                            <em-embed urlsearch=\"{{vm.stepData[0].data._product_url}}\" maxwidth=\"100%\" onempty=\"tryAgain()\"></em-embed>\n" +
+    "                            <md-content>\n" +
+    "                                <md-content class=\"md-padding\">\n" +
+    "                                    <div layout=\"row\" layout-align=\"center top\">\n" +
+    "                                        <div flex=\"nogrow\" style=\"width: 50%\">\n" +
+    "                                            <span class=\"md-subhead\">Paste any product url</span><br/>\n" +
+    "                                            <em-embed urlsearch=\"http://www.patagonia.com/us/product/womens-nano-puff-jacket?p=84216-0\" maxwidth=\"100%\" onempty=\"tryAgain()\"></em-embed>\n" +
+    "                                            <em-embed urlsearch=\"{{vm.stepData[0].data._product_url}}\" maxwidth=\"100%\" onempty=\"tryAgain()\"></em-embed>\n" +
+    "                                        </div>\n" +
+    "                                    </div>\n" +
+    "                                </md-content>\n" +
+    "                            </md-content>\n" +
+    "                            <md-step-actions layout=\"row\">\n" +
+    "                                <div flex layout=\"row\" layout-align=\"end top\">\n" +
+    "                                    <md-button ng-click=\"vm.moveToPreviousStep()\">Previous</md-button>\n" +
+    "                                    <md-button type=\"submit\" ng-disabled=\"vm.showBusyText\" class=\"md-primary md-raised\">Next</md-button>\n" +
+    "                                </div>\n" +
+    "                            </md-step-actions>\n" +
     "                        </md-step-body>\n" +
     "                    </md-step>\n" +
     "                    <md-step label=\"Customize\" md-complete=\"vm.stepData[2].data.completed\" ng-disabled=\"vm.stepProgress < 3\">\n" +

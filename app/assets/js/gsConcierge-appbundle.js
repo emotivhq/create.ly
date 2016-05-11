@@ -227,7 +227,7 @@ angular.module('gsConcierge')
 		.module('create')
 		.controller('CreateCtrl', Create);
 
-		Create.$inject = ['$scope', '$q', '$timeout', '$mdToast',];
+		Create.$inject = ['$scope', '$q', '$timeout', '$mdToast'];
 
 		/*
 		* recommend
@@ -242,19 +242,6 @@ angular.module('gsConcierge')
 			  app_id: "q5i7p4f9"
 			});
 
-			$scope.input_product_url = 'https://';
-			$scope.show_product_preview = false;
-			$scope.showHints = true;
-			
-			$scope.showProductPreview = function() {
-				//$scope.show_product_preview = true;
-				$scope.showHints = false;
-			};
-			
-			$scope.hideProductPreview = function() {
-				$scope.show_product_preview = false;
-			};
-			
 			$scope.tryAgain = function() {
 				$mdToast.show(
 					$mdToast.simple()
@@ -264,13 +251,18 @@ angular.module('gsConcierge')
 				);
 			};
 			
+			$scope.showProductUrlHint = false;
+			$scope.urlPattern = /^(http|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:\/~\+#]*[\w\-\@?^=%&amp;\/~\+#])?/i;
+
 			vm.selectedStep = 0;
 			vm.stepProgress = 1;
 			vm.maxStep = 4;
 			vm.showBusyText = false;
 			// Setup the initial step data
 			vm.stepData = [
-				{ step: 1, completed: false, optional: false, data: {} },
+				{ step: 1, completed: false, optional: false, data: {
+					product_url: 'http://'
+				} },
 				{ step: 2, completed: false, optional: false, data: {} },
 				{ step: 3, completed: false, optional: false, data: {} },
 				{ step: 4, completed: false, optional: false, data: {} },
