@@ -59,7 +59,7 @@
                                             <span class="md-subhead">Creating a custom GiftStarter campaign has never been so easy. Simply copy/paste any link into the input below.</span>
                                             <md-input-container class="md-block">
                                                 <label>Paste a valid URL</label>
-                                                <input name="product_url" ng-model="vm.stepData[0].data.product_url" ng-model="product_url" ng-pattern="/^.+@.+\..+$/" ng-disabled="vm.stepData[0].data.completed" required></input>
+                                                <input name="product_url" ng-model="vm.stepData[0].data.product_url" ng-pattern="/^.+@.+\..+$/" ng-disabled="vm.stepData[0].data.completed" required></input>
                                                 <div ng-messages="step1.product_url.$error">
                                                     <div ng-message="required">
                                                         A valid URL is required
@@ -80,7 +80,7 @@
                     </md-step>
                     <md-step label="Review details" md-complete="vm.stepData[1].data.completed" ng-disabled="vm.stepProgress < 2">
                         <md-step-body>
-                            <em-embed urlsearch="{{input_product_url}}" maxwidth="100%" onempty="tryAgain()"></em-embed>
+                            <em-embed urlsearch="{{vm.stepData[0].data._product_url}}" maxwidth="100%" onempty="tryAgain()"></em-embed>
                         </md-step-body>
                     </md-step>
                     <md-step label="Customize" md-complete="vm.stepData[2].data.completed" ng-disabled="vm.stepProgress < 3">

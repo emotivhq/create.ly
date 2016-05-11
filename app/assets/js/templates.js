@@ -53,7 +53,7 @@ angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
     "                </div>\n" +
     "            </md-toolbar>\n" +
     "            <md-stepper-card-content class=\"md-no-padding\">\n" +
-    "                <md-steppers md-dynamic-height md-stretch-steppers=\"always\" md-selected=\"vm.selectedStep\" md-busy-text=\"'Processing...'\" md-busy=\"vm.showBusyText\">\n" +
+    "                <md-steppers md-dynamic-height md-stretch-steppers=\"always\" md-selected=\"vm.selectedStep\" md-busy-text=\"'Fetching data & other things...'\" md-busy=\"vm.showBusyText\">\n" +
     "                    <md-step label=\"Enter Url\" md-complete=\"vm.stepData[0].data.completed\" ng-disabled=\"vm.stepProgress < 1\">\n" +
     "                        <md-step-body>\n" +
     "                            <form name=\"step1\" ng-submit=\"vm.submitCurrentStep(vm.stepData[0].data)\">\n" +
@@ -63,7 +63,7 @@ angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
     "                                            <span class=\"md-subhead\">Creating a custom GiftStarter campaign has never been so easy. Simply copy/paste any link into the input below.</span>\n" +
     "                                            <md-input-container class=\"md-block\">\n" +
     "                                                <label>Paste a valid URL</label>\n" +
-    "                                                <input name=\"product_url\" ng-model=\"vm.stepData[0].data.product_url\" ng-model=\"product_url\" ng-pattern=\"/^.+@.+\\..+$/\" ng-disabled=\"vm.stepData[0].data.completed\" required></input>\n" +
+    "                                                <input name=\"product_url\" ng-model=\"vm.stepData[0].data.product_url\" ng-pattern=\"/^.+@.+\\..+$/\" ng-disabled=\"vm.stepData[0].data.completed\" required></input>\n" +
     "                                                <div ng-messages=\"step1.product_url.$error\">\n" +
     "                                                    <div ng-message=\"required\">\n" +
     "                                                        A valid URL is required\n" +
@@ -84,7 +84,7 @@ angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
     "                    </md-step>\n" +
     "                    <md-step label=\"Review details\" md-complete=\"vm.stepData[1].data.completed\" ng-disabled=\"vm.stepProgress < 2\">\n" +
     "                        <md-step-body>\n" +
-    "                            <em-embed urlsearch=\"{{input_product_url}}\" maxwidth=\"100%\" onempty=\"tryAgain()\"></em-embed>\n" +
+    "                            <em-embed urlsearch=\"{{vm.stepData[0].data._product_url}}\" maxwidth=\"100%\" onempty=\"tryAgain()\"></em-embed>\n" +
     "                        </md-step-body>\n" +
     "                    </md-step>\n" +
     "                    <md-step label=\"Customize\" md-complete=\"vm.stepData[2].data.completed\" ng-disabled=\"vm.stepProgress < 3\">\n" +
