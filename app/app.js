@@ -20,6 +20,7 @@
 		'ngSanitize',
 		'ngStamplay',
 		'angular-embedly',
+		'md-steppers',
 		'ui.router',
 		'home',
 		'create',

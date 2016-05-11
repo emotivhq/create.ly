@@ -40,6 +40,102 @@ angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
     "        </div>\n" +
     "        <md-button class=\"md-raised md-primary\" ng-click=\"hideProductPreview()\">Close Preview</md-button>\n" +
     "    </div>\n" +
+    "</div>\n" +
+    "<div layout=\"row\" layout-margin layout=\"column\" data-ng-controller=\"CreateCtrl\" ng-cloak>\n" +
+    "    <div flex>\n" +
+    "        <md-card>\n" +
+    "            <md-toolbar>\n" +
+    "                <div class=\"md-toolbar-tools\">\n" +
+    "                    <h2>\n" +
+    "                        <md-icon md-svg-icon=\"md-menu\"></md-icon>\n" +
+    "                        <span>Create custom campaign</span>\n" +
+    "                    </h2>\n" +
+    "                </div>\n" +
+    "            </md-toolbar>\n" +
+    "            <md-stepper-card-content class=\"md-no-padding\">\n" +
+    "                <md-steppers md-dynamic-height md-stretch-steppers=\"always\" md-selected=\"vm.selectedStep\" md-busy-text=\"'Processing...'\" md-busy=\"vm.showBusyText\">\n" +
+    "                    <md-step label=\"Login detail\" md-complete=\"vm.stepData[0].data.completed\" ng-disabled=\"vm.stepProgress < 1\">\n" +
+    "                        <md-step-body>\n" +
+    "                            <form name=\"step1\" ng-submit=\"vm.submitCurrentStep(vm.stepData[0].data)\">\n" +
+    "                                <md-content class=\"md-padding\">\n" +
+    "                                    <div layout=\"row\" layout-align=\"center top\">\n" +
+    "                                        <div flex=\"nogrow\" style=\"width: 400px\">\n" +
+    "                                            <span class=\"md-subhead\">Creating a custom GiftStarter campaign has never been so easy. Simply copy/paste any link into the input below.</span>\n" +
+    "                                            <md-input-container class=\"md-block\">\n" +
+    "                                                <label>Paste a valid URL</label>\n" +
+    "                                                <input name=\"product_url\" ng-model=\"vm.stepData[0].data.product_url\" ng-model=\"input_product_url\" ng-pattern=\"/^.+@.+\\..+$/\" ng-disabled=\"vm.stepData[0].data.completed\" required></input>\n" +
+    "                                                <div ng-messages=\"step1.product_url.$error\">\n" +
+    "                                                    <div ng-message=\"required\">\n" +
+    "                                                        A valid URL is required\n" +
+    "                                                    </div>\n" +
+    "                                                </div>\n" +
+    "                                            </md-input-container>\n" +
+    "                                        </div>\n" +
+    "                                    </div>\n" +
+    "                                </md-content>\n" +
+    "                                <md-step-actions layout=\"row\">\n" +
+    "                                    <div flex layout=\"row\" layout-align=\"end top\">\n" +
+    "                                        <md-button class=\"md-warn\">Cancel</md-button>\n" +
+    "                                        <md-button type=\"submit\" ng-disabled=\"!vm.stepData[0].data.product_url || vm.showBusyText\" class=\"md-primary md-raised\">Next</md-button>\n" +
+    "                                    </div>\n" +
+    "                                </md-step-actions>\n" +
+    "                            </form>\n" +
+    "                        </md-step-body>\n" +
+    "                    </md-step>\n" +
+    "                    <md-step label=\"Review details\" md-complete=\"vm.stepData[1].data.completed\" ng-disabled=\"vm.stepProgress < 2\">\n" +
+    "                        <md-step-body>\n" +
+    "                            <em-embed urlsearch=\"{{input_product_url}}\" maxwidth=\"100%\" onempty=\"tryAgain()\"></em-embed>\n" +
+    "                        </md-step-body>\n" +
+    "                    </md-step>\n" +
+    "                    <md-step label=\"Customize\" md-complete=\"vm.stepData[2].data.completed\" ng-disabled=\"vm.stepProgress < 3\">\n" +
+    "                        <md-step-body>\n" +
+    "                            <form name=\"step2\">\n" +
+    "                                <md-content class=\"md-padding\">\n" +
+    "                                    <div layout=\"row\" layout-align=\"center top\">\n" +
+    "                                        <div flex=\"nogrow\" style=\"width: 400px\">\n" +
+    "                                            <h4>Please enter yout full name</h4>\n" +
+    "                                            <md-input-container class=\"md-block\">\n" +
+    "                                                <label>Your first name here</label>\n" +
+    "                                                <input name=\"firsname\" ng-model=\"vm.stepData[1].data.firsname\"/>\n" +
+    "                                            </md-input-container>\n" +
+    "                                            <md-input-container class=\"md-block\">\n" +
+    "                                                <label>Your last name</label>\n" +
+    "                                                <input name=\"lastname\" ng-model=\"vm.stepData[1].data.lastname\"/>\n" +
+    "                                            </md-input-container>\n" +
+    "                                        </div>\n" +
+    "                                    </div>\n" +
+    "                                </md-content>\n" +
+    "                                <md-step-actions layout=\"row\">\n" +
+    "                                    <div flex>\n" +
+    "                                        <md-button ng-click=\"vm.moveToPreviousStep()\">PREVIOUS</md-button>\n" +
+    "                                    </div>\n" +
+    "                                    <div flex layout=\"row\" layout-align=\"end top\">\n" +
+    "                                        <md-button class=\"md-warn\">CANCEL</md-button>\n" +
+    "                                        <md-button ng-disabled=\"vm.showBusyText\" ng-click=\"vm.submitCurrentStep(vm.stepData[1].data, !(vm.stepData[1].data.firsname && vm.stepData[1].data.lastname))\" class=\"md-primary md-raised\">\n" +
+    "                                            {{ vm.stepData[1].data.firsname && vm.stepData[1].data.lastname ? 'NEXT' : 'SKIP' }}\n" +
+    "                                        </md-button>\n" +
+    "                                    </div>\n" +
+    "                                </md-step-actions>\n" +
+    "                            </form>\n" +
+    "                        </md-step-body>\n" +
+    "                    </md-step>\n" +
+    "                            \n" +
+    "                    <md-step label=\"Finish\" md-complete=\"vm.stepData[3].data.completed\" ng-disabled=\"vm.stepProgress < 4\">\n" +
+    "                        <md-step-body>\n" +
+    "                            <form name=\"step3\">\n" +
+    "                                <md-content class=\"md-padding\">\n" +
+    "                                    <div layout=\"column\" layout-align=\"center center\" style=\"min-height: 200px\">\n" +
+    "                                        <h4>Yasss! your custom campaign link was created.</h4>\n" +
+    "                                        <md-button class=\"md-primary md-raised\">Create a campaign</md-button>\n" +
+    "                                    </div>\n" +
+    "                                </md-content>\n" +
+    "                            </form>\n" +
+    "                        </md-step-body>\n" +
+    "                    </md-step>\n" +
+    "                </md-steppers>\n" +
+    "            </md-stepper-card-content>\n" +
+    "        </md-card>\n" +
+    "    </div>\n" +
     "</div>"
   );
 
