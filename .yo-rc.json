@@ -18,7 +18,8 @@
     "menu": [
       {
         "link": "create",
-        "title": "Create"
+        "title": "Create",
+        "icon": "create"
       }
     ]
   }

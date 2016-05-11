@@ -34,9 +34,9 @@ angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
     "    <div flex ng-show=\"show_product_preview\">\n" +
     "        <h2>Preview Campaign</h2>\n" +
     "        <p>Below is the information we were able to grab from the url you provided.</p>\n" +
-    "        <p>Insert form here.</p>\n" +
     "        <div>\n" +
     "            <em-embed urlsearch=\"{{input_product_url}}\"></em-embed>\n" +
+    "            <!-- https://github.com/Urigo/angular-embedly -->\n" +
     "        </div>\n" +
     "        <md-button class=\"md-raised md-primary\" ng-click=\"hideProductPreview()\">Close Preview</md-button>\n" +
     "    </div>\n" +
@@ -73,8 +73,8 @@ angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
     "        <md-toolbar class=\"md-tall md-hue-2\">\n" +
     "            <div layout=\"column\" class=\"md-toolbar-tools-bottom inset\">\n" +
     "                <div layout=\"row\">\n" +
-    "                    <div flex=\"80\" style=\"margin-top: 10px;\">\n" +
-    "                        <div>GiftStarter</div>\n" +
+    "                    <div flex=\"80\" style=\"margin-top: 0;\">\n" +
+    "                        <img src=\"/app/assets/images/logo-web-white.png\" style=\"max-width: 80%;\">\n" +
     "                    </div>\n" +
     "                </div>\n" +
     "            </div>\n" +
