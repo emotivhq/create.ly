@@ -77,16 +77,16 @@
 				vm.showBusyText = true;
 				console.log('On before submit');
 				if (!stepData.completed && !isSkip) {
-				    //simulate $http
-				    $timeout(function () {
-				    	if (stepData.step === 1) $scope.urlSearch = stepData.data.product_url;
-				        vm.showBusyText = false;
-				        console.log('Step success, #chaboi style');
-				        deferred.resolve({ status: 200, statusText: 'success', data: {} });
-				        //move to next step when success
-				        stepData.completed = true;
-				        vm.enableNextStep();
-				    }, 1000);
+					//simulate $http
+					$timeout(function () {
+						if (stepData.step === 1) { $scope.urlSearch = stepData.data.product_url; }
+						vm.showBusyText = false;
+						console.log('Step success, #chaboi style');
+						deferred.resolve({status: 200,statusText: 'success',data: {}});
+						//move to next step when success
+						stepData.completed = true;
+						vm.enableNextStep();
+					}, 1000);
 				} else {
 				    vm.showBusyText = false;
 				    vm.enableNextStep();
