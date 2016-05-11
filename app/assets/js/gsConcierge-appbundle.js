@@ -1,5 +1,5 @@
 /*!
-* gsConcierge - v0.0.1 - MIT LICENSE 2016-05-10. 
+* gsConcierge - v0.0.1 - MIT LICENSE 2016-05-11. 
 * @author Emotiv
 */
 (function() {
@@ -17,12 +17,13 @@
 	angular.module('gsConcierge', [
 		'ngResource',
 		'ngAria',
-		 'ngMaterial',
+		'ngMaterial',
 		'ngMdIcons',
 		'ngCookies',
 		'ngAnimate',
 		'ngSanitize',
 		'ngStamplay',
+		'angular-embedly',
 		'ui.router',
 		'home',
 		'create',
@@ -47,11 +48,13 @@
 		.config(configure)
 		.run(runBlock);
 
-	configure.$inject = ['$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpProvider', '$mdThemingProvider', '$mdIconProvider'];
+	configure.$inject = ['$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpProvider', '$mdThemingProvider', '$mdIconProvider', 'embedlyServiceProvider'];
 
-	function configure($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, $mdThemingProvider, $mdIconProvider) {
+	function configure($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, $mdThemingProvider, $mdIconProvider, embedlyServiceProvider) {
 
 
+		embedlyServiceProvider.setKey('3853b5f70b824643bd1c416b72c29d75');
+		
 		$mdThemingProvider
 			.theme('default')
 			.primaryPalette('red', {
@@ -211,7 +214,7 @@ angular.module('gsConcierge')
 		.module('create')
 		.controller('CreateCtrl', Create);
 
-		Create.$inject = [];
+		Create.$inject = ['$scope'];
 
 		/*
 		* recommend
@@ -219,9 +222,21 @@ angular.module('gsConcierge')
 		* and bindable members up top.
 		*/
 
-		function Create() {
+		function Create($scope) {
 			/*jshint validthis: true */
 			var vm = this;
+			
+			$scope.input_product_url = 'https://';
+			$scope.show_product_preview = false;
+			$scope.showHints = true;
+			
+			$scope.showProductPreview = function() {
+				$scope.show_product_preview = true;
+			};
+			
+			$scope.hideProductPreview = function() {
+				$scope.show_product_preview = false;
+			};
 
 		}
 

@@ -2,13 +2,45 @@ angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
   'use strict';
 
   $templateCache.put('app/modules/create/create.html',
-    "<div class=\"md-padding\" flex layout-sm=\"column\">\n" +
-    "    <md-card>\n" +
-    "        <md-card-content>\n" +
-    "            <h2 class=\"md-title\">Link Creator</h2>\n" +
-    "        </md-card-content>\n" +
-    "    </md-card>\n" +
-    "</div>\n"
+    "<div layout=\"row\" layout-margin layout=\"column\" data-ng-controller=\"CreateCtrl\" ng-cloak>\n" +
+    "    <div flex>\n" +
+    "        <md-card>\n" +
+    "            <md-card-title>\n" +
+    "                <md-card-title-text>\n" +
+    "                    <span class=\"md-headline\">Create a custom campaign</span>\n" +
+    "                    <span class=\"md-subhead\">Creating a custom GiftStarter campaign has never been so easy. Simply copy/paste any product link into the input below.</span>\n" +
+    "                </md-card-title-text>\n" +
+    "            </md-card-title>\n" +
+    "            <md-card-content>\n" +
+    "                <div>\n" +
+    "                    <form name=\"productForm\">\n" +
+    "                        <md-input-container>\n" +
+    "                            <label>Enter <em>any</em> product URL:</label>\n" +
+    "                            <input name=\"product_url\" ng-model=\"input_product_url\" required ng-pattern=\"/^.+@.+\\..+$/\"></input>\n" +
+    "\n" +
+    "                            <!--<div class=\"hint\" ng-show=\"showHints\">example: https://www.organicbeardsupply.com/products/organic-beard-oil-spice-scent-1oz-dropper</div>-->\n" +
+    "                            <!--<div ng-messages=\"productForm.product_url.$error\" ng-show=\"!showHints\">-->\n" +
+    "                            <!--    <div ng-message-exp=\"['required', 'pattern']\">-->\n" +
+    "                            <!--        That doesn't look like an product url... Are ou sure you entered the right thing?-->\n" +
+    "                            <!--    </div>-->\n" +
+    "                            <!--</div>-->\n" +
+    "                        </md-input-container>\n" +
+    "                        <md-button class=\"md-raised md-primary\" ng-click=\"showProductPreview()\">Get Product Info</md-button>\n" +
+    "                    </form>\n" +
+    "                </div>\n" +
+    "            </md-card-content>\n" +
+    "        </md-card>\n" +
+    "    </div>\n" +
+    "    <div flex ng-show=\"show_product_preview\">\n" +
+    "        <h2>Preview Campaign</h2>\n" +
+    "        <p>Below is the information we were able to grab from the url you provided.</p>\n" +
+    "        <p>Insert form here.</p>\n" +
+    "        <div>\n" +
+    "            <em-embed urlsearch=\"{{input_product_url}}\"></em-embed>\n" +
+    "        </div>\n" +
+    "        <md-button class=\"md-raised md-primary\" ng-click=\"hideProductPreview()\">Close Preview</md-button>\n" +
+    "    </div>\n" +
+    "</div>"
   );
 
 

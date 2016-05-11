@@ -15,11 +15,13 @@
 		.config(configure)
 		.run(runBlock);
 
-	configure.$inject = ['$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpProvider', '$mdThemingProvider', '$mdIconProvider'];
+	configure.$inject = ['$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpProvider', '$mdThemingProvider', '$mdIconProvider', 'embedlyServiceProvider'];
 
-	function configure($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, $mdThemingProvider, $mdIconProvider) {
+	function configure($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, $mdThemingProvider, $mdIconProvider, embedlyServiceProvider) {
 
 
+		embedlyServiceProvider.setKey('3853b5f70b824643bd1c416b72c29d75');
+		
 		$mdThemingProvider
 			.theme('default')
 			.primaryPalette('red', {
