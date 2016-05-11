@@ -21,7 +21,7 @@ angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
     "                                <md-content class=\"md-padding\">\n" +
     "                                    <div layout=\"row\" layout-align=\"center top\">\n" +
     "                                        <div flex=\"nogrow\" style=\"width: 50%\">\n" +
-    "                                            <span class=\"md-subhead\">Paste any product url</span>\n" +
+    "                                            <span class=\"md-subhead\">Paste any product url</span><br/>\n" +
     "                                            <md-input-container class=\"md-block\">\n" +
     "                                                <input name=\"product_url\" ng-model=\"vm.stepData[0].data.product_url\" md-select-on-focus ng-pattern=\"urlPattern\" ng-disabled=\"vm.stepData[0].data.completed\" required></input>\n" +
     "                                                <div class=\"hint\" ng-show=\"showProductUrlHint\">example: http://www.patagonia.com/us/product/womens-nano-puff-jacket?p=84216-0</div>\n" +
@@ -31,12 +31,12 @@ angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
     "                                                    </div>\n" +
     "                                                </div>\n" +
     "                                            </md-input-container>\n" +
+    "                                            <span class=\"md-caption\">to test, copy and paste <pre>http://www.patagonia.com/us/product/womens-nano-puff-jacket?p=84216-0</pre> above</span>\n" +
     "                                        </div>\n" +
     "                                    </div>\n" +
     "                                </md-content>\n" +
     "                                <md-step-actions layout=\"row\">\n" +
     "                                    <div flex layout=\"row\" layout-align=\"end top\">\n" +
-    "                                        <md-button class=\"md-warn\">Cancel</md-button>\n" +
     "                                        <md-button type=\"submit\" ng-disabled=\"!vm.stepData[0].data.product_url || vm.showBusyText\" class=\"md-primary md-raised\">Next</md-button>\n" +
     "                                    </div>\n" +
     "                                </md-step-actions>\n" +
@@ -45,7 +45,23 @@ angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
     "                    </md-step>\n" +
     "                    <md-step label=\"Review details\" md-complete=\"vm.stepData[1].data.completed\" ng-disabled=\"vm.stepProgress < 2\">\n" +
     "                        <md-step-body>\n" +
-    "                            <em-embed urlsearch=\"{{vm.stepData[0].data._product_url}}\" maxwidth=\"100%\" onempty=\"tryAgain()\"></em-embed>\n" +
+    "                            <md-content>\n" +
+    "                                <md-content class=\"md-padding\">\n" +
+    "                                    <div layout=\"row\" layout-align=\"center top\">\n" +
+    "                                        <div flex=\"nogrow\" style=\"width: 50%\">\n" +
+    "                                            <span class=\"md-subhead\">Paste any product url</span><br/>\n" +
+    "                                            <em-embed urlsearch=\"http://www.patagonia.com/us/product/womens-nano-puff-jacket?p=84216-0\" maxwidth=\"100%\" onempty=\"tryAgain()\"></em-embed>\n" +
+    "                                            <em-embed urlsearch=\"{{vm.stepData[0].data._product_url}}\" maxwidth=\"100%\" onempty=\"tryAgain()\"></em-embed>\n" +
+    "                                        </div>\n" +
+    "                                    </div>\n" +
+    "                                </md-content>\n" +
+    "                            </md-content>\n" +
+    "                            <md-step-actions layout=\"row\">\n" +
+    "                                <div flex layout=\"row\" layout-align=\"end top\">\n" +
+    "                                    <md-button ng-click=\"vm.moveToPreviousStep()\">Previous</md-button>\n" +
+    "                                    <md-button type=\"submit\" ng-disabled=\"vm.showBusyText\" class=\"md-primary md-raised\">Next</md-button>\n" +
+    "                                </div>\n" +
+    "                            </md-step-actions>\n" +
     "                        </md-step-body>\n" +
     "                    </md-step>\n" +
     "                    <md-step label=\"Customize\" md-complete=\"vm.stepData[2].data.completed\" ng-disabled=\"vm.stepProgress < 3\">\n" +

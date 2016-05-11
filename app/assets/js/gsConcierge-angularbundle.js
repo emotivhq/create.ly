@@ -35833,7 +35833,6 @@ var angularEmbedly = angular.module('angular-embedly', []);
             },
             controller: 'emEmbedCtrl',
             link: function(scope, element, attributes) {
-                
                 // This function should be called when the oEmbed returns no embed code
                 function handleEmpty(){
                     if(scope.onempty != undefined && typeof(scope.onempty) == "function"){
