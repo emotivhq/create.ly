@@ -234,7 +234,7 @@ angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
   $templateCache.put('app/modules/home/home.html',
     "<md-sidenav layout=\"column\" class=\"md-sidenav-left md-whiteframe-z2\" md-component-id=\"left\" md-is-locked-open=\"$mdMedia('gt-md')\">\n" +
     "    <div ng-controller=\"SidenavCtrl as vm\" ng-cloak>\n" +
-    "        <md-toolbar class=\"md-tall md-hue-2\">\n" +
+    "        <md-toolbar class=\"md-tall md-accent\">\n" +
     "            <div layout=\"column\" class=\"md-toolbar-tools-bottom inset\">\n" +
     "                <div layout=\"row\">\n" +
     "                    <div flex=\"80\" style=\"margin-top: 0;\">\n" +
@@ -252,13 +252,7 @@ angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
     "            </md-list-item>\n" +
     "            <md-divider></md-divider>\n" +
     "            <md-subheader>Admin</md-subheader>\n" +
-    "            <md-list-item ui-sref=\"home.dashboard\">\n" +
-    "                <div class=\"inset\">\n" +
-    "                    <ng-md-icon icon=\"apps\"></ng-md-icon>\n" +
-    "                </div>\n" +
-    "                <p> Dashboard </p>\n" +
-    "            </md-list-item>\n" +
-    "            <md-list-item ng-repeat=\"item in vm.admin\" ng-click=\"vm.showSettingsBottom($event)\" >\n" +
+    "            <md-list-item ng-repeat=\"item in vm.admin\" ng-click=\"vm.navigateTo(item.link)\" >\n" +
     "                <div class=\"inset\">\n" +
     "                    <ng-md-icon icon=\"{{item.icon}}\"></ng-md-icon>\n" +
     "                </div>\n" +
@@ -269,7 +263,7 @@ angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
     "</md-sidenav>\n" +
     "\n" +
     "<div layout=\"column\" class=\"relative\" layout-fill role=\"main\" ng-controller=\"LayoutCtrl as layout\" ng-cloak>\n" +
-    "    <md-toolbar ng-show=\"!showSearch\">\n" +
+    "    <md-toolbar class=\"md-accent\" ng-show=\"!showSearch\">\n" +
     "        <div class=\"md-toolbar-tools\">\n" +
     "            <md-button ng-click=\"layout.toggleSidenav('left')\" hide-gt-md aria-label=\"Menu\">\n" +
     "                <ng-md-icon icon=\"menu\"></ng-md-icon>\n" +
@@ -325,7 +319,7 @@ angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('app/modules/layouts/main-page/main-page.html',
-    "    <md-toolbar ng-show=\"!showSearch\">\n" +
+    "    <md-toolbar class=\"md-accent\" ng-show=\"!showSearch\">\n" +
     "        <div class=\"md-toolbar-tools\">\n" +
     "            <md-button ng-click=\"layout.toggleSidenav('left')\" hide-gt-md aria-label=\"Menu\">\n" +
     "                <ng-md-icon icon=\"menu\"></ng-md-icon>\n" +
@@ -387,7 +381,7 @@ angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('app/modules/layouts/side-nav/sidenav.html',
-    "        <md-toolbar class=\"md-tall md-hue-2\">\n" +
+    "        <md-toolbar class=\"md-tall\">\n" +
     "            <div layout=\"column\" class=\"md-toolbar-tools-bottom inset\">\n" +
     "                <div layout=\"row\">\n" +
     "                    <div flex=\"20\">\n" +

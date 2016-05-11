@@ -11,7 +11,7 @@
 angular.module('gsConcierge')
 	.config(['$stateProvider', function ($stateProvider) {
 		$stateProvider
-			
+		
 			.state('home', {
 				url: '',
 				abstract: true,
@@ -22,6 +22,10 @@ angular.module('gsConcierge')
 			.state('home.dashboard', {
 				url:'/dashboard',
 				templateUrl: 'app/modules/home/dashboard.html'
+			})
+			.state('home.external', {
+				url: 'https://giftstarter.com',
+				external: true
 			});
 			
 	}]);

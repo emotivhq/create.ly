@@ -23,8 +23,8 @@
 				
 					{
 						link: 'create',
-							name: 'Create',
-							icon: 'create',
+							name: 'Create campaign link',
+							icon: 'open_in_browser',
 					},
 			    
 			];

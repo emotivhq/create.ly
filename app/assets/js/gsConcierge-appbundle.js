@@ -58,11 +58,11 @@
 		
 		$mdThemingProvider
 			.theme('default')
-			.primaryPalette('blue', {
-				'default': '600'
+			.primaryPalette('light-blue', {
+				'default': '900'
 			})
-			.accentPalette('indigo', {
-				'default': '500'
+			.accentPalette('blue-grey', {
+				'default': '900'
 			})
 			.warnPalette('defaultPrimary');
 
@@ -108,12 +108,18 @@
 
 	}
 
-	runBlock.$inject = ['$rootScope'];
+	runBlock.$inject = ['$rootScope', '$window'];
 
-	function runBlock($rootScope) {
+	function runBlock($rootScope, $window) {
 		'use strict';
 
-		console.log('AngularJS run() function...');
+		$rootScope.$on('$stateChangeStart',
+	    function(event, toState, toParams, fromState, fromParams) {
+	      if (toState.external) {
+	        event.preventDefault();
+	        $window.open(toState.url, '_self');
+	      }
+	    });
 	}
 
 
@@ -185,7 +191,7 @@ angular.module('create')
 angular.module('gsConcierge')
 	.config(['$stateProvider', function ($stateProvider) {
 		$stateProvider
-			
+		
 			.state('home', {
 				url: '',
 				abstract: true,
@@ -196,6 +202,10 @@ angular.module('gsConcierge')
 			.state('home.dashboard', {
 				url:'/dashboard',
 				templateUrl: 'app/modules/home/dashboard.html'
+			})
+			.state('home.external', {
+				url: 'https://giftstarter.com',
+				external: true
 			});
 			
 	}]);
@@ -499,9 +509,14 @@ angular.module('gsConcierge')
 
 		vm.admin = [
 			{
-				link: 'showListBottomSheet($event)',
-				title: 'Settings',
-				icon: 'settings'
+				link: 'home.dashboard',
+				title: 'Dashboard',
+				icon: 'dashboard'
+			},
+			{
+				link: 'home.external',
+				title: 'GiftStarter.com',
+				icon: 'redeem'
 			}
 		];
 
@@ -716,8 +731,8 @@ angular.module('gsConcierge')
 				
 					{
 						link: 'create',
-							name: 'Create',
-							icon: 'create',
+							name: 'Create campaign link',
+							icon: 'open_in_browser',
 					},
 			    
 			];

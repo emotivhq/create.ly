@@ -24,11 +24,11 @@
 		
 		$mdThemingProvider
 			.theme('default')
-			.primaryPalette('blue', {
-				'default': '600'
+			.primaryPalette('light-blue', {
+				'default': '900'
 			})
-			.accentPalette('indigo', {
-				'default': '500'
+			.accentPalette('blue-grey', {
+				'default': '900'
 			})
 			.warnPalette('defaultPrimary');
 
@@ -74,12 +74,18 @@
 
 	}
 
-	runBlock.$inject = ['$rootScope'];
+	runBlock.$inject = ['$rootScope', '$window'];
 
-	function runBlock($rootScope) {
+	function runBlock($rootScope, $window) {
 		'use strict';
 
-		console.log('AngularJS run() function...');
+		$rootScope.$on('$stateChangeStart',
+	    function(event, toState, toParams, fromState, fromParams) {
+	      if (toState.external) {
+	        event.preventDefault();
+	        $window.open(toState.url, '_self');
+	      }
+	    });
 	}
 
 
