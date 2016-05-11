@@ -63,7 +63,7 @@ angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
     "        <h2>Preview Campaign</h2>\n" +
     "        <p>Below is the information we were able to grab from the url you provided.</p>\n" +
     "        <div>\n" +
-    "            <em-embed urlsearch=\"{{input_product_url}}\" maxwidth=\"100%\" onempty=\"tryAgain()\"></em-embed>\n" +
+    "            <em-embed urlsearch=\"{{product_url}}\" maxwidth=\"100%\" onempty=\"tryAgain()\"></em-embed>\n" +
     "            <!-- https://github.com/Urigo/angular-embedly -->\n" +
     "        </div>\n" +
     "        <md-button class=\"md-raised md-primary\" ng-click=\"hideProductPreview()\">Close Preview</md-button>\n" +
@@ -91,7 +91,7 @@ angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
     "                                            <span class=\"md-subhead\">Creating a custom GiftStarter campaign has never been so easy. Simply copy/paste any link into the input below.</span>\n" +
     "                                            <md-input-container class=\"md-block\">\n" +
     "                                                <label>Paste a valid URL</label>\n" +
-    "                                                <input name=\"product_url\" ng-model=\"vm.stepData[0].data.product_url\" ng-model=\"input_product_url\" ng-pattern=\"/^.+@.+\\..+$/\" ng-disabled=\"vm.stepData[0].data.completed\" required></input>\n" +
+    "                                                <input name=\"product_url\" ng-model=\"vm.stepData[0].data.product_url\" ng-model=\"product_url\" ng-pattern=\"/^.+@.+\\..+$/\" ng-disabled=\"vm.stepData[0].data.completed\" required></input>\n" +
     "                                                <div ng-messages=\"step1.product_url.$error\">\n" +
     "                                                    <div ng-message=\"required\">\n" +
     "                                                        A valid URL is required\n" +

@@ -26,6 +26,7 @@
 			var vm = this;
 
 			$scope.input_product_url = 'https://';
+			$scope.product_url = '';
 			$scope.show_product_preview = false;
 			$scope.showHints = true;
 			
@@ -49,7 +50,7 @@
 			
 			vm.selectedStep = 0;
 			vm.stepProgress = 1;
-			vm.maxStep = 3;
+			vm.maxStep = 4;
 			vm.showBusyText = false;
 			// Setup the initial step data
 			vm.stepData = [
