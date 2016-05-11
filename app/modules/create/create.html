@@ -13,21 +13,21 @@
                 <md-steppers md-dynamic-height md-stretch-steppers="always" md-selected="vm.selectedStep" md-busy-text="'Fetching data & other things...'" md-busy="vm.showBusyText">
                     <md-step label="Enter Url" md-complete="vm.stepData[0].data.completed" ng-disabled="vm.stepProgress < 1">
                         <md-step-body>
-                            <form name="step1" ng-submit="vm.submitCurrentStep(vm.stepData[0].data)">
+                            <form name="step1" ng-submit="vm.submitCurrentStep(vm.stepData[0])">
                                 <md-content class="md-padding">
                                     <div layout="row" layout-align="center top">
                                         <div flex="nogrow" style="width: 50%">
                                             <span class="md-subhead">Paste any product url</span><br/>
                                             <md-input-container class="md-block">
                                                 <input name="product_url" ng-model="vm.stepData[0].data.product_url" md-select-on-focus ng-pattern="urlPattern" ng-disabled="vm.stepData[0].data.completed" required></input>
-                                                <div class="hint" ng-show="showProductUrlHint">example: http://www.patagonia.com/us/product/womens-nano-puff-jacket?p=84216-0</div>
+                                                <div class="hint" ng-show="showProductUrlHint">example: http://www.patagonia.com/us/product/womens-nano-puff-jacket</div>
                                                 <div ng-messages="step1.product_url.$error" role="alert">
                                                     <div ng-message-exp="['required','pattern']">
                                                         That doesn't look like a product url... Are you sure you entered or pasted the right thing?
                                                     </div>
                                                 </div>
                                             </md-input-container>
-                                            <span class="md-caption">to test, copy and paste <pre>http://www.patagonia.com/us/product/womens-nano-puff-jacket?p=84216-0</pre> above</span>
+                                            <span class="md-caption">to test, copy and paste <pre>https://www.organicbeardsupply.com/products/organic-beard-oil-spice-scent-1oz-dropper</pre> above</span>
                                         </div>
                                     </div>
                                 </md-content>
@@ -45,9 +45,9 @@
                                 <md-content class="md-padding">
                                     <div layout="row" layout-align="center top">
                                         <div flex="nogrow" style="width: 50%">
-                                            <span class="md-subhead">Paste any product url</span><br/>
-                                            <em-embed urlsearch="http://www.patagonia.com/us/product/womens-nano-puff-jacket?p=84216-0" maxwidth="100%" onempty="tryAgain()"></em-embed>
-                                            <em-embed urlsearch="{{vm.stepData[0].data._product_url}}" maxwidth="100%" onempty="tryAgain()"></em-embed>
+                                            <span class="md-subhead">Product preview</span><br/>
+                                            <!--<em-embed urlsearch="https://www.organicbeardsupply.com/products/organic-beard-oil-spice-scent-1oz-dropper" onempty="tryAgain()"></em-embed>-->
+                                            <em-embed urlsearch="{{urlSearch}}" onempty="tryAgain()"></em-embed>
                                         </div>
                                     </div>
                                 </md-content>

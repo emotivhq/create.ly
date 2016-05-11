@@ -31,7 +31,7 @@
 			$scope.tryAgain = function() {
 				$mdToast.show(
 					$mdToast.simple()
-					.content('Tray again, nothing returned')
+					.content('Try again, nothing returned')
 					.position('bottom right')
 					.hideDelay(2000)
 				);
@@ -47,7 +47,7 @@
 			// Setup the initial step data
 			vm.stepData = [
 				{ step: 1, completed: false, optional: false, data: {
-					product_url: 'http://'
+					product_url: 'https://'
 				} },
 				{ step: 2, completed: false, optional: false, data: {} },
 				{ step: 3, completed: false, optional: false, data: {} },
@@ -79,6 +79,7 @@
 				if (!stepData.completed && !isSkip) {
 				    //simulate $http
 				    $timeout(function () {
+				    	if (stepData.step === 1) $scope.urlSearch = stepData.data.product_url;
 				        vm.showBusyText = false;
 				        console.log('Step success, #chaboi style');
 				        deferred.resolve({ status: 200, statusText: 'success', data: {} });

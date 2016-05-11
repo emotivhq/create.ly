@@ -24,14 +24,14 @@ angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
     "                                            <span class=\"md-subhead\">Paste any product url</span><br/>\n" +
     "                                            <md-input-container class=\"md-block\">\n" +
     "                                                <input name=\"product_url\" ng-model=\"vm.stepData[0].data.product_url\" md-select-on-focus ng-pattern=\"urlPattern\" ng-disabled=\"vm.stepData[0].data.completed\" required></input>\n" +
-    "                                                <div class=\"hint\" ng-show=\"showProductUrlHint\">example: http://www.patagonia.com/us/product/womens-nano-puff-jacket?p=84216-0</div>\n" +
+    "                                                <div class=\"hint\" ng-show=\"showProductUrlHint\">example: http://www.patagonia.com/us/product/womens-nano-puff-jacket</div>\n" +
     "                                                <div ng-messages=\"step1.product_url.$error\" role=\"alert\">\n" +
     "                                                    <div ng-message-exp=\"['required','pattern']\">\n" +
     "                                                        That doesn't look like a product url... Are you sure you entered or pasted the right thing?\n" +
     "                                                    </div>\n" +
     "                                                </div>\n" +
     "                                            </md-input-container>\n" +
-    "                                            <span class=\"md-caption\">to test, copy and paste <pre>http://www.patagonia.com/us/product/womens-nano-puff-jacket?p=84216-0</pre> above</span>\n" +
+    "                                            <span class=\"md-caption\">to test, copy and paste <pre>http://www.patagonia.com/us/product/womens-nano-puff-jacket</pre> above</span>\n" +
     "                                        </div>\n" +
     "                                    </div>\n" +
     "                                </md-content>\n" +
@@ -49,9 +49,9 @@ angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
     "                                <md-content class=\"md-padding\">\n" +
     "                                    <div layout=\"row\" layout-align=\"center top\">\n" +
     "                                        <div flex=\"nogrow\" style=\"width: 50%\">\n" +
-    "                                            <span class=\"md-subhead\">Paste any product url</span><br/>\n" +
-    "                                            <em-embed urlsearch=\"http://www.patagonia.com/us/product/womens-nano-puff-jacket?p=84216-0\" maxwidth=\"100%\" onempty=\"tryAgain()\"></em-embed>\n" +
-    "                                            <em-embed urlsearch=\"{{vm.stepData[0].data._product_url}}\" maxwidth=\"100%\" onempty=\"tryAgain()\"></em-embed>\n" +
+    "                                            <span class=\"md-subhead\">Product preview</span><br/>\n" +
+    "                                            <em-embed urlsearch=\"https://www.patagonia.com/us/product/womens-nano-puff-jacket\" onempty=\"tryAgain()\"></em-embed>\n" +
+    "                                            <!--<em-embed urlsearch=\"{{vm.stepData[0].data.product_url}}\" onempty=\"tryAgain()\"></em-embed>-->\n" +
     "                                        </div>\n" +
     "                                    </div>\n" +
     "                                </md-content>\n" +
