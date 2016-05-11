@@ -23,7 +23,8 @@
     "angular-material-icons": "~0.6.0",
     "angular-material": ">=1.0.1",
     "angular-stamplay": "^0.0.2",
-    "angular-embedly": "^0.0.8"
+    "angular-embedly": "^0.0.8",
+    "md-steppers": "^0.2.3"
   },
   "resolutions": {
     "angular": ">=1.3.*"
