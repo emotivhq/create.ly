@@ -81,7 +81,7 @@
 
 		$rootScope.$on('$stateChangeStart',
 	    function(event, toState, toParams, fromState, fromParams) {
-	      window.Intercom("shutdown");
+	      window.Intercom("shutdown"); // only show this on /reate route for now. can also change this to window.Intercom("update")
 	      if (toState.external) {
 	        event.preventDefault();
 	        $window.open(toState.url, '_self');
