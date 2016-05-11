@@ -103,7 +103,7 @@
 
 
 		$urlRouterProvider
-			.otherwise('/dashboard');
+			.otherwise('/create');
 
 	}
 
@@ -214,7 +214,7 @@ angular.module('gsConcierge')
 		.module('create')
 		.controller('CreateCtrl', Create);
 
-		Create.$inject = ['$scope'];
+		Create.$inject = ['$scope', '$mdToast'];
 
 		/*
 		* recommend
@@ -222,7 +222,7 @@ angular.module('gsConcierge')
 		* and bindable members up top.
 		*/
 
-		function Create($scope) {
+		function Create($scope, $mdToast) {
 			/*jshint validthis: true */
 			var vm = this;
 			
@@ -236,6 +236,15 @@ angular.module('gsConcierge')
 			
 			$scope.hideProductPreview = function() {
 				$scope.show_product_preview = false;
+			};
+			
+			$scope.tryAgain = function() {
+				$mdToast.show(
+					$mdToast.simple()
+					.content('Tray again, nothing returned')
+					.position('bottom right')
+					.hideDelay(2000)
+				);
 			};
 
 		}
@@ -257,7 +266,7 @@ angular.module('gsConcierge')
 		.module('gsConcierge')
 		.controller('HomeCtrl', Home);
 
-	Home.$inject = ['homeService'];
+	Home.$inject = ['homeService', '$scope'];
 
 	/*
 	* recommend
@@ -265,12 +274,30 @@ angular.module('gsConcierge')
 	* and bindable members up top.
 	*/
 
-	function Home(homeService) {
+	function Home(homeService, $scope) {
 		/*jshint validthis: true */
 		var vm = this;
-		vm.title = "Hello, Giver!";
-		vm.version = "1.0.0";
+		vm.title = "Welcome";
+		vm.version = "1.0";
 		vm.listFeatures = homeService.getFeaturesList();
+		
+		$scope.user = {
+	      title: 'Developer',
+	      email: 'ipsum@giftstarter.com',
+	      firstName: '',
+	      lastName: '',
+	      company: 'GiftStarter',
+	      address: '100 over there',
+	      city: 'Seattle',
+	      state: 'WA',
+	      biography: 'Just another profile of a bot',
+	      postalCode: '98118'
+	    };
+	    $scope.states = ('AL AK AZ AR CA CO CT DE FL GA HI ID IL IN IA KS KY LA ME MD MA MI MN MS ' +
+	    'MO MT NE NV NH NJ NM NY NC ND OH OK OR PA RI SC SD TN TX UT VT VA WA WV WI ' +
+	    'WY').split(' ').map(function(state) {
+			return {abbrev: state};
+	    });
 
 	}
 
@@ -597,7 +624,8 @@ angular.module('gsConcierge')
 				
 					{
 						link: 'create',
-							name: 'Create'
+							name: 'Create link',
+							icon: 'create'
 					},
 			    
 			];

@@ -13,7 +13,7 @@
 		.module('create')
 		.controller('CreateCtrl', Create);
 
-		Create.$inject = ['$scope'];
+		Create.$inject = ['$scope', '$mdToast'];
 
 		/*
 		* recommend
@@ -21,7 +21,7 @@
 		* and bindable members up top.
 		*/
 
-		function Create($scope) {
+		function Create($scope, $mdToast) {
 			/*jshint validthis: true */
 			var vm = this;
 			
@@ -35,6 +35,15 @@
 			
 			$scope.hideProductPreview = function() {
 				$scope.show_product_preview = false;
+			};
+			
+			$scope.tryAgain = function() {
+				$mdToast.show(
+					$mdToast.simple()
+					.content('Tray again, nothing returned')
+					.position('bottom right')
+					.hideDelay(2000)
+				);
 			};
 
 		}

@@ -70,7 +70,7 @@
 
 
 		$urlRouterProvider
-			.otherwise('/dashboard');
+			.otherwise('/create');
 
 	}
 

@@ -18,7 +18,7 @@
     "menu": [
       {
         "link": "create",
-        "title": "Create",
+        "title": "Create link",
         "icon": "create"
       }
     ]

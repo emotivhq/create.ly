@@ -35,7 +35,7 @@ angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
     "        <h2>Preview Campaign</h2>\n" +
     "        <p>Below is the information we were able to grab from the url you provided.</p>\n" +
     "        <div>\n" +
-    "            <em-embed urlsearch=\"{{input_product_url}}\"></em-embed>\n" +
+    "            <em-embed urlsearch=\"{{input_product_url}}\" maxwidth=\"100%\" onempty=\"tryAgain()\"></em-embed>\n" +
     "            <!-- https://github.com/Urigo/angular-embedly -->\n" +
     "        </div>\n" +
     "        <md-button class=\"md-raised md-primary\" ng-click=\"hideProductPreview()\">Close Preview</md-button>\n" +
@@ -49,18 +49,86 @@ angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
     "    <md-card class=\"text-center\">\n" +
     "        <md-card-content>\n" +
     "            <h1>{{ vm.title }}</h1>\n" +
-    "            <h3>Link Creator v{{ vm.version }}</h3>\n" +
-    "            <p>This is a simple home screen. Use it as a starting point to create something more unique. \n" +
-    "            Modules get automagically created links on the left...like Create </p>\n" +
-    "            <code>app/modules/home/home.html</code>\n" +
-    "            <br>\n" +
-    "            <md-divider class=\"margin-top-20\"></md-divider>\n" +
-    "            <h2 class=\"margin-top-50\">Stack Features</h2>\n" +
-    "            <ul>\n" +
-    "                <li class=\" text-center\" ng-repeat=\"item in vm.listFeatures\">\n" +
-    "                    <p><ng-md-icon icon=\"check\"></ng-md-icon> {{item.feature}}</p>\n" +
-    "                </li>\n" +
-    "            </ul>\n" +
+    "            <div ng-controller=\"HomeCtrl\" layout=\"column\" ng-cloak class=\"md-inline-form\">\n" +
+    "              <md-content md-theme=\"docs-dark\" layout-gt-sm=\"row\" layout-padding>\n" +
+    "                <div>\n" +
+    "                  <md-input-container>\n" +
+    "                    <label>Title</label>\n" +
+    "                    <input ng-model=\"user.title\">\n" +
+    "                  </md-input-container>\n" +
+    "                  <md-input-container>\n" +
+    "                    <label>Email</label>\n" +
+    "                    <input ng-model=\"user.email\" type=\"email\">\n" +
+    "                  </md-input-container>\n" +
+    "                </div>\n" +
+    "              </md-content>\n" +
+    "              <md-content layout-padding>\n" +
+    "                <div>\n" +
+    "                  <form name=\"userForm\">\n" +
+    "                    <div layout-gt-xs=\"row\">\n" +
+    "                      <md-input-container class=\"md-block\" flex-gt-xs>\n" +
+    "                        <label>Company (Disabled)</label>\n" +
+    "                        <input ng-model=\"user.company\" disabled>\n" +
+    "                      </md-input-container>\n" +
+    "                      <md-datepicker ng-model=\"user.submissionDate\" md-placeholder=\"Enter date\">\n" +
+    "                      </md-datepicker>\n" +
+    "                    </div>\n" +
+    "                    <div layout-gt-sm=\"row\">\n" +
+    "                      <md-input-container class=\"md-block\" flex-gt-sm>\n" +
+    "                        <label>First name</label>\n" +
+    "                        <input ng-model=\"user.firstName\">\n" +
+    "                      </md-input-container>\n" +
+    "                      <md-input-container class=\"md-block\" flex-gt-sm>\n" +
+    "                        <label>Last Name</label>\n" +
+    "                        <input ng-model=\"theMax\">\n" +
+    "                      </md-input-container>\n" +
+    "                    </div>\n" +
+    "                    <md-input-container class=\"md-block\">\n" +
+    "                      <label>Address</label>\n" +
+    "                      <input ng-model=\"user.address\">\n" +
+    "                    </md-input-container>\n" +
+    "                    <md-input-container md-no-float class=\"md-block\">\n" +
+    "                      <input ng-model=\"user.address2\" placeholder=\"Address 2\">\n" +
+    "                    </md-input-container>\n" +
+    "                    <div layout-gt-sm=\"row\">\n" +
+    "                      <md-input-container class=\"md-block\" flex-gt-sm>\n" +
+    "                        <label>City</label>\n" +
+    "                        <input ng-model=\"user.city\">\n" +
+    "                      </md-input-container>\n" +
+    "                      <md-input-container class=\"md-block\" flex-gt-sm>\n" +
+    "                        <label>State</label>\n" +
+    "                        <md-select ng-model=\"user.state\">\n" +
+    "                          <md-option ng-repeat=\"state in states\" value=\"{{state.abbrev}}\">\n" +
+    "                            {{state.abbrev}}\n" +
+    "                          </md-option>\n" +
+    "                        </md-select>\n" +
+    "                      </md-input-container>\n" +
+    "                      <md-input-container class=\"md-block\" flex-gt-sm>\n" +
+    "                        <label>Postal Code</label>\n" +
+    "                        <input name=\"postalCode\" ng-model=\"user.postalCode\" placeholder=\"12345\"\n" +
+    "                               required ng-pattern=\"/^[0-9]{5}$/\" md-maxlength=\"5\">\n" +
+    "                        <div ng-messages=\"userForm.postalCode.$error\" role=\"alert\" multiple>\n" +
+    "                          <div ng-message=\"required\" class=\"my-message\">You must supply a postal code.</div>\n" +
+    "                          <div ng-message=\"pattern\" class=\"my-message\">That doesn't look like a valid postal\n" +
+    "                            code.\n" +
+    "                          </div>\n" +
+    "                          <div ng-message=\"md-maxlength\" class=\"my-message\">\n" +
+    "                            Don't use the long version silly...we don't need to be that specific...\n" +
+    "                          </div>\n" +
+    "                        </div>\n" +
+    "                      </md-input-container>\n" +
+    "                    </div>\n" +
+    "                    <md-input-container class=\"md-block\">\n" +
+    "                      <label>Biography</label>\n" +
+    "                      <textarea ng-model=\"user.biography\" md-maxlength=\"150\" rows=\"5\" md-select-on-focus></textarea>\n" +
+    "                    </md-input-container>\n" +
+    "                  </form>\n" +
+    "                </div>\n" +
+    "              </md-content>\n" +
+    "            </div>            \n" +
+    "            \n" +
+    "            \n" +
+    "\n" +
     "        </md-card-content>\n" +
     "    </md-card>\n" +
     "</div>\n"
@@ -80,12 +148,6 @@ angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
     "            </div>\n" +
     "        </md-toolbar>\n" +
     "        <md-list>\n" +
-    "            <md-list-item ui-sref=\"home.dashboard\">\n" +
-    "                <div class=\"inset\">\n" +
-    "                    <ng-md-icon icon=\"apps\"></ng-md-icon>\n" +
-    "                </div>\n" +
-    "                <p> Dashboard </p>\n" +
-    "            </md-list-item>\n" +
     "            <md-list-item ng-repeat=\"item in vm.menu\" ng-click=\"vm.navigateTo('home.' + item.link)\">\n" +
     "                <div class=\"inset\" ng-show=\"item.icon\">\n" +
     "                    <ng-md-icon icon=\"{{item.icon}}\"></ng-md-icon>\n" +
@@ -94,6 +156,12 @@ angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
     "            </md-list-item>\n" +
     "            <md-divider></md-divider>\n" +
     "            <md-subheader>Admin</md-subheader>\n" +
+    "            <md-list-item ui-sref=\"home.dashboard\">\n" +
+    "                <div class=\"inset\">\n" +
+    "                    <ng-md-icon icon=\"apps\"></ng-md-icon>\n" +
+    "                </div>\n" +
+    "                <p> Dashboard </p>\n" +
+    "            </md-list-item>\n" +
     "            <md-list-item ng-repeat=\"item in vm.admin\" ng-click=\"vm.showSettingsBottom($event)\" >\n" +
     "                <div class=\"inset\">\n" +
     "                    <ng-md-icon icon=\"{{item.icon}}\"></ng-md-icon>\n" +
