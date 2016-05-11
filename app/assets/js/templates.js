@@ -238,7 +238,7 @@ angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
     "            <div layout=\"column\" class=\"md-toolbar-tools-bottom inset\">\n" +
     "                <div layout=\"row\">\n" +
     "                    <div flex=\"80\" style=\"margin-top: 0;\">\n" +
-    "                        <img src=\"/app/assets/images/logo-web-white.png\" style=\"max-width: 80%;\">\n" +
+    "                        <img src=\"/app/assets/images/logo-web-white.png\" class=\"logo\">\n" +
     "                    </div>\n" +
     "                </div>\n" +
     "            </div>\n" +

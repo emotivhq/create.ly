@@ -115,6 +115,7 @@
 
 		$rootScope.$on('$stateChangeStart',
 	    function(event, toState, toParams, fromState, fromParams) {
+	      window.Intercom("shutdown");
 	      if (toState.external) {
 	        event.preventDefault();
 	        $window.open(toState.url, '_self');
@@ -236,6 +237,9 @@ angular.module('gsConcierge')
 		function Create($scope, $q, $timeout, $mdToast) {
 			/*jshint validthis: true */
 			var vm = this;
+			window.Intercom("boot", {
+			  app_id: "q5i7p4f9"
+			});
 
 			$scope.input_product_url = 'https://';
 			$scope.show_product_preview = false;

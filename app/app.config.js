@@ -81,6 +81,7 @@
 
 		$rootScope.$on('$stateChangeStart',
 	    function(event, toState, toParams, fromState, fromParams) {
+	      window.Intercom("shutdown");
 	      if (toState.external) {
 	        event.preventDefault();
 	        $window.open(toState.url, '_self');
