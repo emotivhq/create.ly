@@ -114,7 +114,7 @@ module.exports = function (grunt) {
 					base: '.',
 					hostname: '0.0.0.0',
 					debug: true,
-					livereload: true,
+					livereload: false,
 					open: true
 				}
 			}
@@ -131,7 +131,7 @@ module.exports = function (grunt) {
 				files: '<%= jshint.app.src %>',
 				tasks: ['jshint:app'],
 				options: {
-					livereload: true
+					livereload: false
 				},
 				css: {
 					files: ["app/**/*.{scss,sass,css}"],

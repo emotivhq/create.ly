@@ -1,0 +1,26 @@
+.create .hint {
+  /* Position the hint */
+  position: absolute;
+  left: 2px;
+  right: auto;
+  bottom: 7px;
+  /* Copy styles from ng-messages */
+  font-size: 12px;
+  line-height: 14px;
+  transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
+  /* Set our own color */
+  color: grey;
+}
+
+.create .hint.ng-hide,
+.create .hint.ng-enter,
+.create .hint.ng-leave.ng-leave-active {
+  bottom: 26px;
+  opacity: 0;
+}
+
+.create .hint.ng-leave,
+.create .hint.ng-enter.ng-enter-active {
+  bottom: 7px;
+  opacity: 1;
+}

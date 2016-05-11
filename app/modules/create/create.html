@@ -1,27 +1,55 @@
-<div layout="row" layout-margin layout="column" data-ng-controller="CreateCtrl" ng-cloak>
+<style>
+    .create .hint {
+  /* Position the hint */
+  position: absolute;
+  left: 2px;
+  right: auto;
+  bottom: 7px;
+  /* Copy styles from ng-messages */
+  font-size: 12px;
+  line-height: 14px;
+  transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
+  /* Set our own color */
+  color: grey;
+}
+
+.create .hint.ng-hide,
+.create .hint.ng-enter,
+.create .hint.ng-leave.ng-leave-active {
+  bottom: 26px;
+  opacity: 0;
+}
+
+.create .hint.ng-leave,
+.create .hint.ng-enter.ng-enter-active {
+  bottom: 7px;
+  opacity: 1;
+}
+</style>
+
+<div layout="row" layout-margin layout="column" data-ng-controller="CreateCtrl" ng-cloak class="create">
     <div flex>
         <md-card>
             <md-card-title>
                 <md-card-title-text>
-                    <span class="md-headline">Create a custom campaign</span>
-                    <span class="md-subhead">Creating a custom GiftStarter campaign has never been so easy. Simply copy/paste any product link into the input below.</span>
+                    <span class="md-headline">Enter any product URL</span>
                 </md-card-title-text>
             </md-card-title>
             <md-card-content>
                 <div>
                     <form name="productForm">
-                        <md-input-container>
-                            <label>Enter <em>any</em> product URL:</label>
+                        <md-input-container class="md-block">
+                            <!--<label>Enter <em>any</em> product URL:</label>-->
                             <input name="product_url" ng-model="input_product_url" required ng-pattern="/^.+@.+\..+$/"></input>
-
-                            <!--<div class="hint" ng-show="showHints">example: https://www.organicbeardsupply.com/products/organic-beard-oil-spice-scent-1oz-dropper</div>-->
-                            <!--<div ng-messages="productForm.product_url.$error" ng-show="!showHints">-->
-                            <!--    <div ng-message-exp="['required', 'pattern']">-->
-                            <!--        That doesn't look like an product url... Are ou sure you entered the right thing?-->
-                            <!--    </div>-->
-                            <!--</div>-->
+                            
+                            <div class="hint" ng-show="showHints">example: http://www.patagonia.com/us/product/womens-nano-puff-jacket?p=84216-0</div>
+                            <div ng-messages="productForm.product_url.$error" ng-show="!showHints">
+                                <div ng-message-exp="['required', 'pattern']">
+                                    That doesn't look like an product url... Are ou sure you entered the right thing?
+                                </div>
+                            </div>
                         </md-input-container>
-                        <md-button class="md-raised md-primary" ng-click="showProductPreview()">Get Product Info</md-button>
+                        <md-button class="md-raised md-primary" ng-click="showProductPreview()">Preview Product</md-button>
                     </form>
                 </div>
             </md-card-content>
