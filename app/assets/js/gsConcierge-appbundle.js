@@ -57,10 +57,10 @@
 		
 		$mdThemingProvider
 			.theme('default')
-			.primaryPalette('red', {
+			.primaryPalette('blue', {
 				'default': '600'
 			})
-			.accentPalette('teal', {
+			.accentPalette('indigo', {
 				'default': '500'
 			})
 			.warnPalette('defaultPrimary');
