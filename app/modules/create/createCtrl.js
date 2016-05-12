@@ -37,6 +37,8 @@
 				);
 			};
 			
+			$scope.product_url = '';
+			$scope.productUrlHint = 'https://giveto.seattlechildrens.org';
 			$scope.showProductUrlHint = false;
 			$scope.urlPattern = /^(http|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:\/~\+#]*[\w\-\@?^=%&amp;\/~\+#])?/i;
 

@@ -13,6 +13,9 @@
     "modules": [
       {
         "name": "create"
+      },
+      {
+        "name": "usersync"
       }
     ],
     "menu": [
@@ -20,6 +23,10 @@
         "link": "create",
         "title": "Create campaign link",
         "icon": "open_in_browser"
+      },
+      {
+        "link": "usersync",
+        "title": "Usersync"
       }
     ]
   }

@@ -21,23 +21,35 @@ angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
     "                                <md-content class=\"md-padding\">\n" +
     "                                    <div layout=\"row\" layout-align=\"center top\">\n" +
     "                                        <div flex=\"nogrow\" style=\"width: 50%\">\n" +
-    "                                            <span class=\"md-subhead\">Paste any product url</span><br/>\n" +
+    "                                            <span class=\"md-subhead\">Paste any commerce enabled url</span><br/>\n" +
     "                                            <md-input-container class=\"md-block\">\n" +
+<<<<<<< HEAD
+    "                                                <input name=\"product_url\" ng-model=\"product_url\" md-select-on-focus ng-pattern=\"urlPattern\" required></input>\n" +
+    "                                                <div class=\"hint\" ng-show=\"showProductUrlHint\">Example url: {{productUrlHint}}</div>\n" +
+=======
     "                                                <input name=\"product_url\" ng-model=\"vm.stepData[0].data.product_url\" md-select-on-focus ng-pattern=\"urlPattern\" ng-disabled=\"vm.stepData[0].data.completed\" required></input>\n" +
     "                                                <div class=\"hint\" ng-show=\"showProductUrlHint\">example: http://www.patagonia.com/us/product/womens-nano-puff-jacket</div>\n" +
+>>>>>>> ea99a35fe355c08427bfe172ca77f49449f957e4
     "                                                <div ng-messages=\"step1.product_url.$error\" role=\"alert\">\n" +
     "                                                    <div ng-message-exp=\"['required','pattern']\">\n" +
-    "                                                        That doesn't look like a product url... Are you sure you entered or pasted the right thing?\n" +
+    "                                                        That doesn't look like a valid url... are you sure you entered or pasted the right thing?\n" +
     "                                                    </div>\n" +
     "                                                </div>\n" +
     "                                            </md-input-container>\n" +
+<<<<<<< HEAD
+    "                                            <md-input-container class=\"md-block\" flex-gt-lg>\n" +
+    "                                                <label>To test, copy and paste:</label>\n" +
+    "                                                <input ng-model=\"productUrlHint\">\n" +
+    "                                            </md-input-container>\n" +
+=======
     "                                            <span class=\"md-caption\">to test, copy and paste <pre>http://www.patagonia.com/us/product/womens-nano-puff-jacket</pre> above</span>\n" +
+>>>>>>> ea99a35fe355c08427bfe172ca77f49449f957e4
     "                                        </div>\n" +
     "                                    </div>\n" +
     "                                </md-content>\n" +
     "                                <md-step-actions layout=\"row\">\n" +
     "                                    <div flex layout=\"row\" layout-align=\"end top\">\n" +
-    "                                        <md-button type=\"submit\" ng-disabled=\"!vm.stepData[0].data.product_url || vm.showBusyText\" class=\"md-primary md-raised\">Next</md-button>\n" +
+    "                                        <md-button type=\"submit\" ng-disabled=\"!product_url || vm.showBusyText\" class=\"md-primary md-raised\">Next</md-button>\n" +
     "                                    </div>\n" +
     "                                </md-step-actions>\n" +
     "                            </form>\n" +
@@ -49,9 +61,15 @@ angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
     "                                <md-content class=\"md-padding\">\n" +
     "                                    <div layout=\"row\" layout-align=\"center top\">\n" +
     "                                        <div flex=\"nogrow\" style=\"width: 50%\">\n" +
+<<<<<<< HEAD
+    "                                            <span class=\"md-subhead\">Paste any product url</span><br/>\n" +
+    "                                            <a href=\"{{product_url}}\" class=\"embedly-card\">{{product_url}}</a>\n" +
+    "                                            <em-embed urlsearch=\"{{product_url}}\" maxwidth=\"100%\" onempty=\"tryAgain()\"></em-embed>\n" +
+=======
     "                                            <span class=\"md-subhead\">Product preview</span><br/>\n" +
     "                                            <em-embed urlsearch=\"https://www.patagonia.com/us/product/womens-nano-puff-jacket\" onempty=\"tryAgain()\"></em-embed>\n" +
     "                                            <!--<em-embed urlsearch=\"{{vm.stepData[0].data.product_url}}\" onempty=\"tryAgain()\"></em-embed>-->\n" +
+>>>>>>> ea99a35fe355c08427bfe172ca77f49449f957e4
     "                                        </div>\n" +
     "                                    </div>\n" +
     "                                </md-content>\n" +
@@ -381,8 +399,8 @@ angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
     "            </md-list-item>\n" +
     "            <md-divider></md-divider>\n" +
     "            <md-subheader>Concierge Admin</md-subheader>\n" +
-    "            <md-list-item ng-repeat=\"item in vm.admin\" ng-click=\"vm.showSettingsBottom($event)\" >\n" +
-    "                <div class=\"inset\">\n" +
+    "            <md-list-item ng-repeat=\"item in vm.admin\" ng-click=\"vm.showSettingsBottom($event)\" ng-hide=\"item.hide\">\n" +
+    "                <div class=\"inset\" ng-hide=\"item.hide\">\n" +
     "                    <ng-md-icon icon=\"{{item.icon}}\"></ng-md-icon>\n" +
     "                </div>\n" +
     "                <p> {{ item.title }}</p>\n" +
@@ -393,6 +411,25 @@ angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
 
   $templateCache.put('app/modules/shared/directives/linkcreator/linkcreator.html',
     "<div><!-- Template Contente if you use templateUrl --></div>\n"
+  );
+
+
+  $templateCache.put('app/modules/usersync/usersync.html',
+    "<div class=\"md-padding\" flex layout-sm=\"column\">\n" +
+    "    <md-card>\n" +
+    "        <md-card-content>\n" +
+    "            <h2 class=\"md-title\">Content from: usersync page</h2>\n" +
+    "             <div ng-controller=\"UsersyncCtrl\">\n" +
+    "                <ul>\n" +
+    "                    <li ng-repeat=\"user in users\" >\n" +
+    "                        <p>{{user.Name.GivenName}} {{user.Name.FamilyName}}</p>\n" +
+    "                        <em-embed urlsearch=\"{{user.profileImg}}\"></em-embed>\n" +
+    "                    </li>\n" +
+    "                </ul>\n" +
+    "            </div>\n" +
+    "        </md-card-content>\n" +
+    "    </md-card>\n" +
+    "</div>\n"
   );
 
 }]);

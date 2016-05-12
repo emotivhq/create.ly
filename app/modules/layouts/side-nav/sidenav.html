@@ -21,8 +21,8 @@
             </md-list-item>
             <md-divider></md-divider>
             <md-subheader>Concierge Admin</md-subheader>
-            <md-list-item ng-repeat="item in vm.admin" ng-click="vm.showSettingsBottom($event)" >
-                <div class="inset">
+            <md-list-item ng-repeat="item in vm.admin" ng-click="vm.showSettingsBottom($event)" ng-hide="item.hide">
+                <div class="inset" ng-hide="item.hide">
                     <ng-md-icon icon="{{item.icon}}"></ng-md-icon>
                 </div>
                 <p> {{ item.title }}</p>

@@ -17,24 +17,27 @@
                                 <md-content class="md-padding">
                                     <div layout="row" layout-align="center top">
                                         <div flex="nogrow" style="width: 50%">
-                                            <em-embed urlsearch="https://www.organicbeardsupply.com/products/organic-beard-oil-spice-scent-1oz-dropper" onempty="tryAgain()"></em-embed>
-                                            <span class="md-subhead">Paste any product url</span><br/>
+                                            <span class="md-subhead">Paste any product url <md-icon md-svg-icon="md-alarm"></md-icon></span><br/>
                                             <md-input-container class="md-block">
-                                                <input name="product_url" ng-model="vm.stepData[0].data.product_url" md-select-on-focus ng-pattern="urlPattern" ng-disabled="vm.stepData[0].data.completed" required></input>
-                                                <div class="hint" ng-show="showProductUrlHint">example: https://www.organicbeardsupply.com/products/organic-beard-oil-spice-scent-1oz-dropper</div>
+                                                <input name="product_url" ng-model="product_url" md-select-on-focus ng-pattern="urlPattern" required></input>
+                                                <div class="hint" ng-show="showProductUrlHint">Example url: {{productUrlHint}}</div>
                                                 <div ng-messages="step1.product_url.$error" role="alert">
                                                     <div ng-message-exp="['required','pattern']">
-                                                        That doesn't look like a product url... Are you sure you entered or pasted the right thing?
+                                                        That doesn't look like a valid url... are you sure you entered or pasted the right thing?
                                                     </div>
                                                 </div>
                                             </md-input-container>
-                                            <span class="md-caption">to test, copy and paste <pre>https://www.organicbeardsupply.com/products/organic-beard-oil-spice-scent-1oz-dropper</pre> above</span>
+                                            <md-input-container class="md-block" flex-gt-lg>
+                                                <label>To test, copy and paste:</label>
+                                                <input ng-model="productUrlHint">
+                                            </md-input-container>
+                                            <em-embed urlsearch="https://www.organicbeardsupply.com/products/organic-beard-oil-spice-scent-1oz-dropper" onempty="tryAgain()"></em-embed>
                                         </div>
                                     </div>
                                 </md-content>
                                 <md-step-actions layout="row">
                                     <div flex layout="row" layout-align="end top">
-                                        <md-button type="submit" ng-disabled="!vm.stepData[0].data.product_url || vm.showBusyText" class="md-primary md-raised">Next</md-button>
+                                        <md-button type="submit" ng-disabled="!product_url || vm.showBusyText" class="md-primary md-raised">Next</md-button>
                                     </div>
                                 </md-step-actions>
                             </form>

@@ -20,7 +20,7 @@
 	function configure($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, $mdThemingProvider, $mdIconProvider, embedlyServiceProvider) {
 
 
-		embedlyServiceProvider.setKey('3853b5f70b824643bd1c416b72c29d75');
+		embedlyServiceProvider.setKey('5c3f7be65ef142a2bffed65a3544c324');
 		
 		$mdThemingProvider
 			.theme('default')
@@ -81,7 +81,7 @@
 
 		$rootScope.$on('$stateChangeStart',
 	    function(event, toState, toParams, fromState, fromParams) {
-	      window.Intercom("shutdown");
+	      window.Intercom("shutdown"); // only show this on /reate route for now. can also change this to window.Intercom("update")
 	      if (toState.external) {
 	        event.preventDefault();
 	        $window.open(toState.url, '_self');
