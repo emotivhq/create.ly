@@ -23,18 +23,27 @@ angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
     "                                        <div flex=\"nogrow\" style=\"width: 50%\">\n" +
     "                                            <span class=\"md-subhead\">Paste any commerce enabled url</span><br/>\n" +
     "                                            <md-input-container class=\"md-block\">\n" +
+<<<<<<< HEAD
     "                                                <input name=\"product_url\" ng-model=\"product_url\" md-select-on-focus ng-pattern=\"urlPattern\" required></input>\n" +
     "                                                <div class=\"hint\" ng-show=\"showProductUrlHint\">Example url: {{productUrlHint}}</div>\n" +
+=======
+    "                                                <input name=\"product_url\" ng-model=\"vm.stepData[0].data.product_url\" md-select-on-focus ng-pattern=\"urlPattern\" ng-disabled=\"vm.stepData[0].data.completed\" required></input>\n" +
+    "                                                <div class=\"hint\" ng-show=\"showProductUrlHint\">example: http://www.patagonia.com/us/product/womens-nano-puff-jacket</div>\n" +
+>>>>>>> ea99a35fe355c08427bfe172ca77f49449f957e4
     "                                                <div ng-messages=\"step1.product_url.$error\" role=\"alert\">\n" +
     "                                                    <div ng-message-exp=\"['required','pattern']\">\n" +
     "                                                        That doesn't look like a valid url... are you sure you entered or pasted the right thing?\n" +
     "                                                    </div>\n" +
     "                                                </div>\n" +
     "                                            </md-input-container>\n" +
+<<<<<<< HEAD
     "                                            <md-input-container class=\"md-block\" flex-gt-lg>\n" +
     "                                                <label>To test, copy and paste:</label>\n" +
     "                                                <input ng-model=\"productUrlHint\">\n" +
     "                                            </md-input-container>\n" +
+=======
+    "                                            <span class=\"md-caption\">to test, copy and paste <pre>http://www.patagonia.com/us/product/womens-nano-puff-jacket</pre> above</span>\n" +
+>>>>>>> ea99a35fe355c08427bfe172ca77f49449f957e4
     "                                        </div>\n" +
     "                                    </div>\n" +
     "                                </md-content>\n" +
@@ -52,9 +61,15 @@ angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
     "                                <md-content class=\"md-padding\">\n" +
     "                                    <div layout=\"row\" layout-align=\"center top\">\n" +
     "                                        <div flex=\"nogrow\" style=\"width: 50%\">\n" +
+<<<<<<< HEAD
     "                                            <span class=\"md-subhead\">Paste any product url</span><br/>\n" +
     "                                            <a href=\"{{product_url}}\" class=\"embedly-card\">{{product_url}}</a>\n" +
     "                                            <em-embed urlsearch=\"{{product_url}}\" maxwidth=\"100%\" onempty=\"tryAgain()\"></em-embed>\n" +
+=======
+    "                                            <span class=\"md-subhead\">Product preview</span><br/>\n" +
+    "                                            <em-embed urlsearch=\"https://www.patagonia.com/us/product/womens-nano-puff-jacket\" onempty=\"tryAgain()\"></em-embed>\n" +
+    "                                            <!--<em-embed urlsearch=\"{{vm.stepData[0].data.product_url}}\" onempty=\"tryAgain()\"></em-embed>-->\n" +
+>>>>>>> ea99a35fe355c08427bfe172ca77f49449f957e4
     "                                        </div>\n" +
     "                                    </div>\n" +
     "                                </md-content>\n" +
