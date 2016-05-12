@@ -20,7 +20,7 @@
 	function configure($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, $mdThemingProvider, $mdIconProvider, embedlyServiceProvider) {
 
 
-		embedlyServiceProvider.setKey('5c3f7be65ef142a2bffed65a3544c324');
+		embedlyServiceProvider.setKey('a46a33d99bc642b4aab1dfa58dc11f32');
 		
 		$mdThemingProvider
 			.theme('default')

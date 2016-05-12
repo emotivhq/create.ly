@@ -39,7 +39,7 @@
 			
 			$scope.product_url = '';
 			$scope.productUrlHint = 'https://giveto.seattlechildrens.org';
-			$scope.showProductUrlHint = false;
+			$scope.showProductUrlHint = true;
 			$scope.urlPattern = /^(http|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:\/~\+#]*[\w\-\@?^=%&amp;\/~\+#])?/i;
 
 			vm.selectedStep = 0;
@@ -56,7 +56,7 @@
 				{ step: 4, completed: false, optional: false, data: {} },
 			];
 		
-			vm.enableNextStep = function nextStep() {
+			vm.enableNextStep = function nextStep(skip) {
 				//do not exceed into max step
 				if (vm.selectedStep >= vm.maxStep) {
 				    return;
@@ -80,11 +80,31 @@
 				console.log('On before submit');
 				if (!stepData.completed && !isSkip) {
 					//simulate $http
+					if (stepData.step === 1) {
+						$scope.urlSearch = stepData.data.product_url;
+					}
 					$timeout(function () {
-						if (stepData.step === 1) { $scope.urlSearch = stepData.data.product_url; }
 						vm.showBusyText = false;
 						console.log('Step success, #chaboi style');
-						deferred.resolve({status: 200,statusText: 'success',data: {}});
+						deferred.resolve({
+							status: 200,
+							statusText: 'success',
+							data: {}
+						});
+						//move to next step when success
+						stepData.completed = true;
+						vm.enableNextStep();
+					}, 1000);	
+				} else if ($scope.urlSearch !== stepData.data.product_url) {
+					$scope.urlSearch = stepData.data.product_url;
+					$timeout(function () {
+						vm.showBusyText = false;
+						console.log('Step success, #chaboi style');
+						deferred.resolve({
+							status: 200,
+							statusText: 'success',
+							data: {}
+						});
 						//move to next step when success
 						stepData.completed = true;
 						vm.enableNextStep();

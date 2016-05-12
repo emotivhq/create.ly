@@ -17,39 +17,36 @@
                                 <md-content class="md-padding">
                                     <div layout="row" layout-align="center top">
                                         <div flex="nogrow" style="width: 50%">
-                                            <span class="md-subhead">Paste any product url <md-icon md-svg-icon="md-alarm"></md-icon></span><br/>
+                                            <span class="md-title">
+                                                Paste any product url <!-- Add help icon explaining 'commerce enabled' links: <md-icon md-svg-icon="md-menu"></md-icon>-->
+                                            </span><br/>
                                             <md-input-container class="md-block">
-                                                <input name="product_url" ng-model="product_url" md-select-on-focus ng-pattern="urlPattern" required></input>
-                                                <div class="hint" ng-show="showProductUrlHint">Example url: {{productUrlHint}}</div>
+                                                <input name="product_url" ng-model="vm.stepData[0].data.product_url" md-select-on-focus ng-pattern="urlPattern" required></input>
+                                                <div class="hint">Example: {{productUrlHint}}</div>
                                                 <div ng-messages="step1.product_url.$error" role="alert">
                                                     <div ng-message-exp="['required','pattern']">
                                                         That doesn't look like a valid url... are you sure you entered or pasted the right thing?
                                                     </div>
                                                 </div>
                                             </md-input-container>
-                                            <md-input-container class="md-block" flex-gt-lg>
-                                                <label>To test, copy and paste:</label>
-                                                <input ng-model="productUrlHint">
-                                            </md-input-container>
-                                            <em-embed urlsearch="https://www.organicbeardsupply.com/products/organic-beard-oil-spice-scent-1oz-dropper" onempty="tryAgain()"></em-embed>
                                         </div>
                                     </div>
                                 </md-content>
                                 <md-step-actions layout="row">
                                     <div flex layout="row" layout-align="end top">
-                                        <md-button type="submit" ng-disabled="!product_url || vm.showBusyText" class="md-primary md-raised">Next</md-button>
+                                        <md-button type="submit" ng-disabled="!vm.stepData[0].data.product_url || vm.showBusyText" class="md-primary md-raised">Next</md-button>
                                     </div>
                                 </md-step-actions>
                             </form>
                         </md-step-body>
                     </md-step>
-                    <md-step label="Review details" md-complete="vm.stepData[1].data.completed" ng-disabled="vm.stepProgress < 2">
+                    <md-step label="Review" md-complete="vm.stepData[1].data.completed" ng-disabled="vm.stepProgress < 2">
                         <md-step-body>
                             <md-content>
                                 <md-content class="md-padding">
                                     <div layout="row" layout-align="center top">
                                         <div flex="nogrow" style="width: 50%">
-                                            <span class="md-subhead">Product preview</span><br/>
+                                            <span class="md-title">Preview</span><br/>
                                             <em-embed urlsearch="{{urlSearch}}" onempty="tryAgain()"></em-embed>
                                         </div>
                                     </div>
@@ -58,7 +55,8 @@
                             <md-step-actions layout="row">
                                 <div flex layout="row" layout-align="end top">
                                     <md-button ng-click="vm.moveToPreviousStep()">Previous</md-button>
-                                    <md-button type="submit" ng-disabled="vm.showBusyText" class="md-primary md-raised">Next</md-button>
+                                    <md-button type="submit" ng-disabled="vm.showBusyText" ng-click="vm.submitCurrentStep(vm.stepData[1])" class="md-default md-raised">Customize</md-button>
+                                    <md-button type="submit" ng-disabled="vm.showBusyText" ng-click="vm.submitCurrentStep(vm.stepData[1], true)" class="md-primary md-raised">That's Perfect!</md-button>
                                 </div>
                             </md-step-actions>
                         </md-step-body>

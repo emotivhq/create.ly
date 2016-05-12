@@ -21,6 +21,10 @@
     bottom: 7px;
     opacity: 1; }
 
+.create .md-input-invalid .hint {
+  bottom: 26px;
+  opacity: 0; }
+
 .logo {
   max-height: 35px;
   margin-left: 35px;
