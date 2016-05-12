@@ -35,6 +35,11 @@ module.exports = function (config) {
 			'app/modules/create/createRoute.js',
 			'app/modules/create/createService.js',
 			'app/modules/create/create-test.js',
+			'app/modules/usersync/usersyncModule.js',
+			'app/modules/usersync/usersyncCtrl.js',
+			'app/modules/usersync/usersyncRoute.js',
+			'app/modules/usersync/usersyncService.js',
+			'app/modules/usersync/usersync-test.js',
 		],
 
 		// Test results reporter to use

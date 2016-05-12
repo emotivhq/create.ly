@@ -1,0 +1,41 @@
+[
+    {
+        "email": "john@doe.com",
+        "password": "userpassword",
+        "displayName": "John Doe",
+        "has_pitched_in": false,
+        "uid": "e029041167edc4fa09051e9b5f0335e3b",
+        "logged_in_with": "email",
+        "subscribed_to_mailing_list": true,
+        "is_system_default_profile_image": false,
+        "Name.FamilyName": "Doe",
+        "Name.GivenName": "John",
+        "profileImg": "https://storage.googleapis.com/giftstarter-pictures/u/be21d5fc-6c7a-4945-92e9-70d4fc71a77e.png"
+    },
+    {
+        "email": "annette@obrestad.com",
+        "password": "userpassword",
+        "displayName": "Annette Obrestad",
+        "has_pitched_in": false,
+        "uid": "98y397678hj",
+        "logged_in_with": "Facebook",
+        "subscribed_to_mailing_list": true,
+        "is_system_default_profile_image": false,
+        "Name.FamilyName": "Obrestad",
+        "Name.GivenName": "Annette",
+        "profileImg": "https://www.youtube.com/watch?v=thi4g02W7q4"
+    },
+    {
+        "email": "liv@boeree.com",
+        "password": "password",
+        "displayName": "Liv Boeree",
+        "has_pitched_in": false,
+        "uid": "lhjbwb78gi867ti3627",
+        "logged_in_with": "Facebook",
+        "subscribed_to_mailing_list": true,
+        "is_system_default_profile_image": false,
+        "Name.FamilyName": "Boeree",
+        "Name.GivenName": "Liv",
+        "profileImg": "https://www.youtube.com/watch?v=errZYGLKeIM"
+    }
+]

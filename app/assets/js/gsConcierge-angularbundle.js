@@ -1,5 +1,5 @@
 /*!
-* gsConcierge - v0.0.1 - MIT LICENSE 2016-05-11. 
+* gsConcierge - v0.0.1 - MIT LICENSE 2016-05-12. 
 * @author Emotiv
 */
 /**
@@ -35833,6 +35833,7 @@ var angularEmbedly = angular.module('angular-embedly', []);
             },
             controller: 'emEmbedCtrl',
             link: function(scope, element, attributes) {
+                
                 // This function should be called when the oEmbed returns no embed code
                 function handleEmpty(){
                     if(scope.onempty != undefined && typeof(scope.onempty) == "function"){

@@ -23,6 +23,10 @@ angular.module('gsConcierge')
 				url:'/dashboard',
 				templateUrl: 'app/modules/home/dashboard.html'
 			})
+			.state('home.syncusers', {
+				url:'/sync-users',
+				templateUrl: 'app/modules/usersync/usersync.html'
+			})
 			.state('home.external', {
 				url: 'https://giftstarter.com',
 				external: true

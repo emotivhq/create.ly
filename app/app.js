@@ -25,6 +25,7 @@
 		'ui.router',
 		'home',
 		'create',
+		'usersync',
 	]);
 
 })();

@@ -31,12 +31,14 @@
 			$scope.tryAgain = function() {
 				$mdToast.show(
 					$mdToast.simple()
-					.content('Tray again, nothing returned')
+					.content('Try again, nothing returned')
 					.position('bottom right')
 					.hideDelay(2000)
 				);
 			};
 			
+			$scope.product_url = '';
+			$scope.productUrlHint = 'https://giveto.seattlechildrens.org';
 			$scope.showProductUrlHint = false;
 			$scope.urlPattern = /^(http|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:\/~\+#]*[\w\-\@?^=%&amp;\/~\+#])?/i;
 

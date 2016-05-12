@@ -1,0 +1,15 @@
+<div class="md-padding" flex layout-sm="column">
+    <md-card>
+        <md-card-content>
+            <h2 class="md-title">Content from: usersync page</h2>
+             <div ng-controller="UsersyncCtrl">
+                <ul>
+                    <li ng-repeat="user in users" >
+                        <p>{{user.Name.GivenName}} {{user.Name.FamilyName}}</p>
+                        <em-embed urlsearch="{{user.profileImg}}"></em-embed>
+                    </li>
+                </ul>
+            </div>
+        </md-card-content>
+    </md-card>
+</div>

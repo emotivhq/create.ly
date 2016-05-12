@@ -1,5 +1,5 @@
 /*!
-* gsConcierge - v0.0.1 - MIT LICENSE 2016-05-11. 
+* gsConcierge - v0.0.1 - MIT LICENSE 2016-05-12. 
 * @author Emotiv
 */
 (function() {
@@ -29,6 +29,7 @@
 		'ui.router',
 		'home',
 		'create',
+		'usersync',
 	]);
 
 })();
@@ -55,7 +56,7 @@
 	function configure($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, $mdThemingProvider, $mdIconProvider, embedlyServiceProvider) {
 
 
-		embedlyServiceProvider.setKey('3853b5f70b824643bd1c416b72c29d75');
+		embedlyServiceProvider.setKey('5c3f7be65ef142a2bffed65a3544c324');
 		
 		$mdThemingProvider
 			.theme('default')
@@ -156,6 +157,21 @@
 	angular.module('home', []);
 })();
 
+(function () {
+	'use strict';
+
+	/**
+	 * @ngdoc function
+	 * @name app.module:usersyncModule
+	 * @description
+	 * # usersyncModule
+	 * Module of the app
+	 */
+
+	angular.module('usersync', []);
+
+})();
+
 'use strict';
 
 /**
@@ -205,11 +221,39 @@ angular.module('gsConcierge')
 				url:'/dashboard',
 				templateUrl: 'app/modules/home/dashboard.html'
 			})
+			.state('home.syncusers', {
+				url:'/sync-users',
+				templateUrl: 'app/modules/usersync/usersync.html'
+			})
 			.state('home.external', {
 				url: 'https://giftstarter.com',
 				external: true
 			});
 			
+	}]);
+
+'use strict';
+
+/**
+ * @ngdoc function
+ * @name app.route:usersyncRoute
+ * @description
+ * # usersyncRoute
+ * Route of the app
+ */
+
+angular.module('usersync')
+	.config(['$stateProvider', function ($stateProvider) {
+		
+		$stateProvider
+			.state('home.usersync', {
+				url:'/usersync',
+				templateUrl: 'app/modules/usersync/usersync.html',
+				controller: 'UsersyncCtrl',
+				controllerAs: 'vm'
+			});
+
+		
 	}]);
 
 (function() {
@@ -251,6 +295,8 @@ angular.module('gsConcierge')
 				);
 			};
 			
+			$scope.product_url = '';
+			$scope.productUrlHint = 'https://giveto.seattlechildrens.org';
 			$scope.showProductUrlHint = false;
 			$scope.urlPattern = /^(http|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:\/~\+#]*[\w\-\@?^=%&amp;\/~\+#])?/i;
 
@@ -599,6 +645,42 @@ angular.module('gsConcierge')
 	'use strict';
 
 	/**
+	* @ngdoc function
+	* @name app.controller:usersyncCtrl
+	* @description
+	* # usersyncCtrl
+	* Controller of the app
+	*/
+
+	angular
+		.module('usersync')
+		.controller('UsersyncCtrl', Usersync);
+
+		Usersync.$inject = ['$scope', '$http', 'UsersyncService'];
+
+		/*
+		* recommend
+		* Using function declarations
+		* and bindable members up top.
+		*/
+
+		function Usersync($scope, $http, UsersyncService) {
+			/*jshint validthis: true */
+			var vm = this;
+			
+			$scope.users = [];
+		    UsersyncService.getUsers();
+		    $scope.users = UsersyncService.users;
+		    vm.users = $scope.users;
+
+		}
+
+})();
+
+(function() {
+	'use strict';
+
+	/**
 	 * @ngdoc function
 	 * @name app.service:createService
 	 * @description
@@ -729,9 +811,11 @@ angular.module('gsConcierge')
 				
 					{
 						link: 'create',
-							name: 'Create campaign link',
-							icon: 'open_in_browser',
+						name: 'Create campaign link',
+						icon: 'open_in_browser',
+						hide: false
 					},
+
 			    
 			];
 
@@ -739,6 +823,38 @@ angular.module('gsConcierge')
 				listMenu: function () {
 					return menu;
 				}
+			};
+
+		}
+
+})();
+
+(function() {
+	'use strict';
+
+	/**
+	 * @ngdoc function
+	 * @name app.service:usersyncService
+	 * @description
+	 * # usersyncService
+	 * Service of the app
+	 */
+
+	angular
+		.module('usersync')
+		.factory('UsersyncService', Usersync);
+		// Inject your dependencies as .$inject = ['$http', 'someSevide'];
+		// function Name ($http, someSevide) {...}
+
+		Usersync.$inject = ['$http', '$scope'];
+
+		function Usersync ($http, $scope) {
+			var vm = this;
+			$scope.users = [];
+			vm.getUsers = function ($index) {
+				$http.get('users.json').success(function(data) {
+					vm.users = data;
+				});
 			};
 
 		}
