@@ -17,10 +17,11 @@
                                 <md-content class="md-padding">
                                     <div layout="row" layout-align="center top">
                                         <div flex="nogrow" style="width: 50%">
+                                            <em-embed urlsearch="https://www.organicbeardsupply.com/products/organic-beard-oil-spice-scent-1oz-dropper" onempty="tryAgain()"></em-embed>
                                             <span class="md-subhead">Paste any product url</span><br/>
                                             <md-input-container class="md-block">
                                                 <input name="product_url" ng-model="vm.stepData[0].data.product_url" md-select-on-focus ng-pattern="urlPattern" ng-disabled="vm.stepData[0].data.completed" required></input>
-                                                <div class="hint" ng-show="showProductUrlHint">example: http://www.patagonia.com/us/product/womens-nano-puff-jacket</div>
+                                                <div class="hint" ng-show="showProductUrlHint">example: https://www.organicbeardsupply.com/products/organic-beard-oil-spice-scent-1oz-dropper</div>
                                                 <div ng-messages="step1.product_url.$error" role="alert">
                                                     <div ng-message-exp="['required','pattern']">
                                                         That doesn't look like a product url... Are you sure you entered or pasted the right thing?
