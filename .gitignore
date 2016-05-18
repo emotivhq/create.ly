@@ -1,0 +1,11 @@
+.idea
+
+#vendor files
+node_modules
+bower_components
+
+# build files (via Grunt)
+app/assets/css/modules.css
+app/assets/css/ui.css
+app/assets/js/gsConcierge-angularbundle.js
+app/assets/js/gsConcierge-appbundle.js
