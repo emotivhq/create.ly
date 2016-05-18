@@ -59,18 +59,18 @@
 			vm.enableNextStep = function nextStep() {
 				//do not exceed into max step
 				if (vm.selectedStep >= vm.maxStep) {
-				    return;
+					return;
 				}
 				//do not increment vm.stepProgress when submitting from previously completed step
 				if (vm.selectedStep === vm.stepProgress - 1) {
-				    vm.stepProgress = vm.stepProgress + 1;
+					vm.stepProgress = vm.stepProgress + 1;
 				}
 				vm.selectedStep = vm.selectedStep + 1;
 			};
 		
 			vm.moveToPreviousStep = function moveToPreviousStep() {
 				if (vm.selectedStep > 0) {
-				    vm.selectedStep = vm.selectedStep - 1;
+					vm.selectedStep = vm.selectedStep - 1;
 				}
 			};
 		
@@ -79,19 +79,21 @@
 				vm.showBusyText = true;
 				console.log('On before submit');
 				if (!stepData.completed && !isSkip) {
-				    //simulate $http
-				    $timeout(function () {
-				    	if (stepData.step === 1) $scope.urlSearch = stepData.data.product_url;
-				        vm.showBusyText = false;
-				        console.log('Step success, #chaboi style');
-				        deferred.resolve({ status: 200, statusText: 'success', data: {} });
-				        //move to next step when success
-				        stepData.completed = true;
-				        vm.enableNextStep();
-				    }, 1000);
+					//simulate $http
+					$timeout(function () {
+						if (stepData.step === 1) {
+							$scope.urlSearch = stepData.data.product_url;
+						}
+						vm.showBusyText = false;
+						console.log('Step success, #chaboi style');
+						deferred.resolve({ status: 200, statusText: 'success', data: {} });
+						//move to next step when success
+						stepData.completed = true;
+						vm.enableNextStep();
+					}, 1000);
 				} else {
-				    vm.showBusyText = false;
-				    vm.enableNextStep();
+					vm.showBusyText = false;
+					vm.enableNextStep();
 				}
 			};
 
