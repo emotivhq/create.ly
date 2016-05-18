@@ -13,7 +13,7 @@
 		.module('create')
 		.controller('CreateCtrl', Create);
 
-		Create.$inject = ['$scope', '$q', '$timeout', '$mdToast'];
+		Create.$inject = ['$scope', '$q', '$timeout', '$mdToast', '$mdDialog'];
 
 		/*
 		* recommend
@@ -21,7 +21,7 @@
 		* and bindable members up top.
 		*/
 
-		function Create($scope, $q, $timeout, $mdToast) {
+		function Create($scope, $q, $timeout, $mdToast, $mdDialog) {
 			/*jshint validthis: true */
 			var vm = this;
 			window.Intercom("boot", {
@@ -87,6 +87,7 @@
 			};
 			
 			vm.submitCurrentStep = function submitCurrentStep(stepData, isSkip) {
+				console.log(stepData);
 				var deferred = $q.defer();
 				vm.showBusyText = true;
 				console.log('On before submit');
@@ -108,7 +109,24 @@
 				}
 			};
 			$scope.campaignCreateShortLink = 'http://bit.ly/1234567890';
-
+			
+			$scope.showUrlEducationDialog = function (ev) {
+				var confirm = $mdDialog.confirm()
+					.clickOutsideToClose(true)
+					.title('How this tool works.')
+					.textContent('This tool uses a method of extracting content from any link it is given. If the content above looks wonky, first make sure you have the correct link. If you are 100% sure you do, use the next step to customize the content to look exactly like you want it to.')
+					.ariaLabel('How this tool works')
+					.targetEvent(ev)
+					.ok('This link is correct. Let\'s customize the content.')
+					.cancel('Let\'s double check the link.');
+				$mdDialog.show(confirm).then(function () {
+					//TODO: move to next step two
+					//vm.submitCurrentStep(vm.stepData[0]); <--- this doesn't work...
+				}, function () {
+					//do nothing because they closed the modal.	
+				});
+				
+			};
 		}
 
 })();
