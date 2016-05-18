@@ -15,13 +15,10 @@
 		.config(configure)
 		.run(runBlock);
 
-	configure.$inject = ['$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpProvider', '$mdThemingProvider', '$mdIconProvider', 'embedlyServiceProvider'];
+	configure.$inject = ['$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpProvider', '$mdThemingProvider', '$mdIconProvider', 'embedlyProvider', 'bitlyProvider'];
 
-	function configure($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, $mdThemingProvider, $mdIconProvider, embedlyServiceProvider) {
+	function configure($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, $mdThemingProvider, $mdIconProvider, embedlyProvider, bitlyProvider) {
 
-
-		embedlyServiceProvider.setKey('a46a33d99bc642b4aab1dfa58dc11f32');
-		
 		$mdThemingProvider
 			.theme('default')
 			.primaryPalette('light-blue', {
@@ -72,6 +69,16 @@
 		$urlRouterProvider
 			.otherwise('/create');
 
+		// Service configurations
+		embedlyServiceProvider.setKey('a46a33d99bc642b4aab1dfa58dc11f32');
+		
+		bitlyServiceProvider.cfgBitly({
+			login: 'myuser',
+			api: 'myapikey',
+			//domain: 'https://api-ssl.bitly.com',
+			//version: '3'
+		});
+		
 	}
 
 	runBlock.$inject = ['$rootScope', '$window'];

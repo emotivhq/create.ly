@@ -3,12 +3,12 @@
 
 	/**
 	 * @ngdoc function
-	 * @name app.module:embedlyModule
+	 * @name app.module:bitlyModule
 	 * @description
-	 * # embedlyModule
+	 * # bitlyModule
 	 * Module of the app
 	 */
 
-	angular.module('embedly', []);
+	angular.module('bitly', []);
 
 })();

@@ -9,7 +9,7 @@
 	* Directive of the app
 	*/
 
-	angular
+    angular
 		.module('gsConcierge')
 		.directive('embedly', embedly);
 
@@ -20,11 +20,11 @@
 				restrict: 'E',
 				controller: 'emEmbedCtrl',
 				scope:{
-		            urlsearch: '@',
-		            maxwidth: '@',
-		            scheme: '@',
-		            onempty: '&'
-            	},
+                    urlsearch: '@',
+                    maxwidth: '@',
+                    scheme: '@',
+                    onempty: '&'
+                },
 				template: ''
 				
 			};
@@ -34,7 +34,7 @@
 			function link(scope, element, attrs) {
 				// This function should be called when the oEmbed returns no embed code
                 function handleEmpty(){
-                    if(scope.onempty != undefined && typeof(scope.onempty) == "function"){
+                    if(scope.onempty !== undefined && typeof(scope.onempty) === "function"){
                         scope.onempty();
                     }
                 }
@@ -50,21 +50,21 @@
                                 scope.$parent.loading_embedly = false;
                                 switch(data.data.type) {
                                     case 'video':
-                                        if(data.data.html == undefined){
+                                        if(data.data.html === undefined){
                                             handleEmpty();
                                         }else{
                                             scope.embedCode = data.data.html;
                                         }
                                         break;
                                     case 'rich':
-                                        if(data.data.html == undefined){
+                                        if(data.data.html === undefined){
                                             handleEmpty();
                                         }else{
                                             scope.embedCode = data.data.html;
                                         }
                                         break;
                                     case 'photo':
-                                        if(data.data.url == undefined){
+                                        if(data.data.url === undefined){
                                             handleEmpty();
                                         }else{
                                             if (scope.maxwidth) {

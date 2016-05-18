@@ -9,7 +9,7 @@
 	* Controller of the app
 	*/
 
-  	angular
+	angular
 		.module('embedly')
 		.controller('EmbedlyCtrl', Embedly);
 
