@@ -38,13 +38,13 @@
 			};
 			
 			$scope.product_url = '';
-			$scope.productUrlHint = 'https://giveto.seattlechildrens.org';
-			$scope.showProductUrlHint = false;
+			$scope.productUrlHint = 'https://giveto.seattlechildrens.org/changealife';
+			$scope.showProductUrlHint = true;
 			$scope.urlPattern = /^(http|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:\/~\+#]*[\w\-\@?^=%&amp;\/~\+#])?/i;
 
 			vm.selectedStep = 0;
 			vm.stepProgress = 1;
-			vm.maxStep = 4;
+			vm.maxStep = 3;
 			vm.showBusyText = false;
 			// Setup the initial step data
 			vm.stepData = [
@@ -53,10 +53,10 @@
 				} },
 				{ step: 2, completed: false, optional: false, data: {} },
 				{ step: 3, completed: false, optional: false, data: {} },
-				{ step: 4, completed: false, optional: false, data: {} },
+				// { step: 4, completed: false, optional: false, data: {} },
 			];
 		
-			vm.enableNextStep = function nextStep() {
+			vm.enableNextStep = function nextStep(skip) {
 				//do not exceed into max step
 				if (vm.selectedStep >= vm.maxStep) {
 					return;
@@ -73,29 +73,41 @@
 					vm.selectedStep = vm.selectedStep - 1;
 				}
 			};
-		
+			
+			vm.showPreview = false;
+			
+			$scope.getUrlInfo = function(url) {
+				$scope.urlSearch = url;
+				$scope.showPreview = true;
+			};
+			
+			$scope.clearUrlInfo = function() {
+				$scope.urlSearch = '';
+				$scope.showPreview = false;
+			};
+			
 			vm.submitCurrentStep = function submitCurrentStep(stepData, isSkip) {
 				var deferred = $q.defer();
 				vm.showBusyText = true;
 				console.log('On before submit');
 				if (!stepData.completed && !isSkip) {
 					//simulate $http
-					$timeout(function () {
-						if (stepData.step === 1) {
-							$scope.urlSearch = stepData.data.product_url;
-						}
-						vm.showBusyText = false;
-						console.log('Step success, #chaboi style');
-						deferred.resolve({ status: 200, statusText: 'success', data: {} });
-						//move to next step when success
-						stepData.completed = true;
-						vm.enableNextStep();
-					}, 1000);
+					vm.showBusyText = false;
+					console.log('Step success, #chaboi style');
+					deferred.resolve({
+						status: 200,
+						statusText: 'success',
+						data: {}
+					});
+					//move to next step when success
+					stepData.completed = true;
+					vm.enableNextStep();
 				} else {
 					vm.showBusyText = false;
 					vm.enableNextStep();
 				}
 			};
+			$scope.campaignCreateShortLink = 'http://bit.ly/1234567890';
 
 		}
 

@@ -1,5 +1,5 @@
 /*!
-* gsConcierge - v0.0.1 - MIT LICENSE 2016-05-12. 
+* gsConcierge - v0.0.1 - MIT LICENSE 2016-05-17. 
 * @author Emotiv
 */
 .create .hint {
@@ -20,6 +20,10 @@
   .create .hint.ng-leave, .create .hint.ng-enter.ng-enter-active {
     bottom: 7px;
     opacity: 1; }
+
+.create .md-input-invalid .hint {
+  bottom: 26px;
+  opacity: 0; }
 
 .logo {
   max-height: 35px;

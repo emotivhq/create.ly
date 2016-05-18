@@ -23,5 +23,11 @@
             opacity: 1;
         }
     }
+    .md-input-invalid {
+        .hint {
+            bottom: 26px;
+            opacity: 0;
+        }
+    }
 }
 // endinjector

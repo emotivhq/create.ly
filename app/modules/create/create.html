@@ -13,100 +13,141 @@
                 <md-steppers md-dynamic-height md-stretch-steppers="always" md-selected="vm.selectedStep" md-busy-text="'Fetching data & other things...'" md-busy="vm.showBusyText">
                     <md-step label="Enter Url" md-complete="vm.stepData[0].data.completed" ng-disabled="vm.stepProgress < 1">
                         <md-step-body>
-                            <form name="step1" ng-submit="vm.submitCurrentStep(vm.stepData[0])">
+                            <form name="step1">
                                 <md-content class="md-padding">
                                     <div layout="row" layout-align="center top">
                                         <div flex="nogrow" style="width: 50%">
-                                            <span class="md-subhead">Paste any commerce enabled url</span><br/>
-                                            <md-input-container class="md-block">
-                                                <input name="product_url" ng-model="product_url" md-select-on-focus ng-pattern="urlPattern" required></input>
-                                                <div class="hint" ng-show="showProductUrlHint">Example url: {{productUrlHint}}</div>
-                                                <div ng-messages="step1.product_url.$error" role="alert">
-                                                    <div ng-message-exp="['required','pattern']">
-                                                        That doesn't look like a valid url... are you sure you entered or pasted the right thing?
+                                            <span class="md-title">
+                                                Paste any url <!-- Add help icon explaining 'commerce enabled' links: <md-icon class="material-icons">question</md-icon>-->
+                                            </span>
+                                            <div layout layout-align="center">
+                                                <div layout="row" flex>
+                                                    <md-input-container flex class="md-block">
+                                                        <input name="product_url" ng-model="vm.stepData[0].data.product_url" ng-disabled="vm.showBusyText" md-select-on-focus ng-pattern="urlPattern" ng-model-options="{ updateOn: 'default blur', debounce: { default: 300, blur: 300 } }" required />
+                                                        <div class="hint">Example: {{productUrlHint}}</div>
+                                                        <div ng-messages="step1.product_url.$error" role="alert">
+                                                            <div ng-message-exp="['required','pattern']">
+                                                                That doesn't look like a valid url... are you sure you pasted the right thing?
+                                                            </div>
+                                                        </div>
+                                                    </md-input-container>
+                                                    <div>
+                                                        <md-button class="md-raised" ng-disabled="!vm.stepData[0].data.product_url || vm.showBusyText" aria-label="Get URL Info" ng-click="getUrlInfo(vm.stepData[0].data.product_url)">
+                                                            <md-icon class="material-icons">search</md-icon>
+                                                            Get Info
+                                                        </md-button>
                                                     </div>
                                                 </div>
-                                            </md-input-container>
-                                            <md-input-container class="md-block" flex-gt-lg>
-                                                <label>To test, copy and paste:</label>
-                                                <input ng-model="productUrlHint">
-                                            </md-input-container>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div layout="row" layout-align="center top" ng-show="showPreview">
+                                        <div flex="nogrow" style="width: 50%">
+                                            <span class="md-title">
+                                                Preview link info
+                                            </span>
+                                            <div layout="row" flex layout-padding>
+                                                <em-embed urlsearch="{{urlSearch}}" onempty="tryAgain()"></em-embed>
+                                            </div>
+                                            <div layout="column" layout-align="center center">
+                                                <div>
+                                                    <span class="md-subhead">Does this look right?</span>
+                                                </div>
+                                                <div layout-padding>
+                                                    <md-button type="button" ng-disabled="!vm.stepData[0].data.product_url || vm.showBusyText" ng-click="clearUrlInfo()">No, let's try again.</md-button>
+                                                    <md-button type="button" ng-disabled="!vm.stepData[0].data.product_url || vm.showBusyText" ng-click="vm.submitCurrentStep(vm.stepData[0])" class="md-raised md-primary">Yes, let's move on!</md-button>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </md-content>
-                                <md-step-actions layout="row">
-                                    <div flex layout="row" layout-align="end top">
-                                        <md-button type="submit" ng-disabled="!product_url || vm.showBusyText" class="md-primary md-raised">Next</md-button>
-                                    </div>
-                                </md-step-actions>
                             </form>
                         </md-step-body>
                     </md-step>
-                    <md-step label="Review details" md-complete="vm.stepData[1].data.completed" ng-disabled="vm.stepProgress < 2">
+                    <md-step label="Customize" md-complete="vm.stepData[1].data.completed" ng-disabled="vm.stepProgress < 2">
                         <md-step-body>
                             <md-content>
                                 <md-content class="md-padding">
                                     <div layout="row" layout-align="center top">
                                         <div flex="nogrow" style="width: 50%">
-                                            <span class="md-subhead">Paste any product url</span><br/>
-                                            <em-embed urlsearch="{{product_url}}" maxwidth="100%" onempty="tryAgain()"></em-embed>
+                                            <em-embed urlsearch="{{urlSearch}}" onempty="tryAgain()"></em-embed>
+                                        </div>
+                                        <div flex="nogrow" style="width: 50%">
+                                            <md-content class="md-padding">
+                                                <div layout="column" layout-align="center top">
+                                                    <div>
+                                                        <span class="md-title">Customize url info</span>
+                                                    </div>
+                                                    <div>
+                                                        <md-input-container class="md-block">
+                                                            <label>Title</label>
+                                                            <input name="title" ng-model="vm.stepData[1].data.title" />
+                                                        </md-input-container>
+                                                        <md-input-container class="md-block">
+                                                            <label>Description</label>
+                                                            <input name="description" ng-model="vm.stepData[1].data.description" />
+                                                        </md-input-container>
+                                                        <md-input-container class="md-block">
+                                                            <label>Price</label>
+                                                            <input name="price" ng-model="vm.stepData[1].data.price" />
+                                                        </md-input-container>
+                                                        <md-input-container class="md-block">
+                                                            <md-button class="md-raised">Upload New Image</md-button>
+                                                        </md-input-container>
+                                                    </div>
+                                                    <div>
+                                                        <md-button ng-click="vm.moveToPreviousStep()">Go back</md-button>
+                                                        <md-button type="submit" ng-disabled="vm.showBusyText" ng-click="vm.submitCurrentStep(vm.stepData[1], true)" class="md-primary md-raised">Perfect, let's finish!</md-button>
+                                                    </div>
+                                                </div>
+                                            </md-content>
                                         </div>
                                     </div>
                                 </md-content>
                             </md-content>
-                            <md-step-actions layout="row">
-                                <div flex layout="row" layout-align="end top">
-                                    <md-button ng-click="vm.moveToPreviousStep()">Previous</md-button>
-                                    <md-button type="submit" ng-disabled="vm.showBusyText" class="md-primary md-raised">Next</md-button>
-                                </div>
-                            </md-step-actions>
                         </md-step-body>
                     </md-step>
-                    <md-step label="Customize" md-complete="vm.stepData[2].data.completed" ng-disabled="vm.stepProgress < 3">
+                    <md-step label="Finish" md-complete="vm.stepData[2].data.completed" ng-disabled="vm.stepProgress < 3">
                         <md-step-body>
                             <form name="step2">
                                 <md-content class="md-padding">
                                     <div layout="row" layout-align="center top">
-                                        <div flex="nogrow" style="width: 400px">
-                                            <h4>Please enter yout full name</h4>
-                                            <md-input-container class="md-block">
-                                                <label>Your first name here</label>
-                                                <input name="firsname" ng-model="vm.stepData[1].data.firsname"/>
+                                        <div flex="nogrow" style="width: 50%;">
+                                            <span class="md-title">
+                                                That's it! Now, create your campaign.
+                                            </span>
+                                            <md-input-container flex class="md-block">
+                                                <input name="firsname" ng-model="campaignCreateShortLink" md-select-on-focus ng-readonly="true" />
+                                                <div class="hint">Click to copy this link. Then, paste it in any browser to create your campaign.</div>
                                             </md-input-container>
+                                            Or, click just click below:
                                             <md-input-container class="md-block">
-                                                <label>Your last name</label>
-                                                <input name="lastname" ng-model="vm.stepData[1].data.lastname"/>
+                                                <md-button class="md-raised md-primary">Create Your Campaign</md-button>
                                             </md-input-container>
                                         </div>
                                     </div>
                                 </md-content>
                                 <md-step-actions layout="row">
-                                    <div flex>
-                                        <md-button ng-click="vm.moveToPreviousStep()">PREVIOUS</md-button>
-                                    </div>
                                     <div flex layout="row" layout-align="end top">
-                                        <md-button class="md-warn">CANCEL</md-button>
-                                        <md-button ng-disabled="vm.showBusyText" ng-click="vm.submitCurrentStep(vm.stepData[1].data, !(vm.stepData[1].data.firsname && vm.stepData[1].data.lastname))" class="md-primary md-raised">
-                                            {{ vm.stepData[1].data.firsname && vm.stepData[1].data.lastname ? 'NEXT' : 'SKIP' }}
-                                        </md-button>
+                                        <md-button ng-click="vm.moveToPreviousStep()">PREVIOUS</md-button>
                                     </div>
                                 </md-step-actions>
                             </form>
                         </md-step-body>
                     </md-step>
                             
-                    <md-step label="Finish" md-complete="vm.stepData[3].data.completed" ng-disabled="vm.stepProgress < 4">
-                        <md-step-body>
-                            <form name="step3">
-                                <md-content class="md-padding">
-                                    <div layout="column" layout-align="center center" style="min-height: 200px">
-                                        <h4>Yasss! your custom campaign link was created.</h4>
-                                        <md-button class="md-primary md-raised">Create a campaign</md-button>
-                                    </div>
-                                </md-content>
-                            </form>
-                        </md-step-body>
-                    </md-step>
+                    <!--<md-step label="Finish" md-complete="vm.stepData[3].data.completed" ng-disabled="vm.stepProgress < 4">-->
+                    <!--    <md-step-body>-->
+                    <!--        <form name="step3">-->
+                    <!--            <md-content class="md-padding">-->
+                    <!--                <div layout="column" layout-align="center center" style="min-height: 200px">-->
+                    <!--                    <h4>Yasss! your custom campaign link was created.</h4>-->
+                    <!--                    <md-button class="md-primary md-raised">Create a campaign</md-button>-->
+                    <!--                </div>-->
+                    <!--            </md-content>-->
+                    <!--        </form>-->
+                    <!--    </md-step-body>-->
+                    <!--</md-step>-->
                 </md-steppers>
             </md-stepper-card-content>
         </md-card>
