@@ -1,1 +1,22 @@
-<div><!-- Template Contente if you use templateUrl --></div>
+<md-card>
+    <md-card-header>
+        <md-card-avatar>
+            <img ng-src="{{embedCode.favicon_url}}" alt="{{embedCode.provider_name}}"/>
+        </md-card-avatar>
+        <md-card-header-text>
+            <span class="md-title">{{embedCode.provider_name}}</span>
+            <span class="md-subhead">{{embedCode.provider_display}}</span>
+        </md-card-header-text>
+    </md-card-header>
+    <img ng-src="{{embedCode.images[0].url}}" class="md-card-image" alt="{{embedCode.title}}">
+    <md-card-title>
+        <md-card-title-text>
+            <span class="md-headline">{{embedCode.title}}</span>
+        </md-card-title-text>
+    </md-card-title>
+    <md-card-content ng-hide="!embedCode.description">
+        <p>
+            {{embedCode.description}}
+        </p>
+    </md-card-content>
+</md-card>

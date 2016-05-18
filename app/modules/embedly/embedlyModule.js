@@ -9,6 +9,6 @@
 	 * Module of the app
 	 */
 
-  	angular.module('embedly', []);
+	angular.module('embedly', []);
 
 })();
