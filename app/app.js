@@ -26,6 +26,7 @@
 		'home',
 		'create',
 		'usersync',
+		'embedly',
 	]);
 
 })();

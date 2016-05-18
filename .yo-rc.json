@@ -8,6 +8,9 @@
     "directives": [
       {
         "name": "linkcreator"
+      },
+      {
+        "name": "embedly"
       }
     ],
     "modules": [
@@ -16,6 +19,9 @@
       },
       {
         "name": "usersync"
+      },
+      {
+        "name": "embedly"
       }
     ],
     "menu": [
@@ -27,6 +33,10 @@
       {
         "link": "usersync",
         "title": "Usersync"
+      },
+      {
+        "link": "embedly",
+        "title": "Embedly"
       }
     ]
   }

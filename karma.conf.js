@@ -40,6 +40,11 @@ module.exports = function (config) {
 			'app/modules/usersync/usersyncRoute.js',
 			'app/modules/usersync/usersyncService.js',
 			'app/modules/usersync/usersync-test.js',
+			'app/modules/embedly/embedlyModule.js',
+			'app/modules/embedly/embedlyCtrl.js',
+			'app/modules/embedly/embedlyRoute.js',
+			'app/modules/embedly/embedlyService.js',
+			'app/modules/embedly/embedly-test.js',
 		],
 
 		// Test results reporter to use
