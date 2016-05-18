@@ -1,10 +1,10 @@
 /**
- * Created by moran on 12/06/14.
+ * Updated by emotiv on 05/18/2016.
  */
 
 var angularEmbedly = angular.module('angular-embedly', []);
 /**
- * Created by moran on 12/06/14.
+ * Updated by emotiv on 05/18/2016.
  */
 
 (function (module) {
@@ -60,17 +60,17 @@ var angularEmbedly = angular.module('angular-embedly', []);
 })(angularEmbedly);
 
 /**
- * Created by moran on 12/06/14.
+ * Updated by emotiv on 05/18/2016.
  */
 
 (function (module) {
     module.controller('emEmbedCtrl', ['$scope', function($scope) {
         $scope.embedCode = '';
-    }]);
+    }])
 })(angularEmbedly);
 /**
- * Created by moran on 12/06/14.
- */
+ * Updated by emotiv on 05/18/2016.
+*/
 
 (function (module) {
     module.directive('emEmbed', ['embedlyService', function(embedlyService) {
@@ -116,7 +116,7 @@ var angularEmbedly = angular.module('angular-embedly', []);
                         embedCode +=    '</p>\
                                       </md-card-content>';
                     }
-                    
+                    embedCode += '</md-card>';
                     embedCode = angular.element('<div>' + embedCode + '</div>');
                     return embedCode.html();
                 }
@@ -153,6 +153,7 @@ var angularEmbedly = angular.module('angular-embedly', []);
                                         }
                                         break;
                                     case 'html':
+                                        //scope.embedCode = data.data;
                                         scope.embedCode = buildHTMLCard(data.data);
                                         break;
                                     default:

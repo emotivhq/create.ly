@@ -1,5 +1,5 @@
 /*!
-* gsConcierge - v0.0.1 - MIT LICENSE 2016-05-12. 
+* gsConcierge - v0.0.1 - MIT LICENSE 2016-05-18. 
 * @author Emotiv
 */
 (function() {
@@ -30,6 +30,7 @@
 		'home',
 		'create',
 		'usersync',
+		'embedly',
 	]);
 
 })();
@@ -140,6 +141,21 @@
 	 */
 
 	angular.module('create', []);
+
+})();
+
+(function () {
+	'use strict';
+
+	/**
+	 * @ngdoc function
+	 * @name app.module:embedlyModule
+	 * @description
+	 * # embedlyModule
+	 * Module of the app
+	 */
+
+  	angular.module('embedly', []);
 
 })();
 
@@ -354,6 +370,38 @@ angular.module('usersync')
 					vm.enableNextStep();
 				}
 			};
+
+		}
+
+})();
+
+(function() {
+	'use strict';
+
+	/**
+	* @ngdoc function
+	* @name app.controller:embedlyCtrl
+	* @description
+	* # embedlyCtrl
+	* Controller of the app
+	*/
+
+  	angular
+		.module('embedly')
+		.controller('EmbedlyCtrl', Embedly);
+
+		Embedly.$inject = ['$scope'];
+
+		/*
+		* recommend
+		* Using function declarations
+		* and bindable members up top.
+		*/
+
+		function Embedly($scope) {
+			/*jshint validthis: true */
+			var vm = this;
+			$scope.embedCode = '';
 
 		}
 
@@ -705,6 +753,78 @@ angular.module('usersync')
 
 })();
 
+(function() {
+	'use strict';
+
+	/**
+	 * @ngdoc function
+	 * @name app.service:embedlyService
+	 * @description
+	 * # embedlyService
+	 * Service of the app
+	 */
+
+	angular
+		.module('embedly')
+		.factory('EmbedlyService', Embedly);
+		// Inject your dependencies as .$inject = ['$http', 'someSevide'];
+		// function Name ($http, someSevide) {...}
+
+		Embedly.$inject = ['$http'];
+
+		function Embedly ($http) {
+			
+			var key;
+        var secure;
+        this.setKey = function(userKey) {
+            key = userKey;
+            return key;
+        };
+        this.getKey = function() {
+            return key;
+        };
+        this.secure = function(value) {
+            if (!value) {
+                return secure;
+            }
+            secure = value;
+        };
+
+        function getProtocol() {
+            return secure ? 'https' : 'https' ;
+        }
+
+        function embedly($http) {
+            this.embed = function(inputUrl, maxwidth, scheme) {
+                var escapedUrl = encodeURIComponent(inputUrl);
+                var embedlyRequest = getProtocol() + '://api.embedly.com/1/oembed?key=' + key + '&url=' +  escapedUrl;
+
+                if(typeof maxwidth !== 'undefined'){
+                    embedlyRequest = embedlyRequest + '&maxwidth=' + maxwidth;
+                }
+
+                if(typeof scheme !== 'undefined'){
+                    embedlyRequest = embedlyRequest + '&scheme=' + scheme;
+                }
+
+                return $http({method: 'GET', url: embedlyRequest});
+            };
+            this.extract = function(inputUrl) {
+                var escapedUrl = encodeURIComponent(inputUrl);
+                var embedlyRequest = getProtocol() + '://api.embedly.com/1/extract?key=' + key + '&url=' +  escapedUrl;
+                return $http({method: 'GET', url: embedlyRequest});
+            };
+        }
+
+
+        this.$get = ['$http', function($http) {
+            return new embedly($http);
+        }];
+
+		}
+
+})();
+
 (function () {
 	'use strict';
 
@@ -859,6 +979,111 @@ angular.module('usersync')
 					vm.users = data;
 				});
 			};
+
+		}
+
+})();
+
+(function() {
+	'use strict';
+
+	/**
+	* @ngdoc function
+	* @name app.controller:embedlyDirective
+	* @description
+	* # embedlyDirective
+	* Directive of the app
+	*/
+
+	angular
+		.module('gsConcierge')
+		.directive('embedly', embedly);
+
+		function embedly (embedlyService) {
+
+			var directive = {
+				link: link,
+				restrict: 'E',
+				controller: 'emEmbedCtrl',
+				scope:{
+		            urlsearch: '@',
+		            maxwidth: '@',
+		            scheme: '@',
+		            onempty: '&'
+            	},
+				template: ''
+				
+			};
+
+			return directive;
+
+			function link(scope, element, attrs) {
+				// This function should be called when the oEmbed returns no embed code
+                function handleEmpty(){
+                    if(scope.onempty != undefined && typeof(scope.onempty) == "function"){
+                        scope.onempty();
+                    }
+                }
+                
+                scope.$parent.loading_embedly = false;
+
+                scope.$watch('urlsearch', function(newVal) {
+                    var previousEmbedCode = scope.embedCode;
+                    if (newVal) {
+                        scope.$parent.loading_embedly = true;
+                        embedlyService.embed(newVal, scope.maxwidth, scope.scheme)
+                            .then(function(data){
+                                scope.$parent.loading_embedly = false;
+                                switch(data.data.type) {
+                                    case 'video':
+                                        if(data.data.html == undefined){
+                                            handleEmpty();
+                                        }else{
+                                            scope.embedCode = data.data.html;
+                                        }
+                                        break;
+                                    case 'rich':
+                                        if(data.data.html == undefined){
+                                            handleEmpty();
+                                        }else{
+                                            scope.embedCode = data.data.html;
+                                        }
+                                        break;
+                                    case 'photo':
+                                        if(data.data.url == undefined){
+                                            handleEmpty();
+                                        }else{
+                                            if (scope.maxwidth) {
+                                                scope.embedCode = '<img style="max-width: ' + scope.maxwidth + 'px;" src="' + data.data.url + '">';
+                                            } else {
+                                                scope.embedCode = '<img src="' + data.data.url + '">';
+                                            }
+                                        }
+                                        break;
+                                    default:
+                                        // call the dev's handling code, he probably assumed he would get a video 
+                                        // or photo (otherwise he'd use a different tool), so for him this result
+                                        // is the same as an empty result.
+                                        handleEmpty();
+                                        scope.embedCode = '';
+                                }
+                                if(previousEmbedCode !== scope.embedCode) {
+                                    // embed code was changed from last call and has to be replaced in DOM
+                                    element.html('<div>' + scope.embedCode + '</div>');
+                                }
+                            }, function(error) {
+                                // promise rejected
+                                scope.$parent.loading_embedly = false;
+                                var previousEmbedCode = scope.embedCode;
+                                scope.embedCode = '';
+
+                                if(previousEmbedCode !== scope.embedCode) {
+                                    element.html('<div>' + scope.embedCode + '</div>');
+                                }
+                            });
+                    }
+                });
+			}
 
 		}
 
