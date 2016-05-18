@@ -110,7 +110,7 @@ module.exports = function (grunt) {
 			server: {
 				options: {
 					keepalive: true,
-					port: 8080,
+					port: 8097,
 					base: '.',
 					hostname: '0.0.0.0',
 					debug: true,
@@ -216,7 +216,7 @@ module.exports = function (grunt) {
 	grunt.option('force', true);
 
 	// Register grunt tasks
-	
+
 	// build but don't run
 	grunt.registerTask("build", [
 		"styles",
