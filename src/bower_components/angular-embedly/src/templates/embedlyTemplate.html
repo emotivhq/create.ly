@@ -1,0 +1,22 @@
+<md-card>
+    <md-card-header>
+        <md-card-avatar>
+            <img ng-src="{{data.favicon_url}}" />
+        </md-card-avatar>
+        <md-card-header-text>
+            <span class="md-title">{{data.provider_name}}</span>
+            <span class="md-subhead">{{data.provider_display}}</span>
+        </md-card-header-text>
+    </md-card-header>
+    <img ng-src="{{data.images[0].url}}" class="md-card-image" alt="{{data.provider_name}}">
+    <md-card-title>
+        <md-card-title-text>
+            <span class="md-headline">{{data.title}}</span>
+        </md-card-title-text>
+    </md-card-title>
+    <md-card-content ng-show="data.description">
+        <p>
+            {{data.description}}
+        </p>
+    </md-card-content>
+</md-card>
