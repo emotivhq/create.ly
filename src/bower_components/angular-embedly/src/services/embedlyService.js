@@ -1,5 +1,5 @@
 /**
- * Created by moran on 12/06/14.
+ * Updated by emotiv on 05/18/2016.
  */
 
 (function (module) {
@@ -51,5 +51,5 @@
             return new embedly($http);
         }];
 
-    })
+    });
 })(angularEmbedly);
