@@ -38,7 +38,7 @@
 			};
 			
 			$scope.product_url = '';
-			$scope.productUrlHint = 'https://giveto.seattlechildrens.org/changealife';
+			$scope.productUrlHint = 'http://www.bloodworksnw.org/home/index.htm';
 			$scope.showProductUrlHint = true;
 			$scope.urlPattern = /^(http|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:\/~\+#]*[\w\-\@?^=%&amp;\/~\+#])?/i;
 
@@ -48,12 +48,9 @@
 			vm.showBusyText = false;
 			// Setup the initial step data
 			vm.stepData = [
-				{ step: 1, completed: false, optional: false, data: {
-					product_url: 'https://'
-				} },
-				{ step: 2, completed: false, optional: false, data: {} },
+				{ step: 1, completed: false, optional: false, data: {product_url: 'https://'}},
+				{ step: 2, completed: false, optional: false, data: {title: 'Imagine Saving a Life: Donate Blood Today', price: '250.00'} },
 				{ step: 3, completed: false, optional: false, data: {} },
-				// { step: 4, completed: false, optional: false, data: {} },
 			];
 		
 			vm.enableNextStep = function nextStep(skip) {

@@ -4,7 +4,7 @@
             <md-toolbar>
                 <div class="md-toolbar-tools">
                     <h2>
-                        <span>Create a campaign for a any product</span>
+                        <span>Create a campaign for a non-profit cause</span>
                     </h2>
                 </div>
             </md-toolbar>
@@ -16,7 +16,7 @@
                                 <div layout="row" layout-padding>
                                     <div flex="50" flex-offset="25">
                                         <span class="md-title">
-                                            Paste any url
+                                            Paste any non-profit url
                                         </span>
                                         <form name="step1">
                                             <div layout="row" flex>
@@ -32,7 +32,7 @@
                                                 <div>
                                                     <md-button type="submit" class="md-raised" ng-disabled="!vm.stepData[0].data.product_url || vm.showBusyText" aria-label="Get URL Info" ng-click="getUrlInfo(vm.stepData[0].data.product_url)">
                                                         <md-icon class="material-icons">search</md-icon>
-                                                        Get Info
+                                                        Find Cause
                                                     </md-button>
                                                 </div>
                                             </div>
@@ -43,15 +43,15 @@
                                     <div flex="50" flex-offset="25">
                                         <span class="md-title">Preview link info</span>
                                         <div style="min-height: 400px;">
-                                            <md-progress-circular md-mode="indeterminate" md-diameter="200" ng-show="loading_embedly"></md-progress-circular>
+                                            <md-progress-circular md-mode="indeterminate" md-diameter="200" ng-show="loading_embedly" style="margin: 0 auto;"></md-progress-circular>
                                             <embedly urlsearch="{{urlSearch}}" onempty="tryAgain()" ng-show="!loading_embedly"></embedly>
                                             <div layout="column" layout layout-align="start center" layout-padding ng-show="!loading_embedly">
                                                 <div flex>
                                                     <span class="md-subhead">Does this look right?</span>
                                                 </div>
                                                 <div flex>
-                                                    <md-button type="button" ng-disabled="vm.showBusyText" ng-click="showUrlEducationDialog($event)">No, let's learn why.</md-button>
-                                                    <md-button type="button" ng-disabled="vm.showBusyText" ng-click="vm.submitCurrentStep(vm.stepData[0])" class="md-raised md-primary">Yes, let's move on!</md-button>
+                                                    <md-button type="button" ng-disabled="vm.showBusyText" ng-click="showUrlEducationDialog($event)">Nope, let's learn why.</md-button>
+                                                    <md-button type="button" ng-disabled="vm.showBusyText" ng-click="vm.submitCurrentStep(vm.stepData[0])" class="md-raised md-primary">Yep, let's move on!</md-button>
                                                 </div>
                                             </div>
                                         </div>
@@ -67,31 +67,60 @@
                                     <embedly urlsearch="{{urlSearch}}" onempty="tryAgain()"></embedly>
                                 </div>
                                 <div flex="50" layout-padding layout-margin>
-                                    <span class="md-title">Let's customize some things.</span>
-                                    <br/>
-                                    <span class="md-subhead">Customize details about your charity.</span>
-                                    <form>
+                                    <span class="md-title">Let's customize this cause. (optional)</span>
+                                    <form name="step2">
                                         <md-input-container class="md-block">
-                                            <label>Title</label>
+                                            <label>Title of cause</label>
                                             <!-- bind embedly title here -->
                                             <input name="title" ng-model="vm.stepData[1].data.title" required/>
+                                            <div ng-messages="step2.title.$error" role="alert">
+                                                <div ng-message-exp="['required']">
+                                                    Please add a title to this cause so we know what to call it.
+                                                </div>
+                                            </div>
                                         </md-input-container>
                                         <md-input-container class="md-block">
-                                            <label>Description</label>
-                                            <!-- bind embedly description here -->
-                                            <input name="description" ng-model="vm.stepData[1].data.description" required />
-                                        </md-input-container>
-                                        <!--<md-list>-->
-                                        <!--    <md-list-item>-->
-                                        <!--        <img class="md-avatar" ng-src="https://giveto.seattlechildrens.org/view.image?Id=2548">-->
-                                        <!--        <md-button class="md-raised">Upload New Image</md-button>-->
-                                        <!--    </md-list-item>-->
-                                        <!--</md-list>-->
-                                        <md-input-container class="md-block">
-                                            <label>Price</label>
+                                            <label>Total Donation Amount</label>
                                             <!-- bind embedly price here, if it exists -->
-                                            <input name="price" ng-model="vm.stepData[1].data.price" required />
+                                            <input name="price" ng-model="vm.stepData[1].data.price" value="vm.stepData[1].data.price | number:2" required />
+                                            <div class="hint">Taxes will be added to physical products during campaign creation. Shipping is free.</div>
+                                            <div ng-messages="step2.price.$error" role="alert">
+                                                <div ng-message-exp="['required']">
+                                                    Please add a donation price for this cause so we know how much to help you raise.
+                                                </div>
+                                            </div>
                                         </md-input-container>
+                                        <p>Choose campaign image</p>
+                                        <md-content layout="row" layout-xs="column" layout-align="start start" layout-wrap>
+                                                <md-card flex="20">
+                                                    <a href="javascript:;" style="border: 1px solid blue">
+                                                        <img src="http://www.bloodworksnw.org/images/home/fuel-level-header.jpg" class="md-card-image" alt="" />
+                                                    </a>
+                                                </md-card>
+                                                <md-card flex="20">
+                                                    <a href="javascript:;">
+                                                        <img src="http://www.bloodworksnw.org/images/home/donate_blood.jpg" class="md-card-image" alt="">
+                                                    </a>
+                                                </md-card>
+                                                <md-card flex="20">
+                                                    <a href="javascript:;">
+                                                        <img src="http://www.bloodworksnw.org/images/home/be_a_volunteer.jpg" class="md-card-image" alt="">
+                                                    </a>
+                                                </md-card>
+                                                <md-card flex="20">
+                                                    <a href="javascript:;">
+                                                        <img src="http://www.bloodworksnw.org/images/home/donate_funds.jpg" class="md-card-image" alt="">
+                                                    </a>
+                                                </md-card>
+                                                <md-card flex="20">
+                                                    <a href="javascript:;">
+                                                        <img src="http://www.bloodworksnw.org/images/home/iam_bloodworks.jpg" class="md-card-image" alt="">
+                                                    </a>
+                                                </md-card>
+                                        </md-content>
+                                        <md-content layout-padding>
+                                            <md-checkbox>Upload custom image</md-checkbox>
+                                        </md-content>
                                     </form>
                                     <div flex>
                                         <md-button ng-click="vm.moveToPreviousStep()">Go back</md-button>
@@ -103,17 +132,16 @@
                     </md-step>
                     <md-step label="Finish" md-complete="vm.stepData[2].data.completed" ng-disabled="vm.stepProgress < 3">
                         <md-step-body>
-                            <div layout="row" layout-aling="start center">
-                                <div flex="50" flex-offset="25">
+                            <div layout="row" layout-align="center center">
+                                <div flex="30" style="text-align: center;">
                                     <h4 class="md-title">That's it! Now, create your campaign.</h4>
                                     <md-input-container class="md-block">
                                         <md-button class="md-raised md-primary">Click Here To Create Your Campaign</md-button>
                                     </md-input-container>
-                                    <small>If you'd rather copy/paste a link, just click below:</small>
-                                    <md-input-container flex class="md-block">
+                                    <small>Or, click this link and copy/paste into a new browser tab.</small>
+                                    <md-input-container>
                                         <!-- Bind shortened bitly link here -->
                                         <input name="short_link" ng-model="campaignCreateShortLink" md-select-on-focus ng-readonly="true" />
-                                        <div class="hint">Click to copy this link. Then, paste it in any browser to create your campaign.</div>
                                     </md-input-container>
                                 </div>
                             </div>
@@ -122,7 +150,12 @@
                                     <md-button ng-click="vm.moveToPreviousStep()">Go Back</md-button>
                                 </div>
                                 <div flex layout="row" layout-align="end top">
-                                    <md-button ng-click="vm.moveToPreviousStep()">Start Over</md-button>
+                                    <md-button class="md-warn" ng-click="vm.moveToPreviousStep()">
+                                        Start Over
+                                        <md-tooltip md-direction="left">
+                                            Starting over will lose current progress.
+                                        </md-tooltip>
+                                    </md-button>
                                 </div>
                             </md-step-actions>
                         </md-step-body>
