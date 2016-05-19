@@ -76,11 +76,16 @@
                                             <!-- bind embedly title here -->
                                             <input name="title" ng-model="vm.stepData[1].data.title" required/>
                                         </md-input-container>
-                                        <md-input-container class="md-block">
-                                            <label>Description</label>
+                                        <!--<md-input-container class="md-block">-->
+                                        <!--    <label>Upload a custom image</label>-->
+                                        <!--    <script type="text/javascript" src="//api.filestackapi.com/filestack.js"></script>-->
+                                        <!--    <input type="filepicker" data-fp-apikey="AVdh2bvkuTYKQI3rdMsZXz" onchange="alert(event.fpfile.url)">-->
+                                        <!--</md-input-container>-->
+                                        <!--<md-input-container class="md-block">-->
+                                        <!--    <label>Description</label>-->
                                             <!-- bind embedly description here -->
-                                            <input name="description" ng-model="vm.stepData[1].data.description" required />
-                                        </md-input-container>
+                                        <!--    <input name="description" ng-model="vm.stepData[1].data.description" required />-->
+                                        <!--</md-input-container>-->
                                         <!--<md-list>-->
                                         <!--    <md-list-item>-->
                                         <!--        <img class="md-avatar" ng-src="https://giveto.seattlechildrens.org/view.image?Id=2548">-->
@@ -90,8 +95,21 @@
                                         <md-input-container class="md-block">
                                             <label>Price</label>
                                             <!-- bind embedly price here, if it exists -->
-                                            <input name="price" ng-model="vm.stepData[1].data.price" required />
+                                            <input name="price" ng-model="vm.stepData[1].data.price" value="vm.stepData[1].data.price | number:2" required />
+                                            <div class="hint">Please ensure this amount includes any fees. We will figure in taxes and shipping.</div>
                                         </md-input-container>
+                                        <p>Choose image:</p>
+                                        <md-content flex="33" layout-xs="column" layout="row">
+                                                <md-card>
+                                                    <img src="https://giveto.seattlechildrens.org/view.image?Id=2548" class="md-card-image" alt="Washed Out">
+                                                </md-card>
+                                                <md-card>
+                                                    <img src="http://www.seattlechildrens.org/uploadedImages/Siteroot_Resources/Related_Content/myGoodGrowingSidebar_122809.jpg" class="md-card-image" alt="Washed Out">
+                                                </md-card>
+                                                <md-card>
+                                                    <img src="http://www.seattlechildrens.org/uploadedImages/Siteroot_Resources/Related_Content/Good_Growing_2016.jpg?n=5974" class="md-card-image" alt="Washed Out">
+                                                </md-card>
+                                        </md-content>
                                     </form>
                                     <div flex>
                                         <md-button ng-click="vm.moveToPreviousStep()">Go back</md-button>

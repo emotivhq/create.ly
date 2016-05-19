@@ -48,12 +48,9 @@
 			vm.showBusyText = false;
 			// Setup the initial step data
 			vm.stepData = [
-				{ step: 1, completed: false, optional: false, data: {
-					product_url: 'https://'
-				} },
-				{ step: 2, completed: false, optional: false, data: {} },
+				{ step: 1, completed: false, optional: false, data: {product_url: 'https://'}},
+				{ step: 2, completed: false, optional: false, data: {title: 'Make a Donation - Seattle Children\'s - Seattle Children\'s', price: '100.00'} },
 				{ step: 3, completed: false, optional: false, data: {} },
-				// { step: 4, completed: false, optional: false, data: {} },
 			];
 		
 			vm.enableNextStep = function nextStep(skip) {
