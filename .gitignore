@@ -5,7 +5,9 @@ node_modules
 bower_components
 
 # build files (via Grunt)
+app/assets/js/
 app/assets/css/modules.css
 app/assets/css/ui.css
 app/assets/js/gsConcierge-angularbundle.js
 app/assets/js/gsConcierge-appbundle.js
+app/assets/js/templates.js
