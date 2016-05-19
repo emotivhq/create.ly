@@ -16,6 +16,7 @@
         &.ng-hide, &.ng-enter, &.ng-leave.ng-leave-active {
             bottom: 26px;
             opacity: 0;
+            z-index: -1;
         }
         
         &.ng-leave, &.ng-enter.ng-enter-active {
@@ -27,7 +28,20 @@
         .hint {
             bottom: 26px;
             opacity: 0;
+            z-index: -1;
         }
+    }
+}
+embedly {
+    transition: none;
+    &.ng-hide, &.ng-enter, &.ng-leave.ng-leave-active {
+        transition: none;
+        opacity: 0;
+    }
+    
+    &.ng-leave, &.ng-enter.ng-enter-active {
+        transition: opacity 0.1s cubic-bezier(0.55, 0, 0.55, 0.2);
+        opacity: 1;
     }
 }
 // endinjector

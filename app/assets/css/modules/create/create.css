@@ -12,11 +12,22 @@
   color: grey; }
   .create .hint.ng-hide, .create .hint.ng-enter, .create .hint.ng-leave.ng-leave-active {
     bottom: 26px;
-    opacity: 0; }
+    opacity: 0;
+    z-index: -1; }
   .create .hint.ng-leave, .create .hint.ng-enter.ng-enter-active {
     bottom: 7px;
     opacity: 1; }
 
 .create .md-input-invalid .hint {
   bottom: 26px;
-  opacity: 0; }
+  opacity: 0;
+  z-index: -1; }
+
+embedly {
+  transition: none; }
+  embedly.ng-hide, embedly.ng-enter, embedly.ng-leave.ng-leave-active {
+    transition: none;
+    opacity: 0; }
+  embedly.ng-leave, embedly.ng-enter.ng-enter-active {
+    transition: opacity 0.1s cubic-bezier(0.55, 0, 0.55, 0.2);
+    opacity: 1; }

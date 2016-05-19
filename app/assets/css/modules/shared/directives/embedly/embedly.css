@@ -1,0 +1,6 @@
+embedly {
+  transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2); }
+  embedly.ng-hide, embedly.ng-enter, embedly.ng-leave.ng-leave-active {
+    opacity: 0; }
+  embedly.ng-leave, embedly.ng-enter.ng-enter-active {
+    opacity: 1; }
