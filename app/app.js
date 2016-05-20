@@ -27,6 +27,7 @@
 		'create',
 		'usersync',
 		'embedly',
+		'bitly',
 	]);
 
 })();

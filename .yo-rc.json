@@ -11,6 +11,9 @@
       },
       {
         "name": "embedly"
+      },
+      {
+        "name": "bitly"
       }
     ],
     "modules": [
@@ -22,6 +25,9 @@
       },
       {
         "name": "embedly"
+      },
+      {
+        "name": "bitly"
       }
     ],
     "menu": [
@@ -37,6 +43,10 @@
       {
         "link": "embedly",
         "title": "Embedly"
+      },
+      {
+        "link": "bitly",
+        "title": "Bitly"
       }
     ]
   }

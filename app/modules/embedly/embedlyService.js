@@ -9,7 +9,7 @@
 	 * Service of the app
 	 */
 
-	angular
+    angular
 		.module('embedly')
 		.factory('EmbedlyService', Embedly);
 		// Inject your dependencies as .$inject = ['$http', 'someSevide'];
