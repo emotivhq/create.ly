@@ -14,7 +14,7 @@
                         <md-step-body>
                             <div layout="column">
                                 <div layout="row" layout-padding>
-                                    <div flex="50" flex-offset="25">
+                                    <div flex="75" flex-offset="10">
                                         <span class="md-title">
                                             Paste any non-profit url
                                         </span>
@@ -22,7 +22,7 @@
                                             <div layout="row" flex>
                                                 <md-input-container flex class="md-block">
                                                     <input name="product_url" ng-model="vm.stepData[0].data.product_url" ng-disabled="vm.showBusyText" md-select-on-focus ng-pattern="urlPattern" ng-model-options="{ updateOn: 'default blur', debounce: { default: 300, blur: 300 } }" required />
-                                                    <div class="hint">Example: {{productUrlHint}}</div>
+                                                    <div class="hint" ng-show="showProductUrlHint">Example: {{productUrlHint}}</div>
                                                     <div ng-messages="step1.product_url.$error" role="alert">
                                                         <div ng-message-exp="['required','pattern']">
                                                             That doesn't look like a valid url... are you sure you pasted the right thing?
@@ -39,21 +39,26 @@
                                         </form>
                                     </div>
                                 </div>
-                                <div layout="row" layout-padding ng-show="showPreview">
-                                    <div flex="50" flex-offset="25">
-                                        <span class="md-title">Preview link info</span>
-                                        <div style="min-height: 400px;">
+                                <div layout="row" layout-padding ng-show="showPreview" layout-align="center">
+                                    <div flex="90" flex-offset="1">
+                                        <div layout-padding layout-align="start center" style="min-height: 400px;">
                                             <md-progress-circular md-mode="indeterminate" md-diameter="200" ng-show="loading_embedly" style="margin: 0 auto;"></md-progress-circular>
                                             <embedly urlsearch="{{urlSearch}}" onempty="tryAgain()" ng-show="!loading_embedly"></embedly>
-                                            <div layout="column" layout layout-align="start center" layout-padding ng-show="!loading_embedly">
-                                                <div flex>
-                                                    <span class="md-subhead">Does this look right?</span>
-                                                </div>
-                                                <div flex>
-                                                    <md-button type="button" ng-disabled="vm.showBusyText" ng-click="showUrlEducationDialog($event)">Nope, let's learn why.</md-button>
-                                                    <md-button type="button" ng-disabled="vm.showBusyText" ng-click="vm.submitCurrentStep(vm.stepData[0])" class="md-raised md-primary">Yep, let's move on!</md-button>
-                                                </div>
-                                            </div>
+                                            <md-toolbar class="md-accent" ng-show="!loading_embedly">
+                                                <div class="md-toolbar-tools">
+                                                    <md-icon class="material-icons">arrow_upward</md-icon>
+                                                    <h2 style="margin-left:10px">
+                                                      <span>Does this look right?</span>
+                                                    </h2>
+                                                    <span flex></span>
+                                                    <md-button class="md-primary md-raised" ng-disabled="vm.showBusyText" ng-click="vm.submitCurrentStep(vm.stepData[0])" aria-label="Yep, let's move on!">
+                                                      Yep, let's move on!
+                                                    </md-button>
+                                                    <md-button class="md-accent md-hue-2 md-fab md-mini" ng-disabled="vm.showBusyText" ng-click="showUrlEducationDialog($event)" aria-label="No, but why?">
+                                                      No
+                                                    </md-button>
+                                                  </div>
+                                            </md-toolbar>
                                         </div>
                                     </div>
                                 </div>
@@ -120,6 +125,9 @@
                                         </md-content>
                                         <md-content layout-padding>
                                             <md-checkbox>Upload custom image</md-checkbox>
+                                            <script type="text/javascript" src="//api.filestackapi.com/filestack.js"></script>
+                                            <input type="filepicker" data-fp-apikey="AVdh2bvkuTYKQI3rdMsZXz"
+                                            onchange="alert(event.fpfile.url)">
                                         </md-content>
                                     </form>
                                     <div flex>
