@@ -45,6 +45,11 @@ module.exports = function (config) {
 			'app/modules/embedly/embedlyRoute.js',
 			'app/modules/embedly/embedlyService.js',
 			'app/modules/embedly/embedly-test.js',
+			'app/modules/bitly/bitlyModule.js',
+			'app/modules/bitly/bitlyCtrl.js',
+			'app/modules/bitly/bitlyRoute.js',
+			'app/modules/bitly/bitlyService.js',
+			'app/modules/bitly/bitly-test.js',
 		],
 
 		// Test results reporter to use
