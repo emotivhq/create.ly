@@ -26,8 +26,7 @@
     "tag": "0.0.8",
     "commit": "e48ff27af8bd702f1cefea6119c863df9b0e6042"
   },
-  "_source": "https://github.com/Urigo/angular-embedly.git",
-  "_target": "^0.0.8",
-  "_originalSource": "angular-embedly",
-  "_direct": true
+  "_source": "https://github.com/emotivhq/angular-embedly.git",
+  "_target": "*",
+  "_originalSource": "https://github.com/emotivhq/angular-embedly.git"
 }

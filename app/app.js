@@ -20,12 +20,14 @@
 		'ngSanitize',
 		'ngStamplay',
 		'ngMessages',
-		'angular-embedly',
+		'angular-embedly', //Switch to embedlyServiceProvider within app before removing. Needed to setKey.
 		'md-steppers',
 		'ui.router',
 		'home',
 		'create',
 		'usersync',
+		'embedly',
+		'bitly',
 	]);
 
 })();

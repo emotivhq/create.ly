@@ -40,6 +40,16 @@ module.exports = function (config) {
 			'app/modules/usersync/usersyncRoute.js',
 			'app/modules/usersync/usersyncService.js',
 			'app/modules/usersync/usersync-test.js',
+			'app/modules/embedly/embedlyModule.js',
+			'app/modules/embedly/embedlyCtrl.js',
+			'app/modules/embedly/embedlyRoute.js',
+			'app/modules/embedly/embedlyService.js',
+			'app/modules/embedly/embedly-test.js',
+			'app/modules/bitly/bitlyModule.js',
+			'app/modules/bitly/bitlyCtrl.js',
+			'app/modules/bitly/bitlyRoute.js',
+			'app/modules/bitly/bitlyService.js',
+			'app/modules/bitly/bitly-test.js',
 		],
 
 		// Test results reporter to use

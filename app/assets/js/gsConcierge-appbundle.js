@@ -1,5 +1,5 @@
 /*!
-* gsConcierge - v0.0.1 - MIT LICENSE 2016-05-12. 
+* gsConcierge - v0.0.1 - MIT LICENSE 2016-05-18. 
 * @author Emotiv
 */
 (function() {
@@ -22,14 +22,12 @@
 		'ngCookies',
 		'ngAnimate',
 		'ngSanitize',
-		'ngStamplay',
-		'ngMessages',
-		'angular-embedly',
-		'md-steppers',
 		'ui.router',
 		'home',
 		'create',
 		'usersync',
+		'embedly',
+		'bitly',
 	]);
 
 })();
@@ -51,13 +49,10 @@
 		.config(configure)
 		.run(runBlock);
 
-	configure.$inject = ['$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpProvider', '$mdThemingProvider', '$mdIconProvider', 'embedlyServiceProvider'];
+	configure.$inject = ['$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpProvider', '$mdThemingProvider', '$mdIconProvider', 'embedlyServiceProvider', 'bitlyServiceProvider'];
 
-	function configure($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, $mdThemingProvider, $mdIconProvider, embedlyServiceProvider) {
+	function configure($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, $mdThemingProvider, $mdIconProvider, embedlyServiceProvider, bitlyServiceProvider) {
 
-
-		embedlyServiceProvider.setKey('5c3f7be65ef142a2bffed65a3544c324');
-		
 		$mdThemingProvider
 			.theme('default')
 			.primaryPalette('light-blue', {
@@ -108,6 +103,15 @@
 		$urlRouterProvider
 			.otherwise('/create');
 
+		// Service configurations
+		embedlyServiceProvider.setKey('a46a33d99bc642b4aab1dfa58dc11f32');
+		bitlyServiceProvider.cfgBitly({
+			login: 'myuser',
+			api: 'myapikey',
+			//domain: 'https://api-ssl.bitly.com',
+			//version: '3'
+		});
+		
 	}
 
 	runBlock.$inject = ['$rootScope', '$window'];
@@ -133,6 +137,21 @@
 
 	/**
 	 * @ngdoc function
+	 * @name app.module:bitlyModule
+	 * @description
+	 * # bitlyModule
+	 * Module of the app
+	 */
+
+	angular.module('bitly', []);
+
+})();
+
+(function () {
+	'use strict';
+
+	/**
+	 * @ngdoc function
 	 * @name app.module:createModule
 	 * @description
 	 * # createModule
@@ -140,6 +159,21 @@
 	 */
 
 	angular.module('create', []);
+
+})();
+
+(function () {
+	'use strict';
+
+	/**
+	 * @ngdoc function
+	 * @name app.module:embedlyModule
+	 * @description
+	 * # embedlyModule
+	 * Module of the app
+	 */
+
+	angular.module('embedly', []);
 
 })();
 
@@ -261,6 +295,50 @@ angular.module('usersync')
 
 	/**
 	* @ngdoc function
+	* @name app.controller:bitlyCtrl
+	* @description
+	* # bitlyCtrl
+	* Controller of the app
+	*/
+
+	angular
+		.module('bitly')
+		.controller('BitlyCtrl', Bitly);
+
+		Bitly.$inject = ['bitly', '$rootScope', '$scope'];
+
+		/*
+		* recommend
+		* Using function declarations
+		* and bindable members up top.
+		*/
+
+		function Bitly(bitly, embedly, $scope) {
+			/*jshint validthis: true */
+			var vm = this;
+			
+			$scope.createBitly = function() {
+				bitly.getShortUrl(embedly.UrlToBitlify).then(function(data){
+					console.log("bit.ly DATA:", data);
+					vm.bitlyUrl = data;
+					$scope.bitlyUrl = data;
+					console.log("Bit.ly", $scope.bitlyUrl);
+				}, function(e){
+					console.log("Bit.ly ERROR: ", e);
+					vm.bitlyUrl = e;
+					$scope.bitlyUrl = e;
+				});
+			};
+
+		}
+
+})();
+
+(function() {
+	'use strict';
+
+	/**
+	* @ngdoc function
 	* @name app.controller:createCtrl
 	* @description
 	* # createCtrl
@@ -296,13 +374,13 @@ angular.module('usersync')
 			};
 			
 			$scope.product_url = '';
-			$scope.productUrlHint = 'https://giveto.seattlechildrens.org';
-			$scope.showProductUrlHint = false;
+			$scope.productUrlHint = 'https://giveto.seattlechildrens.org/changealife';
+			$scope.showProductUrlHint = true;
 			$scope.urlPattern = /^(http|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:\/~\+#]*[\w\-\@?^=%&amp;\/~\+#])?/i;
 
 			vm.selectedStep = 0;
 			vm.stepProgress = 1;
-			vm.maxStep = 4;
+			vm.maxStep = 3;
 			vm.showBusyText = false;
 			// Setup the initial step data
 			vm.stepData = [
@@ -311,10 +389,10 @@ angular.module('usersync')
 				} },
 				{ step: 2, completed: false, optional: false, data: {} },
 				{ step: 3, completed: false, optional: false, data: {} },
-				{ step: 4, completed: false, optional: false, data: {} },
+				// { step: 4, completed: false, optional: false, data: {} },
 			];
 		
-			vm.enableNextStep = function nextStep() {
+			vm.enableNextStep = function nextStep(skip) {
 				//do not exceed into max step
 				if (vm.selectedStep >= vm.maxStep) {
 					return;
@@ -331,29 +409,73 @@ angular.module('usersync')
 					vm.selectedStep = vm.selectedStep - 1;
 				}
 			};
-		
+			
+			vm.showPreview = false;
+			
+			$scope.getUrlInfo = function(url) {
+				$scope.urlSearch = url;
+				$scope.showPreview = true;
+			};
+			
+			$scope.clearUrlInfo = function() {
+				$scope.urlSearch = '';
+				$scope.showPreview = false;
+			};
+			
 			vm.submitCurrentStep = function submitCurrentStep(stepData, isSkip) {
 				var deferred = $q.defer();
 				vm.showBusyText = true;
 				console.log('On before submit');
 				if (!stepData.completed && !isSkip) {
 					//simulate $http
-					$timeout(function () {
-						if (stepData.step === 1) {
-							$scope.urlSearch = stepData.data.product_url;
-						}
-						vm.showBusyText = false;
-						console.log('Step success, #chaboi style');
-						deferred.resolve({ status: 200, statusText: 'success', data: {} });
-						//move to next step when success
-						stepData.completed = true;
-						vm.enableNextStep();
-					}, 1000);
+					vm.showBusyText = false;
+					console.log('Step success, #chaboi style');
+					deferred.resolve({
+						status: 200,
+						statusText: 'success',
+						data: {}
+					});
+					//move to next step when success
+					stepData.completed = true;
+					vm.enableNextStep();
 				} else {
 					vm.showBusyText = false;
 					vm.enableNextStep();
 				}
 			};
+			$scope.campaignCreateShortLink = 'http://bit.ly/1234567890';
+
+		}
+
+})();
+
+(function() {
+	'use strict';
+
+	/**
+	* @ngdoc function
+	* @name app.controller:embedlyCtrl
+	* @description
+	* # embedlyCtrl
+	* Controller of the app
+	*/
+
+	angular
+		.module('embedly')
+		.controller('EmbedlyCtrl', Embedly);
+
+		Embedly.$inject = ['$scope'];
+
+		/*
+		* recommend
+		* Using function declarations
+		* and bindable members up top.
+		*/
+
+		function Embedly($scope) {
+			/*jshint validthis: true */
+			var vm = this;
+			$scope.embedCode = '';
 
 		}
 
@@ -685,6 +807,98 @@ angular.module('usersync')
 
 	/**
 	 * @ngdoc function
+	 * @name app.service:bitlyService
+	 * @description
+	 * # bitlyService
+	 * Service of the app
+	 */
+
+	angular
+		.module('bitly')
+		//.factory('BitlyService', Bitly);
+		.provider('BitlyService', Bitly);
+		// Inject your dependencies as .$inject = ['$http', 'someSevide'];
+		// function Name ($http, someSevide) {...}
+
+		Bitly.$inject = ['$http'];
+
+		function Bitly ($http) {
+			var config;
+			return {
+
+				cfgBitly: function(cfg){
+					config = cfg;
+					config.version = cfg.version || '3'; 
+					config.domain = cfg.domain || 'http://api.bit.ly'; // api-ssl.bitly.com
+					config.format = cfg.format || 'json';
+				},
+
+				$get: ['$http', '$q', '$window', function($http, $q, $window){
+
+					return {
+
+						// API info: http://dev.bitly.com/formats.html
+						getShortUrl: function(url){
+
+							var deferredRequest = $q.defer();
+							var urlEncoded = encodeURIComponent(url);
+
+							var urlPath = '/v3/shorten';
+							var bitlyQuery = '?callback=JSON_CALLBACK&login='+config.login+'&apiKey='+config.api+'&format='+config.format+'&longUrl='+urlEncoded;
+							var okPath = "status_code";
+							var okCode = 200;
+
+							if(/^2/.test(config.version)){
+								urlPath = '/shorten';
+								bitlyQuery = '?callback=JSON_CALLBACK&version='+config.version+'&login='+config.login+'&apiKey='+config.api+'&format='+config.format+'&longUrl='+urlEncoded;
+								okPath = "errorCode";
+								okCode = 0;
+							}
+							// start jsonp callbacks hack
+							/*
+							Problem: http://www.pixeldock.com/blog/working-with-jsonp-in-angularjs/
+							Hack: http://stackoverflow.com/questions/16560843/json-callback-not-found-using-jsonp
+							Discussion: https://github.com/angular/angular.js/issues/1551
+							*/
+							var c = $window.angular.callbacks.counter.toString(36);
+							$window['angularcallbacks_' + c] = function(data) {
+								$window.angular.callbacks['_' + c](data);
+								delete $window['angularcallbacks_' + c];
+							};
+							// end hack
+
+							var bitlyUrl = config.domain + urlPath + bitlyQuery;
+							$http.jsonp(bitlyUrl)
+								.success(function(response){
+									if(response && response[okPath] === okCode){
+										//console.log("bitly getShortUrl v"+config.version+" OK: ", response);
+										if(/^3/.test(config.version)){
+											deferredRequest.resolve(response.data.url);
+										}else{
+											deferredRequest.resolve(response.results[url].shortUrl);
+										}
+									}else{
+										//console.info("bitly getShortUrl v"+config.version+" OK with error: ", response);
+										deferredRequest.reject(url);
+									}
+								}).error(function(error){
+									console.error("bitly getShortUrl KO: ", error);
+									deferredRequest.reject(url);
+								});
+							return deferredRequest.promise;
+						}
+					};
+				}]
+			};
+		}
+
+})();
+
+(function() {
+	'use strict';
+
+	/**
+	 * @ngdoc function
 	 * @name app.service:createService
 	 * @description
 	 * # createService
@@ -700,6 +914,79 @@ angular.module('usersync')
 		Create.$inject = ['$http'];
 
 		function Create ($http) {
+
+		}
+
+})();
+
+(function() {
+	'use strict';
+
+	/**
+	 * @ngdoc function
+	 * @name app.service:embedlyService
+	 * @description
+	 * # embedlyService
+	 * Service of the app
+	 */
+
+    angular
+		.module('embedly')
+		.factory('EmbedlyService', Embedly);
+		// Inject your dependencies as .$inject = ['$http', 'someSevide'];
+		// function Name ($http, someSevide) {...}
+
+		Embedly.$inject = ['$http'];
+
+		function Embedly ($http) {
+			
+			var vm = this;
+            var key;
+            var secure;
+            vm.setKey = function(userKey) {
+                key = userKey;
+                return key;
+            };
+            vm.getKey = function() {
+                return key;
+            };
+            vm.secure = function(value) {
+                if (!value) {
+                    return secure;
+                }
+                secure = value;
+            };
+    
+            function getProtocol() {
+                return secure ? 'https' : 'https' ;
+            }
+    
+            function embedly($http) {
+                vm.embed = function(inputUrl, maxwidth, scheme) {
+                    var escapedUrl = encodeURIComponent(inputUrl);
+                    var embedlyRequest = getProtocol() + '://api.embedly.com/1/oembed?key=' + key + '&url=' +  escapedUrl;
+    
+                    if(typeof maxwidth !== 'undefined'){
+                        embedlyRequest = embedlyRequest + '&maxwidth=' + maxwidth;
+                    }
+    
+                    if(typeof scheme !== 'undefined'){
+                        embedlyRequest = embedlyRequest + '&scheme=' + scheme;
+                    }
+    
+                    return $http({method: 'GET', url: embedlyRequest});
+                };
+                vm.extract = function(inputUrl) {
+                    var escapedUrl = encodeURIComponent(inputUrl);
+                    var embedlyRequest = getProtocol() + '://api.embedly.com/1/extract?key=' + key + '&url=' +  escapedUrl;
+                    return $http({method: 'GET', url: embedlyRequest});
+                };
+            }
+    
+    
+            vm.$get = ['$http', function($http) {
+                return new embedly($http);
+            }];
 
 		}
 
@@ -859,6 +1146,157 @@ angular.module('usersync')
 					vm.users = data;
 				});
 			};
+
+		}
+
+})();
+
+(function() {
+	'use strict';
+
+	/**
+	* @ngdoc function
+	* @name app.controller:bitlyDirective
+	* @description
+	* # bitlyDirective
+	* Directive of the app
+	*/
+
+	angular
+		.module('gsConcierge')
+		.directive('bitlyDirective', bitlyDirective);
+
+		function bitlyDirective () {
+
+			var directive = {
+				restrict: 'A',
+				controller: 'BitlyCtrl',
+				scope: true,
+				link: link,
+				templateUrl:'app/modules/shared/directives/bitly/bitly.html',
+				
+			};
+
+			return directive;
+
+			function link(bitly, embedly, scope, element, attrs) {
+				attrs.$observe('href', function(){
+					scope.url = embedly.UrlToBitlify;
+					//console.log("directive currentHref", a.href);
+					var a = element[0];
+					if(a.href){ 
+						bitly.getShortUrl(a.href).then(function(data){
+							a.href = data;
+							//console.log("directive result", a.href);
+						});
+					}
+				});
+			}
+
+		}
+
+})();
+
+(function() {
+	'use strict';
+
+	/**
+	* @ngdoc function
+	* @name app.controller:embedlyDirective
+	* @description
+	* # embedlyDirective
+	* Directive of the app
+	*/
+
+    angular
+		.module('gsConcierge')
+		.directive('embedly', embedly);
+
+		function embedly (embedlyService) {
+
+			var directive = {
+				link: link,
+				restrict: 'E',
+				controller: 'emEmbedCtrl',
+				scope:{
+                    urlsearch: '@',
+                    maxwidth: '@',
+                    scheme: '@',
+                    onempty: '&'
+                },
+				template: ''
+				
+			};
+
+			return directive;
+
+			function link(scope, element, attrs) {
+				// This function should be called when the oEmbed returns no embed code
+                function handleEmpty(){
+                    if(scope.onempty !== undefined && typeof(scope.onempty) === "function"){
+                        scope.onempty();
+                    }
+                }
+                
+                scope.$parent.loading_embedly = false;
+
+                scope.$watch('urlsearch', function(newVal) {
+                    var previousEmbedCode = scope.embedCode;
+                    if (newVal) {
+                        scope.$parent.loading_embedly = true;
+                        embedlyService.embed(newVal, scope.maxwidth, scope.scheme)
+                            .then(function(data){
+                                scope.$parent.loading_embedly = false;
+                                switch(data.data.type) {
+                                    case 'video':
+                                        if(data.data.html === undefined){
+                                            handleEmpty();
+                                        }else{
+                                            scope.embedCode = data.data.html;
+                                        }
+                                        break;
+                                    case 'rich':
+                                        if(data.data.html === undefined){
+                                            handleEmpty();
+                                        }else{
+                                            scope.embedCode = data.data.html;
+                                        }
+                                        break;
+                                    case 'photo':
+                                        if(data.data.url === undefined){
+                                            handleEmpty();
+                                        }else{
+                                            if (scope.maxwidth) {
+                                                scope.embedCode = '<img style="max-width: ' + scope.maxwidth + 'px;" src="' + data.data.url + '">';
+                                            } else {
+                                                scope.embedCode = '<img src="' + data.data.url + '">';
+                                            }
+                                        }
+                                        break;
+                                    default:
+                                        // call the dev's handling code, he probably assumed he would get a video 
+                                        // or photo (otherwise he'd use a different tool), so for him this result
+                                        // is the same as an empty result.
+                                        handleEmpty();
+                                        scope.embedCode = '';
+                                }
+                                if(previousEmbedCode !== scope.embedCode) {
+                                    // embed code was changed from last call and has to be replaced in DOM
+                                    element.html('<div>' + scope.embedCode + '</div>');
+                                }
+                            }, function(error) {
+                                // promise rejected
+                                scope.$parent.loading_embedly = false;
+                                var previousEmbedCode = scope.embedCode;
+                                scope.embedCode = '';
+
+                                if(previousEmbedCode !== scope.embedCode) {
+                                    element.html('<div>' + scope.embedCode + '</div>');
+                                }
+                            });
+                    }
+                });
+			}
 
 		}
 
