@@ -124,10 +124,7 @@
                                                 </md-card>
                                         </md-content>
                                         <md-content layout-padding>
-                                            <md-checkbox>Upload custom image</md-checkbox>
-                                            <script type="text/javascript" src="//api.filestackapi.com/filestack.js"></script>
-                                            <input type="filepicker" data-fp-apikey="AVdh2bvkuTYKQI3rdMsZXz"
-                                            onchange="alert(event.fpfile.url)">
+                                            <input id="filestack-widget" filepicker type="filepicker" data-fp-multiple="true" data-fp-services="computer,url,facebook,webcam,box,dropbox,image_search,google_drive" on-success="pickMultipleResults=event.fpfiles" />
                                         </md-content>
                                     </form>
                                     <div flex>

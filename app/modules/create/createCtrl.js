@@ -13,7 +13,7 @@
 		.module('create')
 		.controller('CreateCtrl', Create);
 
-		Create.$inject = ['$scope', '$q', '$timeout', '$mdToast', '$mdDialog'];
+		Create.$inject = ['$scope', '$q', '$timeout', '$mdToast', '$mdDialog', 'filepicker'];
 
 		/*
 		* recommend
@@ -21,12 +21,15 @@
 		* and bindable members up top.
 		*/
 
-		function Create($scope, $q, $timeout, $mdToast, $mdDialog) {
+		function Create($scope, $q, $timeout, $mdToast, $mdDialog, filepicker) {
 			/*jshint validthis: true */
 			var vm = this;
 			window.Intercom("boot", {
 			  app_id: "q5i7p4f9"
 			});
+			// Filestack JS API
+			//var element = document.getElementById('filestack-widget');
+			//filepicker.constructWidget(element);
 
 			$scope.tryAgain = function() {
 				$mdToast.show(
