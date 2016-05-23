@@ -13,7 +13,7 @@
 		.module('create')
 		.controller('CreateCtrl', Create);
 
-		Create.$inject = ['$scope', '$q', '$timeout', '$mdToast', '$mdDialog'];
+		Create.$inject = ['$scope', '$q', '$timeout', '$mdToast', '$mdDialog', '$window'];
 
 		/*
 		* recommend
@@ -21,7 +21,7 @@
 		* and bindable members up top.
 		*/
 
-		function Create($scope, $q, $timeout, $mdToast, $mdDialog) {
+		function Create($scope, $q, $timeout, $mdToast, $mdDialog, $window) {
 			/*jshint validthis: true */
 			var vm = this;
 			window.Intercom("boot", {
@@ -31,9 +31,9 @@
 			$scope.tryAgain = function() {
 				$mdToast.show(
 					$mdToast.simple()
-					.content('Try again, nothing returned')
-					.position('bottom right')
-					.hideDelay(2000)
+					.content('We didn\'t find anything for that URL. Please try another one.')
+					.position('bottom left')
+					.hideDelay(3500)
 				);
 			};
 			
@@ -49,7 +49,7 @@
 			// Setup the initial step data
 			vm.stepData = [
 				{ step: 1, completed: false, optional: false, data: {product_url: 'https://'}},
-				{ step: 2, completed: false, optional: false, data: {title: 'Imagine Saving a Life: Donate Blood Today', price: '250.00'} },
+				{ step: 2, completed: false, optional: false, data: {title: 'Imagine Saving a Life: Donate Blood Today', price: '20.00'} },
 				{ step: 3, completed: false, optional: false, data: {} },
 			];
 		
@@ -71,11 +71,11 @@
 				}
 			};
 			
-			vm.showPreview = false;
+			$scope.showPreview = false;
 			
 			$scope.getUrlInfo = function(url) {
 				$scope.urlSearch = url;
-				$scope.showPreview = true;
+				$mdToast.hide();
 			};
 			
 			$scope.clearUrlInfo = function() {
@@ -83,23 +83,21 @@
 				$scope.showPreview = false;
 			};
 			
+			$scope.$on('embedly-fetch-success', function() {
+				$scope.showPreview = true;
+			});
+			
+			$scope.$on('embedly-fetch-error', function() {
+				$scope.showPreview = false;
+			});
+			
 			vm.submitCurrentStep = function submitCurrentStep(stepData, isSkip) {
-				console.log(stepData);
-				var deferred = $q.defer();
 				vm.showBusyText = true;
-				console.log('On before submit');
 				if (!stepData.completed && !isSkip) {
-					//simulate $http
 					vm.showBusyText = false;
-					console.log('Step success, #chaboi style');
-					deferred.resolve({
-						status: 200,
-						statusText: 'success',
-						data: {}
-					});
-					//move to next step when success
 					stepData.completed = true;
 					vm.enableNextStep();
+					console.log(stepData);
 				} else {
 					vm.showBusyText = false;
 					vm.enableNextStep();
@@ -108,21 +106,20 @@
 			$scope.campaignCreateShortLink = 'http://bit.ly/1234567890';
 			
 			$scope.showUrlEducationDialog = function (ev) {
-				var confirm = $mdDialog.confirm()
+				$mdDialog.show(
+					$mdDialog.alert()
 					.clickOutsideToClose(true)
 					.title('How this tool works.')
-					.textContent('This tool uses a method of extracting content from any link it is given. If the content above looks wonky, first make sure you have the correct link. If you are 100% sure you do, use the next step to customize the content to look exactly like you want it to.')
-					.ariaLabel('How this tool works')
+					.ariaLabel('How this tool works.')
+					.textContent('This tool does it\'s best to extract content from any url it is given. If the content above looks wonky, first make sure you have the correct url. If you are 100% sure you do, use the next step to customize things to look how you want.')
 					.targetEvent(ev)
-					.ok('This link is correct. Let\'s customize the content.')
-					.cancel('Let\'s double check the link.');
-				$mdDialog.show(confirm).then(function () {
-					//TODO: move to next step two
-					//vm.submitCurrentStep(vm.stepData[0]); <--- this doesn't work...
-				}, function () {
-					//do nothing because they closed the modal.	
-				});
-				
+					.ok('Close')
+				);
+			};
+			
+			vm.clearStepper = function clearStepper() {
+				//reset the entire page here.
+				$window.location.reload();
 			};
 		}
 
