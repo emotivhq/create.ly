@@ -13,7 +13,7 @@
 		.module('create')
 		.controller('CreateCtrl', Create);
 
-		Create.$inject = ['$scope', '$q', '$timeout', '$mdToast', '$mdDialog', 'filepicker'];
+		Create.$inject = ['$scope', '$q', '$timeout', '$mdToast', '$mdDialog', '$window', 'BitlyService', '$httpParamSerializerJQLike', 'filepicker', '$filter'];
 
 		/*
 		* recommend
@@ -21,7 +21,7 @@
 		* and bindable members up top.
 		*/
 
-		function Create($scope, $q, $timeout, $mdToast, $mdDialog, filepicker) {
+		function Create($scope, $q, $timeout, $mdToast, $mdDialog, $window, BitlyService, $httpParamSerializerJQLike, filepicker, $filter) {
 			/*jshint validthis: true */
 			var vm = this;
 			window.Intercom("boot", {
@@ -34,16 +34,15 @@
 			$scope.tryAgain = function() {
 				$mdToast.show(
 					$mdToast.simple()
-					.content('Try again, nothing returned')
-					.position('bottom right')
-					.hideDelay(2000)
+					.content('We didn\'t find anything for that URL. Please try another one.')
+					.position('bottom left')
+					.hideDelay(3500)
 				);
 			};
 			
-			$scope.product_url = '';
-			$scope.productUrlHint = 'http://www.bloodworksnw.org/home/index.htm';
-			$scope.showProductUrlHint = true;
-			$scope.urlPattern = /^(http|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:\/~\+#]*[\w\-\@?^=%&amp;\/~\+#])?/i;
+			vm.productUrlHint = 'http://www.bloodworksnw.org/home/index.htm';
+			vm.showProductUrlHint = true;
+			vm.urlPattern = /^(http|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:\/~\+#]*[\w\-\@?^=%&amp;\/~\+#])?/i;
 
 			vm.selectedStep = 0;
 			vm.stepProgress = 1;
@@ -52,7 +51,7 @@
 			// Setup the initial step data
 			vm.stepData = [
 				{ step: 1, completed: false, optional: false, data: {product_url: 'https://'}},
-				{ step: 2, completed: false, optional: false, data: {title: 'Imagine Saving a Life: Donate Blood Today', price: '250.00'} },
+				{ step: 2, completed: false, optional: false, data: {title: 'Imagine Saving a Life: Donate Blood Today', price: ''} },
 				{ step: 3, completed: false, optional: false, data: {} },
 			];
 		
@@ -74,59 +73,96 @@
 				}
 			};
 			
-			vm.showPreview = false;
+			$scope.showPreview = false;
+			vm.urlSearch = '';
 			
-			$scope.getUrlInfo = function(url) {
-				$scope.urlSearch = url;
+			vm.getUrlInfo = function getUrlInfo(url) {
+				$mdToast.hide();
+				vm.urlSearch = url;
+				//look at $scope.$on('embedly-fetch-success') or $scope.$on('embedly-fetch-error') for functionality after embedly call.
+			};
+			
+			$scope.$on('embedly-fetch-success', function() {
 				$scope.showPreview = true;
-			};
+				//$scope.$digest();
+			});
 			
-			$scope.clearUrlInfo = function() {
-				$scope.urlSearch = '';
+			$scope.$on('embedly-fetch-error', function() {
 				$scope.showPreview = false;
-			};
+			});
+			
+			vm.campaignCreateShortLink = '';
 			
 			vm.submitCurrentStep = function submitCurrentStep(stepData, isSkip) {
-				console.log(stepData);
-				var deferred = $q.defer();
 				vm.showBusyText = true;
-				console.log('On before submit');
-				if (!stepData.completed && !isSkip) {
-					//simulate $http
+				
+				if (stepData.step === 1) { // stepper is going from step 1 to step 2
 					vm.showBusyText = false;
-					console.log('Step success, #chaboi style');
-					deferred.resolve({
-						status: 200,
-						statusText: 'success',
-						data: {}
-					});
-					//move to next step when success
 					stepData.completed = true;
 					vm.enableNextStep();
-				} else {
-					vm.showBusyText = false;
-					vm.enableNextStep();
+				} else 
+				if (stepData.step === 2) { // stepper is going from step 2 to step 3
+					//$scope.$broadcast('create-bitly-link');
+					var product_url = vm.stepData[0].data.product_url,
+						title = vm.stepData[1].data.title, //update once embedly bind is finished.
+						price = parseFloat($filter('number')(vm.stepData[1].data.price*100, 2).replace(/,/g, '')),
+						img_url = 'http://www.bloodworksnw.org/images/home/5-23-2016-bloodworks-memorial-banner.jpg', //update once filepicker and embedly bind is finished.
+						source = 'Bloodworks Northwest', //update once embedly bind is finished. Need to bind "source" from embedly returned data.
+						urlToShorten = 'https://www.giftstarter.com/create?product_url=' + product_url + '&title=' + title +'&price=' + price + '&img_url=' + img_url + '&source=' + source;
+						
+					var bitlyPromise = BitlyService.getShortUrl(urlToShorten);
+					bitlyPromise.then(function (data) {
+						vm.campaignCreateShortLink = data;
+						vm.showBusyText = false;
+						stepData.completed = true;
+						vm.showClipboardTooltip = false;
+						vm.showFallbackClipboardTooltip = false;
+						vm.enableNextStep();
+					}, function (reason) {
+						console.log('Failed: ' + reason);
+						vm.campaignCreateShortLink = '';
+						vm.showBusyText = false;
+						stepData.completed = false;
+						$mdToast.show(
+							$mdToast.simple()
+							.content('There was an issue creating your custom campaign link. Please try again.')
+							.position('bottom left')
+							.hideDelay(3500)
+						);
+					});
 				}
 			};
-			$scope.campaignCreateShortLink = 'http://bit.ly/1234567890';
 			
-			$scope.showUrlEducationDialog = function (ev) {
-				var confirm = $mdDialog.confirm()
+			vm.showUrlEducationDialog = function showUrlEducationDialog(ev) {
+				$mdDialog.show(
+					$mdDialog.alert()
 					.clickOutsideToClose(true)
 					.title('How this tool works.')
-					.textContent('This tool uses a method of extracting content from any link it is given. If the content above looks wonky, first make sure you have the correct link. If you are 100% sure you do, use the next step to customize the content to look exactly like you want it to.')
-					.ariaLabel('How this tool works')
+					.ariaLabel('How this tool works.')
+					.textContent('This tool does it\'s best to extract content from any url it is given. If the content above looks wonky, first make sure you have the correct url. If you are 100% sure you do, use the next step to customize things to look how you want.')
 					.targetEvent(ev)
-					.ok('This link is correct. Let\'s customize the content.')
-					.cancel('Let\'s double check the link.');
-				$mdDialog.show(confirm).then(function () {
-					//TODO: move to next step two
-					//vm.submitCurrentStep(vm.stepData[0]); <--- this doesn't work...
-				}, function () {
-					//do nothing because they closed the modal.	
-				});
-				
+					.ok('Close')
+				);
+			};
+			
+			vm.startCampaignFromLink = function startCampaignFromLink() {
+				$window.open(vm.campaignCreateShortLink);
+			};
+			
+			vm.clearStepper = function clearStepper() {
+				$window.location.reload();
+			};
+			
+			vm.showClipboardTooltip = false;
+			vm.showFallbackClipboardTooltip = false;
+			
+			vm.clipboardCopySuccess = function clipboardCopySuccess(ev) {
+				vm.showClipboardTooltip = true;
+				//ev.clearSelection();
+			};
+			
+			vm.clipboardCopyError = function clipboardCopyError(ev) {
+				vm.showFallbackClipboardTooltip = true;
 			};
 		}
-
 })();

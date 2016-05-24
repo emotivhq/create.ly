@@ -15,7 +15,7 @@
 
 	// Injecting Denpendencies
 
-	SidenavCtrl.$inject = ['$mdSidenav', '$state', '$mdBottomSheet', '$mdToast', 'MenuService', '$scope'];
+	SidenavCtrl.$inject = ['$mdSidenav', '$state', '$mdBottomSheet', '$mdToast', 'MenuService', '$scope', '$window'];
 	SettingsCtrl.$inject = ['$mdBottomSheet'];
 
 	/*
@@ -24,7 +24,7 @@
 	* and bindable members up top.
 	*/
 
-	function SidenavCtrl($mdSidenav, $state, $mdBottomSheet, $mdToast, MenuService, $scope) {
+	function SidenavCtrl($mdSidenav, $state, $mdBottomSheet, $mdToast, MenuService, $scope, $window) {
 		/*jshint validthis: true */
 		var vm = this;
 
@@ -43,11 +43,11 @@
 		vm.menu = MenuService.listMenu();
 
 		vm.admin = [
-			{
-				link: 'home.dashboard',
-				title: 'Dashboard',
-				icon: 'dashboard'
-			},
+			// {
+			// 	link: 'home.dashboard',
+			// 	title: 'Dashboard',
+			// 	icon: 'dashboard'
+			// },
 			{
 				link: 'home.external',
 				title: 'GiftStarter.com',
@@ -55,12 +55,9 @@
 			}
 		];
 
-		vm.navigateTo = function (target) {
-
-			var page = target;
-
-			$state.go(page);
-
+		vm.navigateTo = function (link, target) {
+				var page = link;	
+				$state.go(page);
 		};
 
 		vm.showSettingsBottom = function ($event) {

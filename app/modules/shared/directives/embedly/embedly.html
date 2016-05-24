@@ -1,20 +1,24 @@
 <md-card ng-show="!loading_embedly">
-    <md-card-header>
-        <md-card-avatar>
+    <md-card-header ng-show="embedCode.favicon_url || embedCode.provider_name || embedCode.provider_display">
+        <md-card-avatar ng-show="embedCode.favicon_url">
             <img ng-src="{{embedCode.favicon_url}}" alt="{{embedCode.provider_name}}"/>
         </md-card-avatar>
         <md-card-header-text>
-            <span class="md-title">{{embedCode.provider_name}}</span>
-            <span class="md-subhead">{{embedCode.provider_display}}</span>
+            <span class="md-title" ng-show="embedCode.provider_name">{{embedCode.provider_name}}</span>
+            <span class="md-subhead" ng-show="embedCode.provider_display">
+                <a href="{{embedCode.original_url}}" target="_blank">
+                    <span hide-xs>See more at </span>{{embedCode.provider_display}}
+                </a>
+            </span>
         </md-card-header-text>
     </md-card-header>
-    <img ng-src="{{embedCode.images[0].url}}" class="md-card-image" alt="{{embedCode.title}}">
-    <md-card-title>
+    <img ng-src="{{embedCode.images[0].url}}" class="md-card-image" alt="{{embedCode.title}}" ng-show="embedCode.images.length > 0">
+    <md-card-title ng-show="embedCode.title">
         <md-card-title-text>
             <span class="md-headline">{{embedCode.title}}</span>
         </md-card-title-text>
     </md-card-title>
-    <md-card-content ng-hide="!embedCode.description">
+    <md-card-content ng-show="embedCode.description">
         <p>
             {{embedCode.description}}
         </p>
