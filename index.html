@@ -14,9 +14,16 @@
 	<link rel="apple-touch-icon" sizes="72x72" href="app/assets/images/apple-touch-icon-72x72.png" />
 	<link rel="apple-touch-icon" sizes="114x114" href="app/assets/images/apple-touch-icon-114x114.png" />
 	<!-- injector:css -->
-	<link rel="stylesheet" href="/src/bower_components/angular-material-icons/angular-material-icons.css">
-	<link rel="stylesheet" href="/src/bower_components/angular-material/angular-material.css">
-	<link rel="stylesheet" href="/src/bower_components/md-steppers/dist/md-steppers.css">
+	<link rel="stylesheet" href="/app/assets/css/angular-material-icons/angular-material-icons.css">
+	<link rel="stylesheet" href="/app/assets/css/angular-material/angular-material.css">
+	<link rel="stylesheet" href="/app/assets/css/custom.css">
+	<link rel="stylesheet" href="/app/assets/css/md-steppers/md-steppers.css">
+	<link rel="stylesheet" href="/app/assets/css/modules.css">
+	<link rel="stylesheet" href="/app/assets/css/modules/create/create.css">
+	<link rel="stylesheet" href="/app/assets/css/modules/embedly/embedly.css">
+	<link rel="stylesheet" href="/app/assets/css/modules/home/home.css">
+	<link rel="stylesheet" href="/app/assets/css/modules/shared/directives/embedly/embedly.css">
+	<link rel="stylesheet" href="/app/assets/css/ui.css">
 	<!-- endinjector -->
 	<link rel="stylesheet" href="/app/assets/css/ui.css">
 	<link rel="stylesheet" href="/app/assets/css/modules.css">
@@ -129,52 +136,9 @@
 
 
 <!-- injector:js -->
-<script src="/src/bower_components/es5-shim/es5-shim.js"></script>
-<script src="/src/bower_components/json3/lib/json3.min.js"></script>
-<script src="/src/bower_components/angular/angular.js"></script>
-<script src="/src/bower_components/angular-resource/angular-resource.js"></script>
-<script src="/src/bower_components/angular-aria/angular-aria.js"></script>
-<script src="/src/bower_components/angular-mocks/angular-mocks.js"></script>
-<script src="/src/bower_components/angular-cookies/angular-cookies.js"></script>
-<script src="/src/bower_components/angular-animate/angular-animate.js"></script>
-<script src="/src/bower_components/angular-sanitize/angular-sanitize.js"></script>
-<script src="/src/bower_components/angular-ui-router/release/angular-ui-router.js"></script>
-<script src="/src/bower_components/angular-messages/angular-messages.js"></script>
-<script src="/src/bower_components/angular-material-icons/angular-material-icons.min.js"></script>
-<script src="/src/bower_components/angular-material/angular-material.js"></script>
-<script src="/src/bower_components/angular-stamplay/angular-stamplay.js"></script>
-<script src="/src/bower_components/angular-embedly/angular-embedly.js"></script>
-<script src="/src/bower_components/md-steppers/dist/md-steppers.js"></script>
-<script src="/src/bower_components/filepicker-js/filepicker.min.js"></script>
-<script src="/src/bower_components/angular-filepicker/dist/angular_filepicker.js"></script>
-<script src="/app/app.js"></script>
-<script src="/app/app.config.js"></script>
-<script src="/app/modules/bitly/bitlyModule.js"></script>
-<script src="/app/modules/create/createModule.js"></script>
-<script src="/app/modules/embedly/embedlyModule.js"></script>
-<script src="/app/modules/home/homeModule.js"></script>
-<script src="/app/modules/usersync/usersyncModule.js"></script>
-<script src="/app/modules/create/createRoute.js"></script>
-<script src="/app/modules/home/homeRoute.js"></script>
-<script src="/app/modules/usersync/usersyncRoute.js"></script>
-<script src="/app/modules/bitly/bitlyCtrl.js"></script>
-<script src="/app/modules/create/createCtrl.js"></script>
-<script src="/app/modules/embedly/embedlyCtrl.js"></script>
-<script src="/app/modules/home/homeCtrl.js"></script>
-<script src="/app/modules/layouts/main-page/mainPageCtrl.js"></script>
-<script src="/app/modules/layouts/side-nav/sidenavCtrl.js"></script>
-<script src="/app/modules/shared/directives/linkcreator/linkcreatorCtrl.js"></script>
-<script src="/app/modules/usersync/usersyncCtrl.js"></script>
-<script src="/app/modules/bitly/bitlyService.js"></script>
-<script src="/app/modules/create/createService.js"></script>
-<script src="/app/modules/embedly/embedlyService.js"></script>
-<script src="/app/modules/home/homeService.js"></script>
-<script src="/app/modules/layouts/nav-bar/navBarService.js"></script>
-<script src="/app/modules/layouts/side-nav/sidenavService.js"></script>
-<script src="/app/modules/usersync/usersyncService.js"></script>
-<script src="/app/modules/shared/directives/bitly/bitlyDirective.js"></script>
-<script src="/app/modules/shared/directives/embedly/embedlyDirective.js"></script>
-<script src="/app/modules/shared/directives/linkcreator/linkcreatorDirective.js"></script>
+<script src="/app/assets/js/gsConcierge-angularbundle.js"></script>
+<script src="/app/assets/js/gsConcierge-appbundle.js"></script>
+<script src="/app/assets/js/templates.js"></script>
 <!-- endinjector -->
 <script>(function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',intercomSettings);}else{var d=document;var i=function(){i.c(arguments)};i.q=[];i.c=function(args){i.q.push(args)};w.Intercom=i;function l(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/q5i7p4f9';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);}if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})()</script>
 </body>

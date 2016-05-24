@@ -25,6 +25,7 @@
     "angular-stamplay": "^0.0.2",
     "angular-embedly": "https://github.com/emotivhq/angular-embedly.git#*",
     "md-steppers": "^0.2.3",
+    "filepicker-js": "^2.4.5",
     "angular-filepicker": "^1.1.4"
   },
   "resolutions": {

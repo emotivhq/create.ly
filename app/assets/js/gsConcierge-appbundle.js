@@ -1,5 +1,5 @@
 /*!
-* gsConcierge - v0.0.1 - MIT LICENSE 2016-05-20. 
+* gsConcierge - v0.0.1 - MIT LICENSE 2016-05-24. 
 * @author Emotiv
 */
 (function() {
@@ -25,6 +25,7 @@
 		'ngStamplay',
 		'ngMessages',
 		'angular-embedly', //Switch to embedlyServiceProvider within app before removing. Needed to setKey.
+		'angular-filepicker', //Switch to filepickerServiceProvider within app before removing. Needed to setKey.
 		'md-steppers',
 		'ui.router',
 		'home',
@@ -53,9 +54,9 @@
 		.config(configure)
 		.run(runBlock);
 
-	configure.$inject = ['$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpProvider', '$mdThemingProvider', '$mdIconProvider', 'embedlyServiceProvider', 'BitlyServiceProvider'];
+	configure.$inject = ['$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpProvider', '$mdThemingProvider', '$mdIconProvider', 'embedlyServiceProvider', 'BitlyServiceProvider', 'filepickerProvider'];
 
-	function configure($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, $mdThemingProvider, $mdIconProvider, embedlyServiceProvider, BitlyServiceProvider) {
+	function configure($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, $mdThemingProvider, $mdIconProvider, embedlyServiceProvider, BitlyServiceProvider, filepickerProvider) {
 
 		$mdThemingProvider
 			.theme('default')
@@ -112,13 +113,14 @@
 		
 		
 		BitlyServiceProvider.cfgBitly({
-			login: 'myuser',
-			api: 'myapikey',
-			//domain: 'https://api-ssl.bitly.com',
-			//version: '3'
+			login: 'giftstarter',
+			api: 'R_85bf9d10211f4423b5c3be4a336ad77d',
+			domain: 'https://api-ssl.bitly.com',
+			version: '3'
 		});
 		
-		
+    	filepickerProvider.setKey('AVdh2bvkuTYKQI3rdMsZXz');
+
 	}
 
 	runBlock.$inject = ['$rootScope', '$window'];
@@ -356,7 +358,7 @@ angular.module('usersync')
 		.module('create')
 		.controller('CreateCtrl', Create);
 
-		Create.$inject = ['$scope', '$q', '$timeout', '$mdToast', '$mdDialog'];
+		Create.$inject = ['$scope', '$q', '$timeout', '$mdToast', '$mdDialog', 'filepicker'];
 
 		/*
 		* recommend
@@ -364,15 +366,15 @@ angular.module('usersync')
 		* and bindable members up top.
 		*/
 
-		function Create($scope, $q, $timeout, $mdToast, $mdDialog) {
+		function Create($scope, $q, $timeout, $mdToast, $mdDialog, filepicker) {
 			/*jshint validthis: true */
 			var vm = this;
 			window.Intercom("boot", {
 			  app_id: "q5i7p4f9"
 			});
 			// Filestack JS API
-			var element = document.getElementById('filestack-widget');
-			filepicker.constructWidget(element);
+			//var element = document.getElementById('filestack-widget');
+			//filepicker.constructWidget(element);
 
 			$scope.tryAgain = function() {
 				$mdToast.show(

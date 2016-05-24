@@ -26,7 +26,7 @@ angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
     "                                            <div layout=\"row\" flex>\n" +
     "                                                <md-input-container flex class=\"md-block\">\n" +
     "                                                    <input name=\"product_url\" ng-model=\"vm.stepData[0].data.product_url\" ng-disabled=\"vm.showBusyText\" md-select-on-focus ng-pattern=\"urlPattern\" ng-model-options=\"{ updateOn: 'default blur', debounce: { default: 300, blur: 300 } }\" required />\n" +
-    "                                                    <div class=\"hint\" ng-show=\"showProductUrlHint\">Example: {{productUrlHint}}</div>\n" +
+    "                                                    <div class=\"hint\" ng-show=\"showProductUrlHint\">{{productUrlHint}}</div>\n" +
     "                                                    <div ng-messages=\"step1.product_url.$error\" role=\"alert\">\n" +
     "                                                        <div ng-message-exp=\"['required','pattern']\">\n" +
     "                                                            That doesn't look like a valid url... are you sure you pasted the right thing?\n" +
@@ -127,9 +127,8 @@ angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
     "                                                    </a>\n" +
     "                                                </md-card>\n" +
     "                                        </md-content>\n" +
-    "                                        <md-content layout-padding>\n" +
-    "                                            <md-checkbox>Upload custom image</md-checkbox>\n" +
-    "                                            <input id=\"filestack-widget\" type=\"filepicker\" data-fp-apikey=\"AVdh2bvkuTYKQI3rdMsZXz\" data-fp-mimetypes=\"*/*\" data-fp-container=\"modal\" onchange=\"alert(event.fpfile.url)\">\n" +
+    "                                        <md-content class=\"filestack-container\" layout-padding>\n" +
+    "                                            <input id=\"filestack-widget\" filepicker data-fp-apikey=\"AVdh2bvkuTYKQI3rdMsZXz\" type=\"filepicker-dragdrop\" data-fp-services=\"computer,url,facebook,webcam,dropbox\" on-success=\"SetUploadedImage(event.fpfile)\" />\n" +
     "                                        </md-content>\n" +
     "                                    </form>\n" +
     "                                    <div flex>\n" +

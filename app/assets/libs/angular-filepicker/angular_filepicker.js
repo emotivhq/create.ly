@@ -1,4 +1,3 @@
-'use strict';
 angular.module('angular-filepicker',[]);
 
 window.filepicker = window.filepicker || {};
@@ -7,6 +6,7 @@ window.filepicker.plugin = 'angular_js_lib';'use strict';
 angular.module('angular-filepicker')
 .directive('filepicker', filepickerDirective);
 
+filepickerDirective.$inject = ['$rootScope', 'filepickerService', '$parse'];
 function filepickerDirective($rootScope, filepickerService, $parse){
     return {
         restrict: 'A',
@@ -34,8 +34,9 @@ function filepickerDirective($rootScope, filepickerService, $parse){
             filepickerService.constructWidget(element);
         }
     };
-}'use strict';
+}
 
+'use strict';
 angular.module('angular-filepicker')
 .provider('filepicker', function() {
 
@@ -51,14 +52,17 @@ angular.module('angular-filepicker')
         }
     };
 });
+
+filepickerService.$inject = ['$window'];
 angular.module('angular-filepicker')
 .service('filepickerService',filepickerService);
 
 function filepickerService($window){
     return $window.filepicker;
 }
-'use strict';
 
+'use strict';
+filepickerPreviewDirective.$inject = ['$rootScope', 'filepickerService'];
 angular.module('angular-filepicker')
 .directive('filepickerPreview', filepickerPreviewDirective);
 
@@ -97,7 +101,6 @@ function filepickerPreviewDirective($rootScope, filepickerService){
 
 
 'use strict';
-
 angular.module('angular-filepicker')
 .service('fpUtilService', fpUtilService);
 
@@ -132,9 +135,10 @@ function fpUtilService(){
         }
         return str.join('&');
     }
-};
-'use strict';
+}
 
+'use strict';
+filepickerPreviewDirective.$inject = ['$filter', 'fpUtilService'];
 angular.module('angular-filepicker')
 .filter('fpConvert', fpConvert);
 
