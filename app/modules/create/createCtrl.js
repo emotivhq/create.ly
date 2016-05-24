@@ -13,7 +13,7 @@
 		.module('create')
 		.controller('CreateCtrl', Create);
 
-		Create.$inject = ['$scope', '$q', '$timeout', '$mdToast', '$mdDialog', '$window', 'BitlyService', '$httpParamSerializerJQLike', 'filepicker'];
+		Create.$inject = ['$scope', '$q', '$timeout', '$mdToast', '$mdDialog', '$window', 'BitlyService', '$httpParamSerializerJQLike', 'filepicker', '$filter'];
 
 		/*
 		* recommend
@@ -21,7 +21,7 @@
 		* and bindable members up top.
 		*/
 
-		function Create($scope, $q, $timeout, $mdToast, $mdDialog, $window, BitlyService, $httpParamSerializerJQLike, filepicker) {
+		function Create($scope, $q, $timeout, $mdToast, $mdDialog, $window, BitlyService, $httpParamSerializerJQLike, filepicker, $filter) {
 			/*jshint validthis: true */
 			var vm = this;
 			window.Intercom("boot", {
@@ -40,10 +40,9 @@
 				);
 			};
 			
-			$scope.product_url = '';
-			$scope.productUrlHint = 'http://www.bloodworksnw.org/home/index.htm';
-			$scope.showProductUrlHint = true;
-			$scope.urlPattern = /^(http|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:\/~\+#]*[\w\-\@?^=%&amp;\/~\+#])?/i;
+			vm.productUrlHint = 'http://www.bloodworksnw.org/home/index.htm';
+			vm.showProductUrlHint = true;
+			vm.urlPattern = /^(http|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:\/~\+#]*[\w\-\@?^=%&amp;\/~\+#])?/i;
 
 			vm.selectedStep = 0;
 			vm.stepProgress = 1;
@@ -52,7 +51,7 @@
 			// Setup the initial step data
 			vm.stepData = [
 				{ step: 1, completed: false, optional: false, data: {product_url: 'https://'}},
-				{ step: 2, completed: false, optional: false, data: {title: 'Imagine Saving a Life: Donate Blood Today', price: '20.00'} },
+				{ step: 2, completed: false, optional: false, data: {title: 'Imagine Saving a Life: Donate Blood Today', price: ''} },
 				{ step: 3, completed: false, optional: false, data: {} },
 			];
 		
@@ -75,19 +74,17 @@
 			};
 			
 			$scope.showPreview = false;
+			vm.urlSearch = '';
 			
-			$scope.getUrlInfo = function(url) {
-				$scope.urlSearch = url;
+			vm.getUrlInfo = function getUrlInfo(url) {
 				$mdToast.hide();
-			};
-			
-			$scope.clearUrlInfo = function() {
-				$scope.urlSearch = '';
-				$scope.showPreview = false;
+				vm.urlSearch = url;
+				//look at $scope.$on('embedly-fetch-success') or $scope.$on('embedly-fetch-error') for functionality after embedly call.
 			};
 			
 			$scope.$on('embedly-fetch-success', function() {
 				$scope.showPreview = true;
+				//$scope.$digest();
 			});
 			
 			$scope.$on('embedly-fetch-error', function() {
@@ -108,7 +105,7 @@
 					//$scope.$broadcast('create-bitly-link');
 					var product_url = vm.stepData[0].data.product_url,
 						title = vm.stepData[1].data.title, //update once embedly bind is finished.
-						price = vm.stepData[1].data.price*100, //update once embedly bind is finished.
+						price = parseFloat($filter('number')(vm.stepData[1].data.price*100, 2).replace(/,/g, '')),
 						img_url = 'http://www.bloodworksnw.org/images/home/5-23-2016-bloodworks-memorial-banner.jpg', //update once filepicker and embedly bind is finished.
 						source = 'Bloodworks Northwest', //update once embedly bind is finished. Need to bind "source" from embedly returned data.
 						urlToShorten = 'https://www.giftstarter.com/create?product_url=' + product_url + '&title=' + title +'&price=' + price + '&img_url=' + img_url + '&source=' + source;
@@ -123,6 +120,7 @@
 						vm.enableNextStep();
 					}, function (reason) {
 						console.log('Failed: ' + reason);
+						vm.campaignCreateShortLink = '';
 						vm.showBusyText = false;
 						stepData.completed = false;
 						$mdToast.show(
@@ -135,7 +133,7 @@
 				}
 			};
 			
-			$scope.showUrlEducationDialog = function (ev) {
+			vm.showUrlEducationDialog = function showUrlEducationDialog(ev) {
 				$mdDialog.show(
 					$mdDialog.alert()
 					.clickOutsideToClose(true)
@@ -152,12 +150,6 @@
 			};
 			
 			vm.clearStepper = function clearStepper() {
-				//reset the entire page here.
-				// 1. reset stepData
-				// 2. clear bitly info
-				// 3. clear embedly data
-				// 4. hide embedly preview on step 1
-				
 				$window.location.reload();
 			};
 			
@@ -166,12 +158,11 @@
 			
 			vm.clipboardCopySuccess = function clipboardCopySuccess(ev) {
 				vm.showClipboardTooltip = true;
-				ev.clearSelection();
+				//ev.clearSelection();
 			};
 			
 			vm.clipboardCopyError = function clipboardCopyError(ev) {
 				vm.showFallbackClipboardTooltip = true;
-				ev.clearSelection();
 			};
 		}
 })();
