@@ -12,13 +12,11 @@
     }
     */ }
   .create .hint {
-  /* Position the hint */
-  padding-top: 34px;
-  font-size: 12px;
-  transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
-  color: grey; 
-    
-  }
+    /* Position the hint */
+    padding-top: 34px;
+    font-size: 12px;
+    transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
+    color: grey; }
 
 embedly {
   transition: none; }

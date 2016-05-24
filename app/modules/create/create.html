@@ -139,7 +139,7 @@
                                     <span class="md-title">Copy/paste the link below into a new tab</span>
                                     <div layout="row" layout-xs="column" flex>
                                         <md-input-container flex class="md-block">
-                                            <input name="short_link" ng-model="campaignCreateShortLink" md-select-on-focus ng-readonly="true" />
+                                            <input name="short_link" ng-model="vm.campaignCreateShortLink" md-select-on-focus ng-readonly="true" />
                                         </md-input-container>
                                         <div>
                                             <md-button type="submit" class="md-raised" aria-label="Copy URL">
@@ -154,7 +154,7 @@
                                             <h2 hide-xs hide-sm>Want to create this campaign now?</h2>
                                             <h2 hide-md hide-lg hide-xl>Create campaign now?</h2>
                                             <span flex></span>
-                                            <md-button class="md-primary md-raised md-hue-2" ng-disabled="vm.showBusyText" ng-click="vm.submitCurrentStep(vm.stepData[1])" aria-label="Yep, let's move on!">
+                                            <md-button class="md-primary md-raised md-hue-2" ng-disabled="vm.showBusyText" ng-click="vm.startCampaignFromLink()" aria-label="Yes, create now!">
                                                 Yes<span hide-xs>, create now!</span>
                                             </md-button>
                                         </div>

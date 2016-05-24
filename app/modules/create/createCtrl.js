@@ -94,51 +94,43 @@
 				$scope.showPreview = false;
 			});
 			
-			$scope.campaignCreateShortLink = '';
+			vm.campaignCreateShortLink = '';
 			
 			vm.submitCurrentStep = function submitCurrentStep(stepData, isSkip) {
 				vm.showBusyText = true;
 				
 				if (stepData.step === 1) { // stepper is going from step 1 to step 2
-					
-				} else 
-				if (stepData.step === 2) { // stepper is going from step 2 to step 3
-					//$scope.$broadcast('create-bitly-link');
-					//console.log(vm.stepData);
-					var product_url = 'http://www.bloodworksnw.org/home/index.htm',
-						title = 'Testing bitly service',
-						price = '20.00',
-						image = 'http://www.bloodworksnw.org/images/home/5-23-2016-bloodworks-memorial-banner.jpg',
-						source = 'Bloodworks Northwest',
-						urlToShorten = $httpParamSerializerJQLike('https://www.giftstarter.com/create?\
-											url=' + product_url + '\
-											&titie=' + title +'\
-											&price=' + price + '\
-											&image=' + image + '\
-											&source=' + source);
-						// urlToShorten = 'https://www.giftstarter.com/create?url=' + product_url + '&titie=' + title +'&price=' + price + '&image=' + image + '&source=' + source;
-											
-					var bitlyPromise = BitlyService.getShortUrl(urlToShorten);
-					
-					bitlyPromise.then(function (data) {
-						console.log('Success: ' + data);
-					}, function (reason) {
-						console.log('Failed: ' + reason);
-					});
-					
-					$scope.campaignCreateShortLink = '';
-					
-					//build URL with params: url, title, price, image, source
-					//pass to BitlyService.getShortUrl(URL);
-				}
-				
-				if (!stepData.completed && !isSkip) {
 					vm.showBusyText = false;
 					stepData.completed = true;
 					vm.enableNextStep();
-				} else {
-					vm.showBusyText = false;
-					vm.enableNextStep();
+				} else 
+				if (stepData.step === 2) { // stepper is going from step 2 to step 3
+					//$scope.$broadcast('create-bitly-link');
+					console.log('stepDate:', vm.stepData);
+					var product_url = vm.stepData[0].data.product_url,
+						title = vm.stepData[1].data.title,
+						price = vm.stepData[1].data.price*100,
+						img_url = 'http://www.bloodworksnw.org/images/home/5-23-2016-bloodworks-memorial-banner.jpg',
+						source = 'Bloodworks Northwest',
+						urlToShorten = 'https://www.giftstarter.com/create?product_url=' + product_url + '&title=' + title +'&price=' + price + '&img_url=' + img_url + '&source=' + source;
+						
+					var bitlyPromise = BitlyService.getShortUrl(urlToShorten);
+					bitlyPromise.then(function (data) {
+						vm.campaignCreateShortLink = data;
+						vm.showBusyText = false;
+						stepData.completed = true;
+						vm.enableNextStep();
+					}, function (reason) {
+						console.log('Failed: ' + reason);
+						vm.showBusyText = false;
+						stepData.completed = false;
+						$mdToast.show(
+							$mdToast.simple()
+							.content('There was an issue creating your custom campaign link. Please try again.')
+							.position('bottom left')
+							.hideDelay(3500)
+						);
+					});
 				}
 			};
 			
@@ -154,18 +146,17 @@
 				);
 			};
 			
-			vm.urlSerialize = function urlSerialize (obj) {
-				var str = [];
-				for (var p in obj)
-					if (obj.hasOwnProperty(p)) {
-						str.push(encodeURIComponent(p) + "=" +
-							encodeURIComponent(obj[p]));
-					}
-				return str.join("&");
+			vm.startCampaignFromLink = function startCampaignFromLink() {
+				$window.open(vm.campaignCreateShortLink);
 			};
 			
 			vm.clearStepper = function clearStepper() {
 				//reset the entire page here.
+				// 1. reset stepData
+				// 2. clear bitly info
+				// 3. clear embedly data
+				// 4. hide embedly preview on step 1
+				
 				$window.location.reload();
 			};
 		}
