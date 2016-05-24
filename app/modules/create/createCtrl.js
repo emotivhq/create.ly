@@ -106,12 +106,11 @@
 				} else 
 				if (stepData.step === 2) { // stepper is going from step 2 to step 3
 					//$scope.$broadcast('create-bitly-link');
-					console.log('stepDate:', vm.stepData);
 					var product_url = vm.stepData[0].data.product_url,
-						title = vm.stepData[1].data.title,
-						price = vm.stepData[1].data.price*100,
-						img_url = 'http://www.bloodworksnw.org/images/home/5-23-2016-bloodworks-memorial-banner.jpg',
-						source = 'Bloodworks Northwest',
+						title = vm.stepData[1].data.title, //update once embedly bind is finished.
+						price = vm.stepData[1].data.price*100, //update once embedly bind is finished.
+						img_url = 'http://www.bloodworksnw.org/images/home/5-23-2016-bloodworks-memorial-banner.jpg', //update once filepicker and embedly bind is finished.
+						source = 'Bloodworks Northwest', //update once embedly bind is finished. Need to bind "source" from embedly returned data.
 						urlToShorten = 'https://www.giftstarter.com/create?product_url=' + product_url + '&title=' + title +'&price=' + price + '&img_url=' + img_url + '&source=' + source;
 						
 					var bitlyPromise = BitlyService.getShortUrl(urlToShorten);
@@ -119,6 +118,8 @@
 						vm.campaignCreateShortLink = data;
 						vm.showBusyText = false;
 						stepData.completed = true;
+						vm.showClipboardTooltip = false;
+						vm.showFallbackClipboardTooltip = false;
 						vm.enableNextStep();
 					}, function (reason) {
 						console.log('Failed: ' + reason);
@@ -159,6 +160,18 @@
 				
 				$window.location.reload();
 			};
+			
+			vm.showClipboardTooltip = false;
+			vm.showFallbackClipboardTooltip = false;
+			
+			vm.clipboardCopySuccess = function clipboardCopySuccess(ev) {
+				vm.showClipboardTooltip = true;
+				ev.clearSelection();
+			};
+			
+			vm.clipboardCopyError = function clipboardCopyError(ev) {
+				vm.showFallbackClipboardTooltip = true;
+				ev.clearSelection();
+			};
 		}
-
 })();

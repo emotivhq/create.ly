@@ -139,12 +139,22 @@
                                     <span class="md-title">Copy/paste the link below into a new tab</span>
                                     <div layout="row" layout-xs="column" flex>
                                         <md-input-container flex class="md-block">
-                                            <input name="short_link" ng-model="vm.campaignCreateShortLink" md-select-on-focus ng-readonly="true" />
+                                            <input id="shortLink" name="short_link" ng-model="vm.campaignCreateShortLink" md-select-on-focus ng-readonly="true" />
                                         </md-input-container>
                                         <div>
-                                            <md-button type="submit" class="md-raised" aria-label="Copy URL">
-                                                <md-icon class="material-icons">search</md-icon>
-                                                Copy Url
+                                            <md-button type="submit" class="md-raised" aria-label="Copy URL" name="shortLinkCopy" ngclipboard data-clipboard-target="#shortLink" ngclipboard-success="vm.clipboardCopySuccess(e);" ngclipboard-error="vm.clipboardCopyError(e);">
+                                                <span ng-show="!vm.showClipboardTooltip && !vm.showFallbackClipboardTooltip">
+                                                    <md-icon class="material-icons">content_copy</md-icon>
+                                                    Copy Url
+                                                </span>
+                                                <span ng-show="vm.showClipboardTooltip">
+                                                    <md-icon class="material-icons">done</md-icon>
+                                                    Url Copied!
+                                                </span>
+                                                <span ng-show="vm.showFallbackClipboardTooltip">
+                                                    <md-icon class="material-icons">done</md-icon>
+                                                    Press Ctrl+C
+                                                </span>
                                             </md-button>
                                         </div>
                                     </div>
@@ -155,6 +165,7 @@
                                             <h2 hide-md hide-lg hide-xl>Create campaign now?</h2>
                                             <span flex></span>
                                             <md-button class="md-primary md-raised md-hue-2" ng-disabled="vm.showBusyText" ng-click="vm.startCampaignFromLink()" aria-label="Yes, create now!">
+                                                <md-icon class="material-icons">open_in_new</md-icon>
                                                 Yes<span hide-xs>, create now!</span>
                                             </md-button>
                                         </div>
