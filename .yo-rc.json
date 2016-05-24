@@ -28,6 +28,9 @@
       },
       {
         "name": "bitly"
+      },
+      {
+        "name": "filestack"
       }
     ],
     "menu": [
@@ -47,6 +50,10 @@
       {
         "link": "bitly",
         "title": "Bitly"
+      },
+      {
+        "link": "filestack",
+        "title": "Filestack"
       }
     ]
   }
