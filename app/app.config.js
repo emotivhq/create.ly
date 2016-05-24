@@ -72,7 +72,6 @@
 		// Service configurations
 		embedlyServiceProvider.setKey('a46a33d99bc642b4aab1dfa58dc11f32');
 		
-		
 		BitlyServiceProvider.cfgBitly({
 			login: 'giftstarter',
 			api: 'R_85bf9d10211f4423b5c3be4a336ad77d',
