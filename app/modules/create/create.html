@@ -95,37 +95,26 @@
                                                 </div>
                                             </div>
                                         </md-input-container>
-                                        <p>Choose campaign image</p>
-                                        <md-content layout="row" layout-xs="column" layout-align="start start" layout-wrap>
-                                                <md-card flex="20">
-                                                    <a href="javascript:;" style="border: 1px solid blue">
-                                                        <img src="http://www.bloodworksnw.org/images/home/fuel-level-header.jpg" class="md-card-image" alt="" />
-                                                    </a>
-                                                </md-card>
-                                                <md-card flex="20">
-                                                    <a href="javascript:;">
-                                                        <img src="http://www.bloodworksnw.org/images/home/donate_blood.jpg" class="md-card-image" alt="">
-                                                    </a>
-                                                </md-card>
-                                                <md-card flex="20">
-                                                    <a href="javascript:;">
-                                                        <img src="http://www.bloodworksnw.org/images/home/be_a_volunteer.jpg" class="md-card-image" alt="">
-                                                    </a>
-                                                </md-card>
-                                                <md-card flex="20">
-                                                    <a href="javascript:;">
-                                                        <img src="http://www.bloodworksnw.org/images/home/donate_funds.jpg" class="md-card-image" alt="">
-                                                    </a>
-                                                </md-card>
-                                        </md-content>
-                                        <p>Or, upload an image</p>
+                                        <p>Upload custom campaign image <em>(optional)</em></p>
                                         <md-content class="filestack-container" layout-padding>
                                             <input id="filestack-widget" filepicker data-fp-apikey="AVdh2bvkuTYKQI3rdMsZXz" type="filepicker-dragdrop" data-fp-services="computer,url,webcam,video,gmail,facebook,instagram,twitter,box,dropbox,googledrive" on-success="setUploadedImage(event.fpfile)" />
                                         </md-content>
                                     </form>
                                     <div flex>
-                                        <md-button ng-click="vm.moveToPreviousStep()">Go back</md-button>
-                                        <md-button type="submit" ng-disabled="vm.showBusyText" ng-click="vm.submitCurrentStep(vm.stepData[1], true)" class="md-primary md-raised">Perfect, let's finish!</md-button>
+                                        <md-toolbar class="md-accent" ng-show="!loading_embedly">
+                                            <div class="md-toolbar-tools">
+                                                <h2 style="margin-left:10px">
+                                                  <span>All set?</span>
+                                                </h2>
+                                                <span flex></span>
+                                                <md-button class="md-primary md-raised" ng-disabled="vm.showBusyText" ng-click="vm.submitCurrentStep(vm.stepData[1], true)" aria-label="Perfect, let's finish!">
+                                                  Perfect, let's finish!
+                                                </md-button>
+                                                <md-button class="md-accent md-hue-2 md-fab md-mini" ng-disabled="vm.showBusyText" ng-click="showUrlEducationDialog($event)" aria-label="No, but why?">
+                                                  No
+                                                </md-button>
+                                              </div>
+                                        </md-toolbar>
                                     </div>
                                 </div>
                             </div>

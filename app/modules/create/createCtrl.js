@@ -110,8 +110,9 @@
 			};
 			
 			$scope.setUploadedImage = function (fpfile) {
-				$scope.uploadedImageUrl = fpfile;
-				vm.uploadedImageUrl = fpfile;
+				$scope.cardImg = fpfile.url;
+				vm.cardImg = fpfile.url;
+				console.log(fpfile);
 			};
 			
 			$scope.campaignCreateShortLink = 'http://bit.ly/1234567890';
