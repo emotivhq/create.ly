@@ -21,7 +21,6 @@
 		'ngStamplay',
 		'ngMessages',
 		'angular-embedly', //Switch to embedlyServiceProvider within app before removing. Needed to setKey.
-		'angular-filepicker', //Switch to filepickerServiceProvider within app before removing. Needed to setKey.
 		'md-steppers',
 		'ui.router',
 		'home',
@@ -29,6 +28,7 @@
 		'usersync',
 		'embedly',
 		'bitly',
+		'filestack',
 	]);
 
 })();
