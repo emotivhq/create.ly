@@ -13,7 +13,7 @@
 		.module('create')
 		.controller('CreateCtrl', Create);
 
-		Create.$inject = ['$scope', '$q', '$timeout', '$mdToast', '$mdDialog', '$window'];
+		Create.$inject = ['$scope', '$q', '$timeout', '$mdToast', '$mdDialog', '$window', 'BitlyService', '$httpParamSerializerJQLike'];
 
 		/*
 		* recommend
@@ -21,7 +21,7 @@
 		* and bindable members up top.
 		*/
 
-		function Create($scope, $q, $timeout, $mdToast, $mdDialog, $window) {
+		function Create($scope, $q, $timeout, $mdToast, $mdDialog, $window, BitlyService, $httpParamSerializerJQLike) {
 			/*jshint validthis: true */
 			var vm = this;
 			window.Intercom("boot", {
@@ -91,19 +91,53 @@
 				$scope.showPreview = false;
 			});
 			
+			$scope.campaignCreateShortLink = '';
+			
 			vm.submitCurrentStep = function submitCurrentStep(stepData, isSkip) {
 				vm.showBusyText = true;
+				
+				if (stepData.step === 1) { // stepper is going from step 1 to step 2
+					
+				} else 
+				if (stepData.step === 2) { // stepper is going from step 2 to step 3
+					//$scope.$broadcast('create-bitly-link');
+					//console.log(vm.stepData);
+					var product_url = 'http://www.bloodworksnw.org/home/index.htm',
+						title = 'Testing bitly service',
+						price = '20.00',
+						image = 'http://www.bloodworksnw.org/images/home/5-23-2016-bloodworks-memorial-banner.jpg',
+						source = 'Bloodworks Northwest',
+						urlToShorten = $httpParamSerializerJQLike('https://www.giftstarter.com/create?\
+											url=' + product_url + '\
+											&titie=' + title +'\
+											&price=' + price + '\
+											&image=' + image + '\
+											&source=' + source);
+						// urlToShorten = 'https://www.giftstarter.com/create?url=' + product_url + '&titie=' + title +'&price=' + price + '&image=' + image + '&source=' + source;
+											
+					var bitlyPromise = BitlyService.getShortUrl(urlToShorten);
+					
+					bitlyPromise.then(function (data) {
+						console.log('Success: ' + data);
+					}, function (reason) {
+						console.log('Failed: ' + reason);
+					});
+					
+					$scope.campaignCreateShortLink = '';
+					
+					//build URL with params: url, title, price, image, source
+					//pass to BitlyService.getShortUrl(URL);
+				}
+				
 				if (!stepData.completed && !isSkip) {
 					vm.showBusyText = false;
 					stepData.completed = true;
 					vm.enableNextStep();
-					console.log(stepData);
 				} else {
 					vm.showBusyText = false;
 					vm.enableNextStep();
 				}
 			};
-			$scope.campaignCreateShortLink = 'http://bit.ly/1234567890';
 			
 			$scope.showUrlEducationDialog = function (ev) {
 				$mdDialog.show(
@@ -115,6 +149,16 @@
 					.targetEvent(ev)
 					.ok('Close')
 				);
+			};
+			
+			vm.urlSerialize = function urlSerialize (obj) {
+				var str = [];
+				for (var p in obj)
+					if (obj.hasOwnProperty(p)) {
+						str.push(encodeURIComponent(p) + "=" +
+							encodeURIComponent(obj[p]));
+					}
+				return str.join("&");
 			};
 			
 			vm.clearStepper = function clearStepper() {
