@@ -20,7 +20,7 @@
                                             <div layout="row" layout-xs="column" flex>
                                                 <md-input-container flex class="md-block">
                                                     <input name="product_url" ng-model="vm.stepData[0].data.product_url" ng-disabled="vm.showBusyText" md-select-on-focus ng-pattern="urlPattern" ng-model-options="{ updateOn: 'default blur', debounce: { default: 300, blur: 300 } }" required />
-                                                    <div class="hint" ng-show="showProductUrlHint">Example: {{productUrlHint}}</div>
+                                                    <div class="hint" ng-show="showProductUrlHint">{{productUrlHint}}</div>
                                                     <div ng-messages="step1.product_url.$error" role="alert">
                                                         <div ng-message-exp="['required','pattern']">
                                                             That doesn't look like a valid url... are you sure you pasted the right thing?
@@ -122,17 +122,10 @@
                                                         <img src="http://www.bloodworksnw.org/images/home/donate_funds.jpg" class="md-card-image" alt="">
                                                     </a>
                                                 </md-card>
-                                                <md-card flex="20">
-                                                    <a href="javascript:;">
-                                                        <img src="http://www.bloodworksnw.org/images/home/iam_bloodworks.jpg" class="md-card-image" alt="">
-                                                    </a>
-                                                </md-card>
                                         </md-content>
-                                        <md-content layout-padding>
-                                            <md-checkbox>Upload custom image</md-checkbox>
-                                            <script type="text/javascript" src="//api.filestackapi.com/filestack.js"></script>
-                                            <input type="filepicker" data-fp-apikey="AVdh2bvkuTYKQI3rdMsZXz"
-                                            onchange="alert(event.fpfile.url)">
+                                        <p>Or, upload an image</p>
+                                        <md-content class="filestack-container" layout-padding>
+                                            <input id="filestack-widget" filepicker data-fp-apikey="AVdh2bvkuTYKQI3rdMsZXz" type="filepicker-dragdrop" data-fp-services="computer,url,facebook,webcam,dropbox" on-success="SetUploadedImage(event.fpfile)" />
                                         </md-content>
                                     </form>
                                 </div>

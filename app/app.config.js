@@ -15,9 +15,9 @@
 		.config(configure)
 		.run(runBlock);
 
-	configure.$inject = ['$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpProvider', '$mdThemingProvider', '$mdIconProvider', 'embedlyServiceProvider', 'BitlyServiceProvider'];
+	configure.$inject = ['$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpProvider', '$mdThemingProvider', '$mdIconProvider', 'embedlyServiceProvider', 'BitlyServiceProvider', 'filepickerProvider'];
 
-	function configure($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, $mdThemingProvider, $mdIconProvider, embedlyServiceProvider, BitlyServiceProvider) {
+	function configure($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, $mdThemingProvider, $mdIconProvider, embedlyServiceProvider, BitlyServiceProvider, filepickerProvider) {
 
 		$mdThemingProvider
 			.theme('default')
@@ -74,13 +74,14 @@
 		
 		
 		BitlyServiceProvider.cfgBitly({
-			login: 'myuser',
-			api: 'myapikey',
-			//domain: 'https://api-ssl.bitly.com',
-			//version: '3'
+			login: 'giftstarter',
+			api: 'R_85bf9d10211f4423b5c3be4a336ad77d',
+			domain: 'https://api-ssl.bitly.com',
+			version: '3'
 		});
 		
-		
+    	filepickerProvider.setKey('AVdh2bvkuTYKQI3rdMsZXz');
+
 	}
 
 	runBlock.$inject = ['$rootScope', '$window'];

@@ -7,6 +7,18 @@
         transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
         color: grey;
     }
+    /*
+     ************************
+     If filepicker generates 3 distinct components in DOM, 
+     cancel out the fake ones
+     ************************
+    .filestack-container {
+        div:nth-child(2), div:nth-child(4) {
+            display:none;
+        }
+
+    }
+    */
 }
 embedly {
     transition: none;
