@@ -50,6 +50,11 @@ module.exports = function (config) {
 			'app/modules/bitly/bitlyRoute.js',
 			'app/modules/bitly/bitlyService.js',
 			'app/modules/bitly/bitly-test.js',
+			'app/modules/filestack/filestackModule.js',
+			'app/modules/filestack/filestackCtrl.js',
+			'app/modules/filestack/filestackRoute.js',
+			'app/modules/filestack/filestackService.js',
+			'app/modules/filestack/filestack-test.js',
 		],
 
 		// Test results reporter to use
