@@ -7,6 +7,7 @@
     function bindEmbedly() {
         var directive = {
             restrict: 'A',
+            scope : true,
             link: linkBindEmbedly
         };
 
@@ -23,7 +24,7 @@
                 embedlySelector: 'embedly',
                 causeImgSelector: '.cause-img',
                 causeTitleSelector: '.cause-title'
-            }
+            };
 
             var mdCardTitleVal,
                 causeImg,
@@ -32,19 +33,22 @@
                 mdCardImg,
                 causeTitle;
             scope.$on('secondstep', function () {
+                scope.cardImg = scope.$parent.cardImg;
+                scope.cardTitle = scope.$parent.cardTitle;
                 causeTitle = elem.find(params.causeTitleSelector);
                 causeImg = elem.find(params.causeImgSelector);
                 embedly = angular.element(document.querySelectorAll(params.embedlySelector)[0]);
                 embedlyImages = angular.element(document.querySelectorAll(params.embedlyImagesSelector));
                 mdCardTitleVal = angular.element(document.querySelectorAll(params.cardTitleTextSelector)[1]);
                 mdCardImg = document.querySelectorAll(params.cardImageSelector)[1];
-
+                
                 function clickEmbedlyImageHandler() {
+                    scope.$parent.cardImg = this.src;
                     mdCardImg.src = this.src;
                 }
 
                 function addHandlersForImages(images) {
-                    images.addEventListener('click', clickEmbedlyImageHandler)
+                    images.addEventListener('click', clickEmbedlyImageHandler);
                 }
 
                 angular.forEach(embedlyImages, addHandlersForImages);
@@ -52,22 +56,24 @@
                 function cardTitleWatch (newValue) {
                     if (newValue) {
                         mdCardTitleVal.text(newValue);
+                        scope.$parent.cardTitle = scope.cardTitle;
                     }
                 }
 
                 function twoWayTitle () {
-                    scope.cardTitle = mdCardTitleVal.text().toString().trim();
                     scope.$watch('cardTitle', cardTitleWatch);
                 }
 
                 function watchImageChange (newValue) {
                     if (newValue) {
+                        scope.$parent.cardImg = newValue.trim();
                         mdCardImg.src = newValue.trim();
                     }
                 }
 
                 function twoWayImg () {
                     scope.cardImg = mdCardImg.src.toString().trim();
+                    scope.$parent.cardImg = mdCardImg.src.toString().trim();
                     scope.$watch('cardImg', watchImageChange);
                 }
 

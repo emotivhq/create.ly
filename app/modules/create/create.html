@@ -11,7 +11,7 @@
                     <md-step label="Enter Url" md-complete="vm.stepData[0].completed" ng-disabled="vm.stepProgress < 1">
                         <md-step-body>
                             <div layout="column">
-                                <div layout="row" layout-padding layout-align="center start">
+                                <div layout="row" layout-padding layout-align="center start" layout-wrap>
                                     <div flex="90" flex-sm="90" flex-xs="100">
                                         <span class="md-title">
                                             Paste any non-profit url
@@ -36,6 +36,8 @@
                                             </div>
                                         </form>
                                         <md-progress-linear md-mode="indeterminate" ng-show="loading_embedly"></md-progress-linear>
+                                    </div>
+                                    <div flex="60" flex-sm="90" flex-xs="100">
                                         <div ng-show="showPreview">
                                             <embedly urlsearch="{{vm.urlSearch}}" onempty="tryAgain()"></embedly>
                                             <md-toolbar class="md-accent">
@@ -88,13 +90,13 @@
                                             </div>
                                         </md-input-container>
                                         <md-content>
-                                        <p>Choose campaign image</p>
-                                        <hr/>
-                                        <div layout="row" layout-md="column" class="layout-md-column layout-row layout-margin">
-                                            <div flex="" class="flex" ng-repeat="image in ::embedlyImages track by $index">
-                                                <img class="embedly-variation-images" ng-src="{{ image.url }}" alt="{{ image.caption}}" />
-                                             </div>
-                                        </div>
+                                            <p>Choose campaign image</p>
+                                            <hr/>
+                                            <div layout="row" layout-xs="column" layout-align="start start" layout-wrap>
+                                                <md-card flex="20" ng-repeat="image in embedlyImages track by $index">
+                                                    <img class="embedly-variation-images" ng-src="{{ image.url }}" alt="{{ image.caption}}" />
+                                                </md-card>
+                                            </div>
                                         </md-content>
                                         <p>Upload custom campaign image <em>(optional)</em></p>
                                         <md-content class="filestack-container" layout-padding>
@@ -128,68 +130,69 @@
                     <md-step label="Finish" md-complete="vm.stepData[2].completed" ng-disabled="vm.stepProgress < 3">
                         <md-step-body>
                             <div layout="column" layout-gt-sm="row" layout-align="center start">
-                                <div flex="100" flex-gt-sm="65" flex-order="1" flex-order-gt-sm="0" layout-padding>
+                                <div flex="100" flex-gt-sm="50" flex-order="1" flex-order-gt-sm="0" layout-padding>
+                                    <!-- TODO: @yaboi
+                                        allow ability to update ng-src for this to work,
+                                        then add to step 2 as well instead of embedly directive
+                                    -->
                                     <md-card>
-                                        <img ng-src="{{vm.stepData[1].data.cardImg}}" class="md-card-image" alt="{{vm.stepData[1].data.title}}">
-                                        <md-card-title>
-                                          <md-card-title-text>
-                                            <span class="md-headline">{{vm.stepData[1].data.title}}</span>
-                                          </md-card-title-text>
+                                        <md-card-header ng-show="faviconUrl || providerName || providerDisplay">
+                                            <md-card-avatar ng-show="faviconUrl">
+                                                <img ng-src="{{faviconUrl}}" alt="{{providerName}}" />
+                                            </md-card-avatar>
+                                            <md-card-header-text>
+                                                <span class="md-title" ng-show="providerName">{{providerName}}</span>
+                                                <span class="md-subhead" ng-show="providerDisplay">
+                                                    <span hide-xs>See more at </span>{{providerDisplay}}
+                                                </span>
+                                            </md-card-header-text>
+                                        </md-card-header>
+                                        <img ng-src="{{cardImg}}" class="md-card-image" alt="{{cardTitle}}" ng-show="cardImg">
+                                        <md-card-title ng-show="cardTitle">
+                                            <md-card-title-text>
+                                                <span class="md-headline">{{cardTitle}}</span>
+                                            </md-card-title-text>
                                         </md-card-title>
-                                        <md-card-content>
-                                          <p>
-                                            {{vm.stepData[1].data.description}}
-                                          </p>
+                                        <md-card-content ng-show="cardDescription">
+                                            <p>
+                                                {{cardDescription}}
+                                            </p>
                                         </md-card-content>
-                                        <md-card-actions layout="row" layout-align="end center">
-                                          <md-button class="md-icon-button" aria-label="Favorite">
-                                            <md-icon md-font-icon="favorite"></md-icon>
-                                          </md-button>
-                                          <md-button class="md-icon-button" aria-label="Settings">
-                                            <md-icon md-font-icon="menu"></md-icon>
-                                          </md-button>
-                                          <md-button class="md-icon-button" aria-label="Share">
-                                            <md-icon md-font-icon="share-arrow"></md-icon>
-                                          </md-button>
-                                        </md-card-actions>
-                                      </md-card>
-
+                                    </md-card>
                                 </div>
-                                <div flex="100" flex-gt-sm="35" flex-order="1" flex-order-gt-sm="0" layout-padding>
-                                    <div flex="100" flex-sm="100" flex-xs="100">
-                                        <md-toolbar class="md-accent md-hue-1">
-                                            <div class="md-toolbar-tools">
-                                                <md-icon class="material-icons" hide-xs style="margin-right:10px">trending_flat</md-icon>
-                                                <h2 hide-xs hide-sm>Want to create this campaign now?</h2>
-                                                <h2 hide-md hide-lg hide-xl>Create campaign now?</h2>
-                                                <span flex></span>
-                                                <md-button class="md-primary md-raised md-hue-2" ng-disabled="vm.showBusyText" ng-click="vm.startCampaignFromLink()" aria-label="Yes, create now!">
-                                                    <md-icon class="material-icons">open_in_new</md-icon>
-                                                    Yes<span hide-xs>, create now!</span>
-                                                </md-button>
-                                            </div>
-                                        </md-toolbar>
-                                        <span class="md-title">Copy/paste the link below into a new tab</span>
-                                        <div layout="row" layout-xs="column" flex>
-                                            <md-input-container flex class="md-block">
-                                                <input id="shortLink" ng-model="vm.campaignCreateShortLink" md-select-on-focus ng-readonly="true" aria-label="Campaign Short Link" />
-                                            </md-input-container>
-                                            <div>
-                                                <md-button ng-show="!vm.showClipboardTooltip && !vm.showFallbackClipboardTooltip" type="button" class="md-raised" aria-label="Copy URL" ngclipboard data-clipboard-target="#shortLink" ngclipboard-success="vm.clipboardCopySuccess($event);" ngclipboard-error="vm.clipboardCopyError($event);">
-                                                    <md-icon class="material-icons">content_copy</md-icon>
-                                                    Copy Url
-                                                </md-button>
-                                                <md-button ng-show="vm.showClipboardTooltip || vm.showFallbackClipboardTooltip" type="button" class="md-raised md-accent md-hue-3" aria-label="URL Copied!" ngclipboard data-clipboard-target="#shortLink" ngclipboard-success="vm.clipboardCopySuccess($event);" ngclipboard-error="vm.clipboardCopyError($event);">
-                                                    <span ng-show="vm.showClipboardTooltip">
-                                                        <md-icon class="material-icons">done</md-icon>
-                                                        Url Copied!
-                                                    </span>
-                                                    <span ng-show="vm.showFallbackClipboardTooltip">
-                                                        <md-icon class="material-icons">done</md-icon>
-                                                        Press Ctrl+C
-                                                    </span>
-                                                </md-button>
-                                            </div>
+                                <div flex="100" flex-gt-sm="50" flex-order="0" flex-order-gt-sm="1" layout-padding layout-margin>
+                                    <md-toolbar class="md-accent md-hue-1">
+                                        <div class="md-toolbar-tools">
+                                            <md-icon class="material-icons" hide-xs style="margin-right:10px">trending_flat</md-icon>
+                                            <h2 hide-xs hide-sm>Want to create this campaign now?</h2>
+                                            <h2 hide-md hide-lg hide-xl>Create campaign now?</h2>
+                                            <span flex></span>
+                                            <md-button class="md-primary md-raised md-hue-2" ng-disabled="vm.showBusyText" ng-click="vm.startCampaignFromLink()" aria-label="Yes, create now!">
+                                                <md-icon class="material-icons">open_in_new</md-icon>
+                                                Yes<span hide-xs>, create now!</span>
+                                            </md-button>
+                                        </div>
+                                    </md-toolbar>
+                                    <span class="md-title">Copy/paste the link below into a new tab</span>
+                                    <div layout="row" layout-xs="column" flex>
+                                        <md-input-container flex class="md-block">
+                                            <input id="shortLink" ng-model="vm.campaignCreateShortLink" md-select-on-focus ng-readonly="true" aria-label="Campaign Short Link" />
+                                        </md-input-container>
+                                        <div>
+                                            <md-button ng-show="!vm.showClipboardTooltip && !vm.showFallbackClipboardTooltip" type="button" class="md-raised" aria-label="Copy URL" ngclipboard data-clipboard-target="#shortLink" ngclipboard-success="vm.clipboardCopySuccess($event);" ngclipboard-error="vm.clipboardCopyError($event);">
+                                                <md-icon class="material-icons">content_copy</md-icon>
+                                                Copy Url
+                                            </md-button>
+                                            <md-button ng-show="vm.showClipboardTooltip || vm.showFallbackClipboardTooltip" type="button" class="md-raised md-accent md-hue-3" aria-label="URL Copied!" ngclipboard data-clipboard-target="#shortLink" ngclipboard-success="vm.clipboardCopySuccess($event);" ngclipboard-error="vm.clipboardCopyError($event);">
+                                                <span ng-show="vm.showClipboardTooltip">
+                                                    <md-icon class="material-icons">done</md-icon>
+                                                    Url Copied!
+                                                </span>
+                                                <span ng-show="vm.showFallbackClipboardTooltip">
+                                                    <md-icon class="material-icons">done</md-icon>
+                                                    Press Ctrl+C
+                                                </span>
+                                            </md-button>
                                         </div>
                                     </div>
                                 </div>
