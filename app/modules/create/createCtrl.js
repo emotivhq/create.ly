@@ -48,11 +48,11 @@
 			vm.maxStep = 3;
 			vm.showBusyText = false;
 			vm.cardImg = '';
-			$scope.cardImg = '';
+			$scope.cardImg;
 			// Setup the initial step data
 			vm.stepData = [
 				{ step: 1, completed: false, optional: false, data: {product_url: 'https://'}},
-				{ step: 2, completed: false, optional: false, data: {title: 'Imagine Saving a Life: Donate Blood Today', price: ''} },
+				{ step: 2, completed: false, optional: false, data: {title: '', price: ''} },
 				{ step: 3, completed: false, optional: false, data: {} },
 			];
 
@@ -74,11 +74,15 @@
 				}
 			};
 
-			$scope.originalUrl;
 			$scope.cardTitle;
-			$scope.showPreview = false;
+			$scope.embedlyImages;
+			$scope.originalUrl;
+			$scope.providerName;
+			$scope.faviconUrl;
+			$scope.providerDisplay;
+			$scope.cardDescription;
 			vm.urlSearch = '';
-
+			
 			vm.getUrlInfo = function getUrlInfo(url) {
 				CreateService.getEmbedlyRes(url).then(
 					function (response) {
@@ -87,6 +91,9 @@
 							$scope.embedlyImages = response.data.images;
 							$scope.originalUrl = response.data.original_url;
 							$scope.providerName = response.data.provider_name;
+							$scope.faviconUrl = response.data.favicon_url;
+							$scope.providerDisplay = response.data.provider_display;
+							$scope.cardDescription = response.data.description;
 						}
 					}, function(error) {
 						console.log('Failed request to embedly ' + error);
@@ -97,6 +104,7 @@
 				//look at $scope.$on('embedly-fetch-success') or $scope.$on('embedly-fetch-error') for functionality after embedly call.
 			};
 
+			$scope.showPreview = false;
 			$scope.$on('embedly-fetch-success', function() {
 				$scope.showPreview = true;
 				//$scope.$digest();
@@ -107,7 +115,7 @@
 			});
 
 			vm.campaignCreateShortLink = '';
-
+			
 			vm.submitCurrentStep = function submitCurrentStep(stepData) {
 				vm.showBusyText = true;
 
@@ -120,11 +128,11 @@
 					if (stepData.step === 2) { // stepper is going from step 2 to step 3
 						//$scope.$broadcast('create-bitly-link');
 						var base_url = 'https://www.giftstarter.com/create?product_url=',
-							product_url = vm.stepData[0].data.product_url,
+							product_url = $scope.originalUrl,
 							title = $scope.cardTitle, //update once embedly bind is finished.
 							price = parseFloat($filter('number')(vm.stepData[1].data.price*100, 2).replace(/,/g, '')),
 							img_url = $scope.cardImg,
-							source = 'Bloodworks Northwest', //update once embedly bind is finished. Need to bind "source" from embedly returned data.
+							source = $scope.providerName, //update once embedly bind is finished. Need to bind "source" from embedly returned data.
 							urlToShorten = base_url + product_url + '&title=' + title +'&price=' + price + '&img_url=' + img_url + '&source=' + source;
 
 					var bitlyPromise = BitlyService.getShortUrl(urlToShorten);
@@ -147,8 +155,12 @@
 								.hideDelay(3500)
 							);
 						});
-					}
-				};
+				}
+			};
+
+			vm.startCampaignFromLink = function startCampaignFromLink() {
+				$window.open(vm.campaignCreateShortLink);
+			};
 
 				$scope.setUploadedImage = function (fpfile) {
 					$scope.mdCardImg = fpfile.url;
@@ -157,8 +169,6 @@
 					vm.stepData[1].data.cardImg = fpfile.url;
 					console.log(fpfile);
 				};
-
-				$scope.campaignCreateShortLink = 'http://bit.ly/1234567890';
 
 				vm.showUrlEducationDialog = function showUrlEducationDialog(ev) {
 					$mdDialog.show(
@@ -171,10 +181,6 @@
 						.ok('Close')
 					);
 				};
-
-			vm.startCampaignFromLink = function startCampaignFromLink() {
-				$window.open(vm.campaignCreateShortLink);
-			};
 
 			vm.clearStepper = function clearStepper() {
 				$window.location.reload();
