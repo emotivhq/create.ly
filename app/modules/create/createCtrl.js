@@ -48,7 +48,7 @@
 			vm.maxStep = 3;
 			vm.showBusyText = false;
 			vm.cardImg = '';
-			$scope.cardImg = '';
+			$scope.cardImg;
 			// Setup the initial step data
 			vm.stepData = [
 				{ step: 1, completed: false, optional: false, data: {product_url: 'https://'}},
@@ -78,6 +78,9 @@
 			$scope.embedlyImages;
 			$scope.originalUrl;
 			$scope.providerName;
+			$scope.faviconUrl;
+			$scope.providerDisplay;
+			$scope.cardDescription;
 			vm.urlSearch = '';
 			
 			vm.getUrlInfo = function getUrlInfo(url) {
@@ -88,6 +91,9 @@
 							$scope.embedlyImages = response.data.images;
 							$scope.originalUrl = response.data.original_url;
 							$scope.providerName = response.data.provider_name;
+							$scope.faviconUrl = response.data.favicon_url;
+							$scope.providerDisplay = response.data.provider_display;
+							$scope.cardDescription = response.data.description;
 						}
 					}, function(error) {
 						console.log('Failed request to embedly ' + error);

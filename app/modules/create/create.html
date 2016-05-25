@@ -11,7 +11,7 @@
                     <md-step label="Enter Url" md-complete="vm.stepData[0].completed" ng-disabled="vm.stepProgress < 1">
                         <md-step-body>
                             <div layout="column">
-                                <div layout="row" layout-padding layout-align="center start">
+                                <div layout="row" layout-padding layout-align="center start" layout-wrap>
                                     <div flex="90" flex-sm="90" flex-xs="100">
                                         <span class="md-title">
                                             Paste any non-profit url
@@ -36,8 +36,10 @@
                                             </div>
                                         </form>
                                         <md-progress-linear md-mode="indeterminate" ng-show="loading_embedly"></md-progress-linear>
+                                    </div>
+                                    <div flex="60" flex-sm="90" flex-xs="100">
                                         <div ng-show="showPreview">
-                                            <embedly urlsearch="{{vm.urlSearch}}" onempty="tryAgain()"></embedly>
+                                            <embedly class="embedly" urlsearch="{{vm.urlSearch}}" onempty="tryAgain()"></embedly>
                                             <md-toolbar class="md-accent">
                                                 <div class="md-toolbar-tools">
                                                     <md-icon class="material-icons" hide-xs style="margin-right:10px">arrow_upward</md-icon>
@@ -61,7 +63,7 @@
                         <md-step-body>
                             <div layout="column" layout-gt-sm="row" layout-align="center start">
                                 <div flex="100" flex-gt-sm="50" flex-order="1" flex-order-gt-sm="0" layout-padding>
-                                    <embedly urlsearch="{{vm.urlSearch}}"></embedly>
+                                    <embedly class="embedly" urlsearch="{{vm.urlSearch}}"></embedly>
                                 </div>
                                 <div flex="100" flex-gt-sm="50" flex-order="0" flex-order-gt-sm="1" layout-padding layout-margin>
                                     <span class="md-title">Customize your cause.</span>
@@ -91,8 +93,8 @@
                                             <p>Choose campaign image</p>
                                             <hr/>
                                             <div layout="row" layout-xs="column" layout-align="start start" layout-wrap>
-                                                <md-card flex="20" ng-repeat="image in ::embedlyImages track by $index">
-                                                    <img class="embedly-variation-images" ng-class="{'selected': mdCardImg.src === image.url}" style="cursor: pointer;" ng-src="{{ image.url }}" alt="{{ image.caption}}" />
+                                                <md-card flex="20" ng-repeat="image in embedlyImages track by $index">
+                                                    <img class="embedly-variation-images" ng-src="{{ image.url }}" alt="{{ image.caption}}" />
                                                 </md-card>
                                             </div>
                                         </md-content>
@@ -129,9 +131,23 @@
                         <md-step-body>
                             <div layout="column" layout-gt-sm="row" layout-align="center start">
                                 <div flex="100" flex-gt-sm="50" flex-order="1" flex-order-gt-sm="0" layout-padding>
-                                    <!--<embedly urlsearch="{{vm.urlSearch}}"></embedly>-->
+                                    <!-- TODO: @yaboi
+                                        allow ability to update ng-src for this to work,
+                                        then add to step 2 as well instead of embedly directive
+                                    -->
                                     <md-card>
-                                        <img ng-show="cardImg" ng-src="{{cardImg}}" class="md-card-image" alt="{{cardTitle}}">
+                                        <md-card-header ng-show="faviconUrl || providerName || providerDisplay">
+                                            <md-card-avatar ng-show="faviconUrl">
+                                                <img ng-src="{{faviconUrl}}" alt="{{providerName}}" />
+                                            </md-card-avatar>
+                                            <md-card-header-text>
+                                                <span class="md-title" ng-show="providerName">{{providerName}}</span>
+                                                <span class="md-subhead" ng-show="providerDisplay">
+                                                    <span hide-xs>See more at </span>{{providerDisplay}}
+                                                </span>
+                                            </md-card-header-text>
+                                        </md-card-header>
+                                        <img ng-src="{{cardImg}}" class="md-card-image" alt="{{cardTitle}}" ng-show="cardImg">
                                         <md-card-title ng-show="cardTitle">
                                             <md-card-title-text>
                                                 <span class="md-headline">{{cardTitle}}</span>

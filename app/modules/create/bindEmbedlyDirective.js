@@ -73,6 +73,7 @@
 
                 function twoWayImg () {
                     scope.cardImg = mdCardImg.src.toString().trim();
+                    scope.$parent.cardImg = mdCardImg.src.toString().trim();
                     scope.$watch('cardImg', watchImageChange);
                 }
 
