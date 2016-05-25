@@ -1,7 +1,13 @@
-.create {
-  /*
+.create .hint {
+  /* Position the hint */
+  padding-top: 34px;
+  font-size: 12px;
+  transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
+  color: grey; }
+
+/*
      ************************
-     If filepicker generates 3 distinct components in DOM, 
+     If filepicker generates 3 distinct components in DOM,
      cancel out the fake ones
      ************************
     .filestack-container {
@@ -10,14 +16,7 @@
         }
 
     }
-    */ }
-  .create .hint {
-    /* Position the hint */
-    padding-top: 34px;
-    font-size: 12px;
-    transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
-    color: grey; }
-
+    */
 embedly {
   transition: none; }
   embedly.ng-hide, embedly.ng-enter, embedly.ng-leave.ng-leave-active {
@@ -26,3 +25,6 @@ embedly {
   embedly.ng-leave, embedly.ng-enter.ng-enter-active {
     transition: opacity 0.1s cubic-bezier(0.55, 0, 0.55, 0.2);
     opacity: 1; }
+  embedly md-card-title {
+    font-size: 24px;
+    line-height: 32px; }
