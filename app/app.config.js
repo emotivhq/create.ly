@@ -15,13 +15,10 @@
 		.config(configure)
 		.run(runBlock);
 
-	configure.$inject = ['$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpProvider', '$mdThemingProvider', '$mdIconProvider', 'embedlyServiceProvider'];
+	configure.$inject = ['$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpProvider', '$mdThemingProvider', '$mdIconProvider', 'embedlyServiceProvider', 'BitlyServiceProvider', 'filepickerProvider'];
 
-	function configure($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, $mdThemingProvider, $mdIconProvider, embedlyServiceProvider) {
+	function configure($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, $mdThemingProvider, $mdIconProvider, embedlyServiceProvider, BitlyServiceProvider, filepickerProvider) {
 
-
-		embedlyServiceProvider.setKey('a46a33d99bc642b4aab1dfa58dc11f32');
-		
 		$mdThemingProvider
 			.theme('default')
 			.primaryPalette('light-blue', {
@@ -71,6 +68,18 @@
 
 		$urlRouterProvider
 			.otherwise('/create');
+
+		// Service configurations
+		embedlyServiceProvider.setKey('a46a33d99bc642b4aab1dfa58dc11f32');
+		
+		BitlyServiceProvider.cfgBitly({
+			login: 'giftstarter',
+			api: 'R_85bf9d10211f4423b5c3be4a336ad77d',
+			domain: 'https://api-ssl.bitly.com',
+			version: '3'
+		});
+		
+    	filepickerProvider.setKey('AVdh2bvkuTYKQI3rdMsZXz');
 
 	}
 

@@ -13,7 +13,7 @@
 		.module('create')
 		.controller('CreateCtrl', Create);
 
-		Create.$inject = ['$scope', '$q', '$timeout', '$mdToast'];
+		Create.$inject = ['$scope', '$q', '$timeout', '$mdToast', '$mdDialog', 'filepicker'];
 
 		/*
 		* recommend
@@ -21,12 +21,15 @@
 		* and bindable members up top.
 		*/
 
-		function Create($scope, $q, $timeout, $mdToast) {
+		function Create($scope, $q, $timeout, $mdToast, $mdDialog, filepicker) {
 			/*jshint validthis: true */
 			var vm = this;
 			window.Intercom("boot", {
 			  app_id: "q5i7p4f9"
 			});
+			// Filestack JS API
+			//var element = document.getElementById('filestack-widget');
+			//filepicker.constructWidget(element);
 
 			$scope.tryAgain = function() {
 				$mdToast.show(
@@ -38,7 +41,7 @@
 			};
 			
 			$scope.product_url = '';
-			$scope.productUrlHint = 'https://giveto.seattlechildrens.org/changealife';
+			$scope.productUrlHint = 'http://www.bloodworksnw.org/home/index.htm';
 			$scope.showProductUrlHint = true;
 			$scope.urlPattern = /^(http|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:\/~\+#]*[\w\-\@?^=%&amp;\/~\+#])?/i;
 
@@ -48,12 +51,9 @@
 			vm.showBusyText = false;
 			// Setup the initial step data
 			vm.stepData = [
-				{ step: 1, completed: false, optional: false, data: {
-					product_url: 'https://'
-				} },
-				{ step: 2, completed: false, optional: false, data: {} },
+				{ step: 1, completed: false, optional: false, data: {product_url: 'https://'}},
+				{ step: 2, completed: false, optional: false, data: {title: 'Imagine Saving a Life: Donate Blood Today', price: '250.00'} },
 				{ step: 3, completed: false, optional: false, data: {} },
-				// { step: 4, completed: false, optional: false, data: {} },
 			];
 		
 			vm.enableNextStep = function nextStep(skip) {
@@ -87,6 +87,7 @@
 			};
 			
 			vm.submitCurrentStep = function submitCurrentStep(stepData, isSkip) {
+				console.log(stepData);
 				var deferred = $q.defer();
 				vm.showBusyText = true;
 				console.log('On before submit');
@@ -107,8 +108,32 @@
 					vm.enableNextStep();
 				}
 			};
+			
+			$scope.setUploadedImage = function (fpfile) {
+				$scope.cardImg = fpfile.url;
+				vm.cardImg = fpfile.url;
+				console.log(fpfile);
+			};
+			
 			$scope.campaignCreateShortLink = 'http://bit.ly/1234567890';
-
+			
+			$scope.showUrlEducationDialog = function (ev) {
+				var confirm = $mdDialog.confirm()
+					.clickOutsideToClose(true)
+					.title('How this tool works.')
+					.textContent('This tool uses a method of extracting content from any link it is given. If the content above looks wonky, first make sure you have the correct link. If you are 100% sure you do, use the next step to customize the content to look exactly like you want it to.')
+					.ariaLabel('How this tool works')
+					.targetEvent(ev)
+					.ok('This link is correct. Let\'s customize the content.')
+					.cancel('Let\'s double check the link.');
+				$mdDialog.show(confirm).then(function () {
+					//TODO: move to next step two
+					//vm.submitCurrentStep(vm.stepData[0]); <--- this doesn't work...
+				}, function () {
+					//do nothing because they closed the modal.	
+				});
+				
+			};
 		}
 
 })();

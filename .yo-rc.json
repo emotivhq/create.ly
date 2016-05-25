@@ -8,6 +8,12 @@
     "directives": [
       {
         "name": "linkcreator"
+      },
+      {
+        "name": "embedly"
+      },
+      {
+        "name": "bitly"
       }
     ],
     "modules": [
@@ -16,6 +22,15 @@
       },
       {
         "name": "usersync"
+      },
+      {
+        "name": "embedly"
+      },
+      {
+        "name": "bitly"
+      },
+      {
+        "name": "filestack"
       }
     ],
     "menu": [
@@ -27,6 +42,18 @@
       {
         "link": "usersync",
         "title": "Usersync"
+      },
+      {
+        "link": "embedly",
+        "title": "Embedly"
+      },
+      {
+        "link": "bitly",
+        "title": "Bitly"
+      },
+      {
+        "link": "filestack",
+        "title": "Filestack"
       }
     ]
   }
