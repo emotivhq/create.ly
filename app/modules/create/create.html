@@ -103,10 +103,10 @@
                                         <md-content>
                                         <p>Choose campaign image</p>
                                         <hr/>
-                                        <div layout="row" layout-md="column" class="layout-md-column layout-row layout-margin">
-                                            <div flex="" class="flex" ng-repeat="image in ::embedlyImages track by $index">
-                                                <img class="embedly-variation-images" ng-src="{{ image.url }}" alt="{{ image.caption}}" />
-                                             </div>
+                                        <div layout="row" layout-xs="column" layout-align="start start" layout-wrap>
+                                            <md-card flex="20" ng-repeat="image in ::embedlyImages track by $index">
+                                                <img class="embedly-variation-images" ng-class="{'selected': mdCardImg.src === image.url}" style="cursor: pointer;" ng-src="{{ image.url }}" alt="{{ image.caption}}" />
+                                            </md-card>
                                         </div>
                                         </md-content>
                                         <p>Upload custom campaign image <em>(optional)</em></p>

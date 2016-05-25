@@ -23,7 +23,7 @@
                 embedlySelector: 'embedly',
                 causeImgSelector: '.cause-img',
                 causeTitleSelector: '.cause-title'
-            }
+            };
 
             var mdCardTitleVal,
                 causeImg,
@@ -38,13 +38,13 @@
                 embedlyImages = angular.element(document.querySelectorAll(params.embedlyImagesSelector));
                 mdCardTitleVal = angular.element(document.querySelectorAll(params.cardTitleTextSelector)[1]);
                 mdCardImg = document.querySelectorAll(params.cardImageSelector)[1];
-
+                
                 function clickEmbedlyImageHandler() {
                     mdCardImg.src = this.src;
                 }
 
                 function addHandlersForImages(images) {
-                    images.addEventListener('click', clickEmbedlyImageHandler)
+                    images.addEventListener('click', clickEmbedlyImageHandler);
                 }
 
                 angular.forEach(embedlyImages, addHandlersForImages);

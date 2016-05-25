@@ -77,6 +77,7 @@
 		vm.urlSearch = '';
 
 		vm.getUrlInfo = function getUrlInfo(url) {
+			//look at $scope.$on('embedly-fetch-success') or $scope.$on('embedly-fetch-error') for functionality after embedly call.
 			CreateService.getEmbedlyRes(url).then(
 				function (response) {
 					$scope.embedlyImages = response.data.images;
@@ -84,7 +85,6 @@
 			);
 			$mdToast.hide();
 			vm.urlSearch = url;
-			//look at $scope.$on('embedly-fetch-success') or $scope.$on('embedly-fetch-error') for functionality after embedly call.
 		};
 
 		$scope.$on('embedly-fetch-success', function() {
@@ -102,7 +102,7 @@
 			vm.showBusyText = true;
 
 			if (stepData.step === 1) { // stepper is going from step 1 to step 2
-				$scope.cardTitle;
+				//$scope.cardTitle;
 				$scope.$broadcast('secondstep');
 				vm.showBusyText = false;
 				stepData.completed = true;
