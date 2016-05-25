@@ -52,7 +52,7 @@
 			// Setup the initial step data
 			vm.stepData = [
 				{ step: 1, completed: false, optional: false, data: {product_url: 'https://'}},
-				{ step: 2, completed: false, optional: false, data: {title: 'Imagine Saving a Life: Donate Blood Today', price: ''} },
+				{ step: 2, completed: false, optional: false, data: {title: '', price: ''} },
 				{ step: 3, completed: false, optional: false, data: {} },
 			];
 			
@@ -81,6 +81,7 @@
 				CreateService.getEmbedlyRes(url).then(
 					function (response) {
 						$scope.embedlyImages = response.data.images;
+						console.log(response.data);
 					}
 				);
 				$mdToast.hide();
@@ -101,25 +102,24 @@
 
 			vm.submitCurrentStep = function submitCurrentStep(stepData) {
 				vm.showBusyText = true;
-
-				if (stepData.step === 1) { // stepper is going from step 1 to step 2
-					$scope.cardTitle;
+				
+				// stepper is going from step 1 to step 2
+				if (stepData.step === 1) {
 					$scope.$broadcast('secondstep');
+					vm.cardTitle = $scope.cardTitle;
 					vm.showBusyText = false;
 					stepData.completed = true;
 					vm.enableNextStep();
-
-				} else 
-				if (stepData.step === 2) { // stepper is going from step 2 to step 3
-					console.log(vm.stepData[1].data.cardImg);
-					//$scope.$broadcast('create-bitly-link');
+				} else // stepper is going from step 2 to step 3
+				if (stepData.step === 2) {
 					var base_url = 'https://www.giftstarter.com/create?product_url=',
 						product_url = vm.stepData[0].data.product_url,
-						title = vm.stepData[1].data.title, //update once embedly bind is finished.
+						title = vm.stepData[1].data.title,
 						price = parseFloat($filter('number')(vm.stepData[1].data.price*100, 2).replace(/,/g, '')),
 						img_url = vm.stepData[1].data.cardImg,
 						source = 'Bloodworks Northwest', //update once embedly bind is finished. Need to bind "source" from embedly returned data.
 						urlToShorten = base_url + product_url + '&title=' + title +'&price=' + price + '&img_url=' + img_url + '&source=' + source;
+						
 				var bitlyPromise = BitlyService.getShortUrl(urlToShorten);
 				bitlyPromise.then(function (data) {
 					vm.campaignCreateShortLink = data;
