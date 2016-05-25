@@ -39,7 +39,7 @@
                                     </div>
                                     <div flex="60" flex-sm="90" flex-xs="100">
                                         <div ng-show="showPreview">
-                                            <embedly class="embedly" urlsearch="{{vm.urlSearch}}" onempty="tryAgain()"></embedly>
+                                            <embedly urlsearch="{{vm.urlSearch}}" onempty="tryAgain()"></embedly>
                                             <md-toolbar class="md-accent">
                                                 <div class="md-toolbar-tools">
                                                     <md-icon class="material-icons" hide-xs style="margin-right:10px">arrow_upward</md-icon>
@@ -63,7 +63,7 @@
                         <md-step-body>
                             <div layout="column" layout-gt-sm="row" layout-align="center start">
                                 <div flex="100" flex-gt-sm="50" flex-order="1" flex-order-gt-sm="0" layout-padding>
-                                    <embedly class="embedly" urlsearch="{{vm.urlSearch}}"></embedly>
+                                    <embedly urlsearch="{{vm.urlSearch}}"></embedly>
                                 </div>
                                 <div flex="100" flex-gt-sm="50" flex-order="0" flex-order-gt-sm="1" layout-padding layout-margin>
                                     <span class="md-title">Customize your cause.</span>
