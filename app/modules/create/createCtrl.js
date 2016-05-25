@@ -144,17 +144,17 @@
 						vm.showFallbackClipboardTooltip = false;
 						vm.enableNextStep();
 					}, function (reason) {
-						console.log('Failed: ' + reason);
-						vm.campaignCreateShortLink = '';
-						vm.showBusyText = false;
-						stepData.completed = false;
-						$mdToast.show(
-							$mdToast.simple()
-							.content('There was an issue creating your custom campaign link. Please try again.')
-							.position('bottom left')
-							.hideDelay(3500)
-						);
-					});
+							console.log('Failed: ' + reason);
+							vm.campaignCreateShortLink = '';
+							vm.showBusyText = false;
+							stepData.completed = false;
+							$mdToast.show(
+								$mdToast.simple()
+								.content('There was an issue creating your custom campaign link. Please try again.')
+								.position('bottom left')
+								.hideDelay(3500)
+							);
+						});
 				}
 			};
 
@@ -162,25 +162,25 @@
 				$window.open(vm.campaignCreateShortLink);
 			};
 
-			$scope.setUploadedImage = function (fpfile) {
-				$scope.mdCardImg = fpfile.url;
-				$scope.cardImg = fpfile.url;
-				vm.cardImg = fpfile.url;
-				vm.stepData[1].data.cardImg = fpfile.url;
-				console.log(fpfile);
-			};
+				$scope.setUploadedImage = function (fpfile) {
+					$scope.mdCardImg = fpfile.url;
+					$scope.cardImg = fpfile.url;
+					vm.cardImg = fpfile.url;
+					vm.stepData[1].data.cardImg = fpfile.url;
+					console.log(fpfile);
+				};
 
-			vm.showUrlEducationDialog = function showUrlEducationDialog(ev) {
-				$mdDialog.show(
-					$mdDialog.alert()
-					.clickOutsideToClose(true)
-					.title('How this tool works.')
-					.ariaLabel('How this tool works.')
-					.textContent('This tool does it\'s best to extract content from any url it is given. If the content above looks wonky, first make sure you have the correct url. If you are 100% sure you do, use the next step to customize things to look how you want.')
-					.targetEvent(ev)
-					.ok('Close')
-				);
-			};
+				vm.showUrlEducationDialog = function showUrlEducationDialog(ev) {
+					$mdDialog.show(
+						$mdDialog.alert()
+						.clickOutsideToClose(true)
+						.title('How this tool works.')
+						.ariaLabel('How this tool works.')
+						.textContent('This tool does it\'s best to extract content from any url it is given. If the content above looks wonky, first make sure you have the correct url. If you are 100% sure you do, use the next step to customize things to look how you want.')
+						.targetEvent(ev)
+						.ok('Close')
+					);
+				};
 
 			vm.clearStepper = function clearStepper() {
 				$window.location.reload();
