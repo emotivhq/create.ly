@@ -12,7 +12,7 @@
                         <md-step-body>
                             <div layout="column">
                                 <div layout="row" layout-padding layout-align="center start">
-                                    <div flex="60" flex-sm="90" flex-xs="100">
+                                    <div flex="90" flex-sm="90" flex-xs="100">
                                         <span class="md-title">
                                             Paste any non-profit url
                                         </span>
@@ -62,19 +62,6 @@
                             <div layout="column" layout-gt-sm="row" layout-align="center start">
                                 <div flex="100" flex-gt-sm="50" flex-order="1" flex-order-gt-sm="0" layout-padding>
                                     <embedly urlsearch="{{vm.urlSearch}}"></embedly>
-                                    <md-toolbar class="md-accent">
-                                        <div class="md-toolbar-tools">
-                                            <md-icon class="material-icons" hide-xs style="margin-right:10px">arrow_upward</md-icon>
-                                            <h2>Is this correct?</h2>
-                                            <span flex></span>
-                                            <md-button hide-xs class="md-accent md-hue-3 md-mini" ng-disabled="vm.showBusyText" ng-click="vm.moveToPreviousStep()" aria-label="Go back">
-                                                No, go back
-                                            </md-button>
-                                            <md-button class="md-primary md-raised" ng-disabled="vm.showBusyText || !vm.stepData[1].data.title || !vm.stepData[1].data.price" ng-click="vm.submitCurrentStep(vm.stepData[1])" aria-label="Yep, let's move on!">
-                                                Yes<span hide-xs>, create campaign link!</span>
-                                            </md-button>
-                                        </div>
-                                    </md-toolbar>
                                 </div>
                                 <div flex="100" flex-gt-sm="50" flex-order="0" flex-order-gt-sm="1" layout-padding layout-margin>
                                     <span class="md-title">Customize your cause.</span>
@@ -111,7 +98,7 @@
                                         </md-content>
                                         <p>Upload custom campaign image <em>(optional)</em></p>
                                         <md-content class="filestack-container" layout-padding>
-                                            <input id="filestack-widget" filepicker data-fp-apikey="AVdh2bvkuTYKQI3rdMsZXz" type="filepicker-dragdrop" data-fp-services="computer,url,webcam,video,gmail,facebook,instagram,twitter,box,dropbox,googledrive" on-success="setUploadedImage(event.fpfile)" />
+                                            <input id="filestack-widget" filepicker ng-model="vm.stepData[1].data.cardImg" data-fp-apikey="AVdh2bvkuTYKQI3rdMsZXz" type="filepicker-dragdrop" data-fp-conversions="crop,rotate,filter" data-fp-cropRatio="4/3" data-fp-cropDim="1024, 1024" data-fp-cropMax="1920, 1920" data-fp-services="computer,url,webcam,video,gmail,facebook,instagram,twitter,box,dropbox,googledrive,convert" on-success="setUploadedImage(event.fpfile)" />
                                         </md-content>
                                         <md-input-container class="md-block">
                                               <label>Or paste image URL </label>
@@ -128,7 +115,7 @@
                                                 <md-button class="md-primary md-raised" ng-disabled="vm.showBusyText" ng-click="vm.submitCurrentStep(vm.stepData[1], true)" aria-label="Perfect, let's finish!">
                                                   Perfect, let's finish!
                                                 </md-button>
-                                                <md-button class="md-accent md-hue-2 md-fab md-mini" ng-disabled="vm.showBusyText" ng-click="showUrlEducationDialog($event)" aria-label="No, but why?">
+                                                <md-button class="md-accent md-hue-2 md-fab md-mini" ng-disabled="vm.showBusyText" ng-click="vm.moveToPreviousStep()" aria-label="No, let's go back">
                                                   No
                                                 </md-button>
                                               </div>
@@ -140,42 +127,71 @@
                     </md-step>
                     <md-step label="Finish" md-complete="vm.stepData[2].completed" ng-disabled="vm.stepProgress < 3">
                         <md-step-body>
-                            <div layout="row" layout-padding layout-align="center start">
-                                <div flex="50" flex-sm="90" flex-xs="100">
-                                    <span class="md-title">Copy/paste the link below into a new tab</span>
-                                    <div layout="row" layout-xs="column" flex>
-                                        <md-input-container flex class="md-block">
-                                            <input id="shortLink" ng-model="vm.campaignCreateShortLink" md-select-on-focus ng-readonly="true" aria-label="Campaign Short Link" />
-                                        </md-input-container>
-                                        <div>
-                                            <md-button ng-show="!vm.showClipboardTooltip && !vm.showFallbackClipboardTooltip" type="button" class="md-raised" aria-label="Copy URL" ngclipboard data-clipboard-target="#shortLink" ngclipboard-success="vm.clipboardCopySuccess($event);" ngclipboard-error="vm.clipboardCopyError($event);">
-                                                <md-icon class="material-icons">content_copy</md-icon>
-                                                Copy Url
-                                            </md-button>
-                                            <md-button ng-show="vm.showClipboardTooltip || vm.showFallbackClipboardTooltip" type="button" class="md-raised md-accent md-hue-3" aria-label="URL Copied!" ngclipboard data-clipboard-target="#shortLink" ngclipboard-success="vm.clipboardCopySuccess($event);" ngclipboard-error="vm.clipboardCopyError($event);">
-                                                <span ng-show="vm.showClipboardTooltip">
-                                                    <md-icon class="material-icons">done</md-icon>
-                                                    Url Copied!
-                                                </span>
-                                                <span ng-show="vm.showFallbackClipboardTooltip">
-                                                    <md-icon class="material-icons">done</md-icon>
-                                                    Press Ctrl+C
-                                                </span>
-                                            </md-button>
+                            <div layout="column" layout-gt-sm="row" layout-align="center start">
+                                <div flex="100" flex-gt-sm="65" flex-order="1" flex-order-gt-sm="0" layout-padding>
+                                    <md-card>
+                                        <img ng-src="{{vm.stepData[1].data.cardImg}}" class="md-card-image" alt="{{vm.stepData[1].data.title}}">
+                                        <md-card-title>
+                                          <md-card-title-text>
+                                            <span class="md-headline">{{vm.stepData[1].data.title}}</span>
+                                          </md-card-title-text>
+                                        </md-card-title>
+                                        <md-card-content>
+                                          <p>
+                                            {{vm.stepData[1].data.description}}
+                                          </p>
+                                        </md-card-content>
+                                        <md-card-actions layout="row" layout-align="end center">
+                                          <md-button class="md-icon-button" aria-label="Favorite">
+                                            <md-icon md-font-icon="favorite"></md-icon>
+                                          </md-button>
+                                          <md-button class="md-icon-button" aria-label="Settings">
+                                            <md-icon md-font-icon="menu"></md-icon>
+                                          </md-button>
+                                          <md-button class="md-icon-button" aria-label="Share">
+                                            <md-icon md-font-icon="share-arrow"></md-icon>
+                                          </md-button>
+                                        </md-card-actions>
+                                      </md-card>
+
+                                </div>
+                                <div flex="100" flex-gt-sm="35" flex-order="1" flex-order-gt-sm="0" layout-padding>
+                                    <div flex="100" flex-sm="100" flex-xs="100">
+                                        <md-toolbar class="md-accent md-hue-1">
+                                            <div class="md-toolbar-tools">
+                                                <md-icon class="material-icons" hide-xs style="margin-right:10px">trending_flat</md-icon>
+                                                <h2 hide-xs hide-sm>Want to create this campaign now?</h2>
+                                                <h2 hide-md hide-lg hide-xl>Create campaign now?</h2>
+                                                <span flex></span>
+                                                <md-button class="md-primary md-raised md-hue-2" ng-disabled="vm.showBusyText" ng-click="vm.startCampaignFromLink()" aria-label="Yes, create now!">
+                                                    <md-icon class="material-icons">open_in_new</md-icon>
+                                                    Yes<span hide-xs>, create now!</span>
+                                                </md-button>
+                                            </div>
+                                        </md-toolbar>
+                                        <span class="md-title">Copy/paste the link below into a new tab</span>
+                                        <div layout="row" layout-xs="column" flex>
+                                            <md-input-container flex class="md-block">
+                                                <input id="shortLink" ng-model="vm.campaignCreateShortLink" md-select-on-focus ng-readonly="true" aria-label="Campaign Short Link" />
+                                            </md-input-container>
+                                            <div>
+                                                <md-button ng-show="!vm.showClipboardTooltip && !vm.showFallbackClipboardTooltip" type="button" class="md-raised" aria-label="Copy URL" ngclipboard data-clipboard-target="#shortLink" ngclipboard-success="vm.clipboardCopySuccess($event);" ngclipboard-error="vm.clipboardCopyError($event);">
+                                                    <md-icon class="material-icons">content_copy</md-icon>
+                                                    Copy Url
+                                                </md-button>
+                                                <md-button ng-show="vm.showClipboardTooltip || vm.showFallbackClipboardTooltip" type="button" class="md-raised md-accent md-hue-3" aria-label="URL Copied!" ngclipboard data-clipboard-target="#shortLink" ngclipboard-success="vm.clipboardCopySuccess($event);" ngclipboard-error="vm.clipboardCopyError($event);">
+                                                    <span ng-show="vm.showClipboardTooltip">
+                                                        <md-icon class="material-icons">done</md-icon>
+                                                        Url Copied!
+                                                    </span>
+                                                    <span ng-show="vm.showFallbackClipboardTooltip">
+                                                        <md-icon class="material-icons">done</md-icon>
+                                                        Press Ctrl+C
+                                                    </span>
+                                                </md-button>
+                                            </div>
                                         </div>
                                     </div>
-                                    <md-toolbar class="md-accent md-hue-2">
-                                        <div class="md-toolbar-tools">
-                                            <md-icon class="material-icons" hide-xs style="margin-right:10px">trending_flat</md-icon>
-                                            <h2 hide-xs hide-sm>Want to create this campaign now?</h2>
-                                            <h2 hide-md hide-lg hide-xl>Create campaign now?</h2>
-                                            <span flex></span>
-                                            <md-button class="md-primary md-raised md-hue-2" ng-disabled="vm.showBusyText" ng-click="vm.startCampaignFromLink()" aria-label="Yes, create now!">
-                                                <md-icon class="material-icons">open_in_new</md-icon>
-                                                Yes<span hide-xs>, create now!</span>
-                                            </md-button>
-                                        </div>
-                                    </md-toolbar>
                                 </div>
                             </div>
                             <md-step-actions layout="row" layout-padding>

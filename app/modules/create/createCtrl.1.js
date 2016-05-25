@@ -13,7 +13,7 @@
 		.module('create')
 		.controller('CreateCtrl', Create);
 
-		Create.$inject = ['$scope', '$q', '$mdToast', '$mdDialog', '$window', 'BitlyService', 'filepicker', '$filter', 'CreateService'];
+		Create.$inject = ['$scope', '$q', '$timeout', '$mdToast', '$mdDialog', '$window', 'BitlyService', '$httpParamSerializerJQLike', 'filepicker', '$filter'];
 
 		/*
 		* recommend
@@ -21,7 +21,7 @@
 		* and bindable members up top.
 		*/
 
-		function Create($scope, $q, $mdToast, $mdDialog, $window, BitlyService, filepicker, $filter, CreateService) {
+		function Create($scope, $q, $timeout, $mdToast, $mdDialog, $window, BitlyService, $httpParamSerializerJQLike, filepicker, $filter) {
 			/*jshint validthis: true */
 			var vm = this;
 			window.Intercom("boot", {
@@ -55,7 +55,7 @@
 				{ step: 2, completed: false, optional: false, data: {title: 'Imagine Saving a Life: Donate Blood Today', price: ''} },
 				{ step: 3, completed: false, optional: false, data: {} },
 			];
-			
+		
 			vm.enableNextStep = function nextStep(skip) {
 				//do not exceed into max step
 				if (vm.selectedStep >= vm.maxStep) {
@@ -73,53 +73,46 @@
 					vm.selectedStep = vm.selectedStep - 1;
 				}
 			};
-
+			
 			$scope.showPreview = false;
 			vm.urlSearch = '';
-
+			
 			vm.getUrlInfo = function getUrlInfo(url) {
-				CreateService.getEmbedlyRes(url).then(
-					function (response) {
-						$scope.embedlyImages = response.data.images;
-					}
-				);
 				$mdToast.hide();
 				vm.urlSearch = url;
 				//look at $scope.$on('embedly-fetch-success') or $scope.$on('embedly-fetch-error') for functionality after embedly call.
 			};
-
+			
 			$scope.$on('embedly-fetch-success', function() {
 				$scope.showPreview = true;
 				//$scope.$digest();
 			});
-
+			
 			$scope.$on('embedly-fetch-error', function() {
 				$scope.showPreview = false;
 			});
-
+			
 			vm.campaignCreateShortLink = '';
-
-			vm.submitCurrentStep = function submitCurrentStep(stepData) {
+			
+			vm.submitCurrentStep = function submitCurrentStep(stepData, isSkip) {
 				vm.showBusyText = true;
-
+				
 				if (stepData.step === 1) { // stepper is going from step 1 to step 2
-					$scope.cardTitle;
-					$scope.$broadcast('secondstep');
 					vm.showBusyText = false;
 					stepData.completed = true;
 					vm.enableNextStep();
 				} else 
-					if (stepData.step === 2) { // stepper is going from step 2 to step 3
-						console.log(vm.stepData[1].data.cardImg);
-						//$scope.$broadcast('create-bitly-link');
-						var base_url = 'https://www.giftstarter.com/create?product_url=',
-							product_url = vm.stepData[0].data.product_url,
-							title = vm.stepData[1].data.title, //update once embedly bind is finished.
-							price = parseFloat($filter('number')(vm.stepData[1].data.price*100, 2).replace(/,/g, '')),
-							img_url = vm.stepData[1].data.cardImg,
-							source = 'Bloodworks Northwest', //update once embedly bind is finished. Need to bind "source" from embedly returned data.
-							urlToShorten = base_url + product_url + '&title=' + title +'&price=' + price + '&img_url=' + img_url + '&source=' + source;
-
+				if (stepData.step === 2) { // stepper is going from step 2 to step 3
+					console.log(vm.stepData[1].data.cardImg);
+					//$scope.$broadcast('create-bitly-link');
+					var base_url = 'https://www.giftstarter.com/create?product_url=',
+						product_url = vm.stepData[0].data.product_url,
+						title = vm.stepData[1].data.title, //update once embedly bind is finished.
+						price = parseFloat($filter('number')(vm.stepData[1].data.price*100, 2).replace(/,/g, '')),
+						img_url = vm.stepData[1].data.cardImg,
+						source = 'Bloodworks Northwest', //update once embedly bind is finished. Need to bind "source" from embedly returned data.
+						urlToShorten = base_url + product_url + '&title=' + title +'&price=' + price + '&img_url=' + img_url + '&source=' + source;
+						
 					var bitlyPromise = BitlyService.getShortUrl(urlToShorten);
 					bitlyPromise.then(function (data) {
 						vm.campaignCreateShortLink = data;
@@ -129,41 +122,41 @@
 						vm.showFallbackClipboardTooltip = false;
 						vm.enableNextStep();
 					}, function (reason) {
-							console.log('Failed: ' + reason);
-							vm.campaignCreateShortLink = '';
-							vm.showBusyText = false;
-							stepData.completed = false;
-							$mdToast.show(
-								$mdToast.simple()
-								.content('There was an issue creating your custom campaign link. Please try again.')
-								.position('bottom left')
-								.hideDelay(3500)
-							);
-						});
-					}
-				};
+						console.log('Failed: ' + reason);
+						vm.campaignCreateShortLink = '';
+						vm.showBusyText = false;
+						stepData.completed = false;
+						$mdToast.show(
+							$mdToast.simple()
+							.content('There was an issue creating your custom campaign link. Please try again.')
+							.position('bottom left')
+							.hideDelay(3500)
+						);
+					});
+				}
+			};
 			
-				$scope.setUploadedImage = function (fpfile) {
-					$scope.mdCardImg = fpfile.url;
-					$scope.cardImg = fpfile.url;
-					vm.cardImg = fpfile.url;
-					vm.stepData[1].data.cardImg = fpfile.url;
-					console.log(fpfile);
-				};
+			$scope.setUploadedImage = function (fpfile) {
+				$scope.mdCardImg = fpfile.url;
+				$scope.cardImg = fpfile.url;
+				vm.cardImg = fpfile.url;
+				vm.stepData[1].data.cardImg = fpfile.url;
+				console.log(fpfile);
+			};
 			
-				$scope.campaignCreateShortLink = 'http://bit.ly/1234567890';
+			$scope.campaignCreateShortLink = 'http://bit.ly/1234567890';
 			
-				vm.showUrlEducationDialog = function showUrlEducationDialog(ev) {
-					$mdDialog.show(
-						$mdDialog.alert()
-						.clickOutsideToClose(true)
-						.title('How this tool works.')
-						.ariaLabel('How this tool works.')
-						.textContent('This tool does it\'s best to extract content from any url it is given. If the content above looks wonky, first make sure you have the correct url. If you are 100% sure you do, use the next step to customize things to look how you want.')
-						.targetEvent(ev)
-						.ok('Close')
-					);
-				};
+			vm.showUrlEducationDialog = function showUrlEducationDialog(ev) {
+				$mdDialog.show(
+					$mdDialog.alert()
+					.clickOutsideToClose(true)
+					.title('How this tool works.')
+					.ariaLabel('How this tool works.')
+					.textContent('This tool does it\'s best to extract content from any url it is given. If the content above looks wonky, first make sure you have the correct url. If you are 100% sure you do, use the next step to customize things to look how you want.')
+					.targetEvent(ev)
+					.ok('Close')
+				);
+			};
 			
 			vm.startCampaignFromLink = function startCampaignFromLink() {
 				$window.open(vm.campaignCreateShortLink);
