@@ -1,4 +1,4 @@
-<div layout="row" layout-margin layout="column" data-ng-controller="CreateCtrl" ng-cloak class="create">
+<div layout="row" layout-margin layout="column" data-ng-controller="CreateCtrl" bind-embedly ng-cloak class="create">
     <div flex>
         <md-card>
             <md-toolbar>
@@ -82,7 +82,7 @@
                                         <md-input-container class="md-icon-float md-block">
                                             <label>Title of cause</label>
                                             <md-icon class="material-icons">font_download</md-icon>
-                                            <input name="title" ng-model="vm.stepData[1].data.title" required aria-label="Title of cause"/>
+                                            <input name="title" class="cause-title" required ng-model="cardTitle" aria-label="Title of cause" />
                                             <div ng-messages="step2.title.$error" role="alert">
                                                 <div ng-message-exp="['required']">
                                                     Please add a title to your cause so we know what to call it.
@@ -100,10 +100,23 @@
                                                 </div>
                                             </div>
                                         </md-input-container>
+                                        <md-content>
+                                        <p>Choose campaign image</p>
+                                        <hr/>
+                                        <div layout="row" layout-md="column" class="layout-md-column layout-row layout-margin">
+                                            <div flex="" class="flex" ng-repeat="image in ::embedlyImages track by $index">
+                                                <img class="embedly-variation-images" ng-src="{{ image.url }}" alt="{{ image.caption}}" />
+                                             </div>
+                                        </div>
+                                        </md-content>
                                         <p>Upload custom campaign image <em>(optional)</em></p>
                                         <md-content class="filestack-container" layout-padding>
                                             <input id="filestack-widget" filepicker data-fp-apikey="AVdh2bvkuTYKQI3rdMsZXz" type="filepicker-dragdrop" data-fp-services="computer,url,webcam,video,gmail,facebook,instagram,twitter,box,dropbox,googledrive" on-success="setUploadedImage(event.fpfile)" />
                                         </md-content>
+                                        <md-input-container class="md-block">
+                                              <label>Or paste image URL </label>
+                                              <input name="imageurl" class="cause-img" ng-model="cardImg" />
+                                        </md-input-container>
                                     </form>
                                     <div flex>
                                         <md-toolbar class="md-accent" ng-show="!loading_embedly">
