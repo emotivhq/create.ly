@@ -88,13 +88,13 @@
                                             </div>
                                         </md-input-container>
                                         <md-content>
-                                        <p>Choose campaign image</p>
-                                        <hr/>
-                                        <div layout="row" layout-xs="column" layout-align="start start" layout-wrap>
-                                            <md-card flex="20" ng-repeat="image in ::embedlyImages track by $index">
-                                                <img class="embedly-variation-images" ng-class="{'selected': mdCardImg.src === image.url}" style="cursor: pointer;" ng-src="{{ image.url }}" alt="{{ image.caption}}" />
-                                            </md-card>
-                                        </div>
+                                            <p>Choose campaign image</p>
+                                            <hr/>
+                                            <div layout="row" layout-xs="column" layout-align="start start" layout-wrap>
+                                                <md-card flex="20" ng-repeat="image in ::embedlyImages track by $index">
+                                                    <img class="embedly-variation-images" ng-class="{'selected': mdCardImg.src === image.url}" style="cursor: pointer;" ng-src="{{ image.url }}" alt="{{ image.caption}}" />
+                                                </md-card>
+                                            </div>
                                         </md-content>
                                         <p>Upload custom campaign image <em>(optional)</em></p>
                                         <md-content class="filestack-container" layout-padding>
@@ -129,20 +129,20 @@
                         <md-step-body>
                             <div layout="column" layout-gt-sm="row" layout-align="center start">
                                 <div flex="100" flex-gt-sm="50" flex-order="1" flex-order-gt-sm="0" layout-padding>
-                                    <embedly urlsearch="{{vm.urlSearch}}"></embedly>
-                                    <!--<md-card>-->
-                                    <!--    <img ng-show="cardImg" ng-src="{{cardImg}}" class="md-card-image" alt="{{cardTitle}}">-->
-                                    <!--    <md-card-title ng-show="cardTitle">-->
-                                    <!--        <md-card-title-text>-->
-                                    <!--            <span class="md-headline">{{cardTitle}}</span>-->
-                                    <!--        </md-card-title-text>-->
-                                    <!--    </md-card-title>-->
-                                    <!--    <md-card-content ng-show="cardDescription">-->
-                                    <!--        <p>-->
-                                    <!--            {{cardDescription}}-->
-                                    <!--        </p>-->
-                                    <!--    </md-card-content>-->
-                                    <!--</md-card>-->
+                                    <!--<embedly urlsearch="{{vm.urlSearch}}"></embedly>-->
+                                    <md-card>
+                                        <img ng-show="cardImg" ng-src="{{cardImg}}" class="md-card-image" alt="{{cardTitle}}">
+                                        <md-card-title ng-show="cardTitle">
+                                            <md-card-title-text>
+                                                <span class="md-headline">{{cardTitle}}</span>
+                                            </md-card-title-text>
+                                        </md-card-title>
+                                        <md-card-content ng-show="cardDescription">
+                                            <p>
+                                                {{cardDescription}}
+                                            </p>
+                                        </md-card-content>
+                                    </md-card>
                                 </div>
                                 <div flex="100" flex-gt-sm="50" flex-order="0" flex-order-gt-sm="1" layout-padding layout-margin>
                                     <md-toolbar class="md-accent md-hue-1">
