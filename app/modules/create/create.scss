@@ -7,9 +7,10 @@
         transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
         color: grey;
     }
+}
     /*
      ************************
-     If filepicker generates 3 distinct components in DOM, 
+     If filepicker generates 3 distinct components in DOM,
      cancel out the fake ones
      ************************
     .filestack-container {
@@ -19,17 +20,21 @@
 
     }
     */
-}
+    
 embedly {
     transition: none;
     &.ng-hide, &.ng-enter, &.ng-leave.ng-leave-active {
         transition: none;
         opacity: 0;
     }
-    
+
     &.ng-leave, &.ng-enter.ng-enter-active {
         transition: opacity 0.1s cubic-bezier(0.55, 0, 0.55, 0.2);
         opacity: 1;
     }
+md-card-title {
+    font-size: 24px;
+    line-height: 32px;
+}
 }
 // endinjector

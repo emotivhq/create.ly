@@ -33,7 +33,6 @@ var angularEmbedly = angular.module('angular-embedly', []);
             this.embed = function(inputUrl, maxwidth, scheme) {
                 var escapedUrl = encodeURIComponent(inputUrl);
                 var embedlyRequest = getProtocol() + '://api.embed.ly/1/oembed?key=' + key + '&url=' +  escapedUrl;
-
                 if(typeof maxwidth !== 'undefined'){
                     embedlyRequest = embedlyRequest + '&maxwidth=' + maxwidth;
                 }
@@ -84,14 +83,14 @@ var angularEmbedly = angular.module('angular-embedly', []);
             },
             controller: 'emEmbedCtrl',
             link: function(scope, element, attributes) {
-                
+
                 // This function should be called when the oEmbed returns no embed code
                 function handleEmpty(){
                     if(scope.onempty != undefined && typeof(scope.onempty) == "function"){
                         scope.onempty();
                     }
                 }
-                
+
                 scope.$parent.loading_embedly = false;
 
                 scope.$watch('urlsearch', function(newVal) {
@@ -124,7 +123,7 @@ var angularEmbedly = angular.module('angular-embedly', []);
                                         }
                                         break;
                                     default:
-                                        // call the dev's handling code, he probably assumed he would get a video 
+                                        // call the dev's handling code, he probably assumed he would get a video
                                         // or photo (otherwise he'd use a different tool), so for him this result
                                         // is the same as an empty result.
                                         handleEmpty();

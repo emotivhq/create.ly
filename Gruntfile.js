@@ -136,7 +136,7 @@ module.exports = function (grunt) {
 				css: {
 					files: ["app/**/*.{scss,sass,css}"],
 					tasks: ["sass"]
-				},
+				}
 			}
 		},
 
@@ -216,7 +216,6 @@ module.exports = function (grunt) {
 	grunt.option('force', true);
 
 	// Register grunt tasks
-	
 	// build but don't run
 	grunt.registerTask("build", [
 		"styles",
