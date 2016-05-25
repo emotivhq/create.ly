@@ -35,7 +35,6 @@
 
 						// API info: http://dev.bitly.com/formats.html
 						getShortUrl: function(url){
-
 							var deferredRequest = $q.defer();
 							var urlEncoded = encodeURIComponent(url);
 
@@ -74,7 +73,7 @@
 											deferredRequest.resolve(response.results[url].shortUrl);
 										}
 									}else{
-										//console.info("bitly getShortUrl v"+config.version+" OK with error: ", response);
+										console.info("bitly getShortUrl v"+config.version+" OK with error: ", response);
 										deferredRequest.reject(url);
 									}
 								}).error(function(error){

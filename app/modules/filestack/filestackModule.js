@@ -1,5 +1,5 @@
 (function () {
-
+	'use strict';
 
 	/**
 	 * @ngdoc function
@@ -108,7 +108,7 @@
 	            }
 	        }
 	    };
-	};
+	}
 	
 	
 
