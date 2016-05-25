@@ -91,7 +91,7 @@
                                         <p>Choose campaign image</p>
                                         <hr/>
                                         <div layout="row" layout-md="column" class="layout-md-column layout-row layout-margin">
-                                            <div flex="" class="flex" ng-repeat="image in ::embedlyImages track by $index">
+                                            <div flex="" class="flex" ng-repeat="image in embedlyImages track by $index">
                                                 <img class="embedly-variation-images" ng-src="{{ image.url }}" alt="{{ image.caption}}" />
                                              </div>
                                         </div>

@@ -39,7 +39,7 @@
 					.hideDelay(3500)
 				);
 			};
-			
+
 			vm.productUrlHint = 'http://www.bloodworksnw.org/home/index.htm';
 			vm.showProductUrlHint = true;
 			vm.urlPattern = /^(http|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:\/~\+#]*[\w\-\@?^=%&amp;\/~\+#])?/i;
@@ -55,7 +55,7 @@
 				{ step: 2, completed: false, optional: false, data: {title: 'Imagine Saving a Life: Donate Blood Today', price: ''} },
 				{ step: 3, completed: false, optional: false, data: {} },
 			];
-			
+
 			vm.enableNextStep = function nextStep(skip) {
 				//do not exceed into max step
 				if (vm.selectedStep >= vm.maxStep) {
@@ -67,20 +67,29 @@
 				}
 				vm.selectedStep = vm.selectedStep + 1;
 			};
-		
+
 			vm.moveToPreviousStep = function moveToPreviousStep() {
 				if (vm.selectedStep > 0) {
 					vm.selectedStep = vm.selectedStep - 1;
 				}
 			};
 
+			$scope.originalUrl;
+			$scope.cardTitle;
 			$scope.showPreview = false;
 			vm.urlSearch = '';
 
 			vm.getUrlInfo = function getUrlInfo(url) {
 				CreateService.getEmbedlyRes(url).then(
 					function (response) {
-						$scope.embedlyImages = response.data.images;
+						if (response) {
+							$scope.cardTitle  = response.data.title;
+							$scope.embedlyImages = response.data.images;
+							$scope.originalUrl = response.data.original_url;
+							$scope.providerName = response.data.provider_name;
+						}
+					}, function(error) {
+						console.log('Failed request to embedly ' + error);
 					}
 				);
 				$mdToast.hide();
@@ -103,20 +112,18 @@
 				vm.showBusyText = true;
 
 				if (stepData.step === 1) { // stepper is going from step 1 to step 2
-					$scope.cardTitle;
-					$scope.$broadcast('secondstep');
 					vm.showBusyText = false;
 					stepData.completed = true;
 					vm.enableNextStep();
-				} else 
+					$scope.$broadcast('secondstep');
+				} else
 					if (stepData.step === 2) { // stepper is going from step 2 to step 3
-						console.log(vm.stepData[1].data.cardImg);
 						//$scope.$broadcast('create-bitly-link');
 						var base_url = 'https://www.giftstarter.com/create?product_url=',
 							product_url = vm.stepData[0].data.product_url,
-							title = vm.stepData[1].data.title, //update once embedly bind is finished.
+							title = $scope.cardTitle, //update once embedly bind is finished.
 							price = parseFloat($filter('number')(vm.stepData[1].data.price*100, 2).replace(/,/g, '')),
-							img_url = vm.stepData[1].data.cardImg,
+							img_url = $scope.cardImg,
 							source = 'Bloodworks Northwest', //update once embedly bind is finished. Need to bind "source" from embedly returned data.
 							urlToShorten = base_url + product_url + '&title=' + title +'&price=' + price + '&img_url=' + img_url + '&source=' + source;
 
@@ -142,7 +149,7 @@
 						});
 					}
 				};
-			
+
 				$scope.setUploadedImage = function (fpfile) {
 					$scope.mdCardImg = fpfile.url;
 					$scope.cardImg = fpfile.url;
@@ -150,9 +157,9 @@
 					vm.stepData[1].data.cardImg = fpfile.url;
 					console.log(fpfile);
 				};
-			
+
 				$scope.campaignCreateShortLink = 'http://bit.ly/1234567890';
-			
+
 				vm.showUrlEducationDialog = function showUrlEducationDialog(ev) {
 					$mdDialog.show(
 						$mdDialog.alert()
@@ -164,23 +171,23 @@
 						.ok('Close')
 					);
 				};
-			
+
 			vm.startCampaignFromLink = function startCampaignFromLink() {
 				$window.open(vm.campaignCreateShortLink);
 			};
-			
+
 			vm.clearStepper = function clearStepper() {
 				$window.location.reload();
 			};
-			
+
 			vm.showClipboardTooltip = false;
 			vm.showFallbackClipboardTooltip = false;
-			
+
 			vm.clipboardCopySuccess = function clipboardCopySuccess(ev) {
 				vm.showClipboardTooltip = true;
 				//ev.clearSelection();
 			};
-			
+
 			vm.clipboardCopyError = function clipboardCopyError(ev) {
 				vm.showFallbackClipboardTooltip = true;
 			};
