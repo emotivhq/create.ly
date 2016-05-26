@@ -201,6 +201,22 @@ module.exports = function (grunt) {
                     ext: '.css'
                 }]
             }
+        },
+        bump: {
+            options: {
+                files: ['package.json', 'bower.json'],
+                updateConfigs: [],
+                commit: true,
+                commitMessage: 'Build & release v%VERSION%',
+                commitFiles: ['package.json', 'bower.json'],
+                createTag: true,
+                tagName: 'v%VERSION%',
+                tagMessage: 'Version %VERSION%',
+                push: true, // True if you want to auto deploy while doing $ grunt beep, etc
+                pushTo: 'github',
+                gitDescribeOptions: '--tags --always --abbrev=1 --dirty=-d',
+                globalReplace: false
+            }
         }
 
 
@@ -209,6 +225,7 @@ module.exports = function (grunt) {
 
 	grunt.loadNpmTasks('grunt-contrib-sass');
 	grunt.loadNpmTasks('grunt-contrib-concat');
+	grunt.loadNpmTasks('grunt-bump');
 	require('time-grunt')(grunt);
 	require('load-grunt-tasks')(grunt);
 
@@ -237,6 +254,7 @@ module.exports = function (grunt) {
 		"concurrent",
 		"clean"
 	]);
+	
 
 	// Development task(s).
 	grunt.registerTask('dev', ['styles', 'injector:dev', 'concurrent']);
@@ -244,4 +262,13 @@ module.exports = function (grunt) {
 	// Sass task(s).
 	grunt.registerTask('styles', ['sass:ui', 'sass:modules', 'concat:modules', 'concat:ui']);
 
+
+	grunt.registerTask('beep', ['bump:patch']);
+    grunt.registerTask('boop', ['bump:minor']);
+    grunt.registerTask('bop', ['bump:major']); 
+    grunt.registerTask('prebeep', ['bump:prepatch']);
+    grunt.registerTask('preboop', ['bump:preminor']);
+    grunt.registerTask('prebop', ['bump:premajor']);
+    grunt.registerTask('prerelease', ['bump:prerelease']);
+    // for a full list of bump commands, see https://www.npmjs.com/package/grunt-bump
 };
