@@ -32,6 +32,9 @@
 		function Data ($rootScope) {
 			var vm = this;
 			vm.cardImage = '';
+			if (!$rootScope.cardImage) {
+				$rootScope.cardImage = vm.cardImage;
+			}
 		}
 
 })();

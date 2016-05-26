@@ -66,11 +66,15 @@
 					vm.stepProgress = vm.stepProgress + 1;
 				}
 				vm.selectedStep = vm.selectedStep + 1;
+				$scope.$broadcast('bindEmbedlyNow', CreateDataService.cardImage);
+				console.log('bindEmbedlyNow - next step' + CreateDataService.cardImage);
 			};
 
 			vm.moveToPreviousStep = function moveToPreviousStep() {
 				if (vm.selectedStep > 0) {
 					vm.selectedStep = vm.selectedStep - 1;
+					$scope.$broadcast('bindEmbedlyNow', CreateDataService.cardImage);
+					console.log('bindEmbedlyNow - previous step' + CreateDataService.cardImage);
 				}
 			};
 
@@ -121,24 +125,24 @@
 				vm.showBusyText = true;
 
 				if (stepData.step === 0) { // stepper is going from step 0 to step 1
-					$scope.$broadcast('bindEmbedlyNow', $scope.cardImg);
-					console.log('bindEmbedlyNow - 0' + $scope.cardImg);
+					$scope.$broadcast('bindEmbedlyNow', CreateDataService.cardImage);
+					console.log('bindEmbedlyNow - 0' + CreateDataService.cardImage);
 				} else if (stepData.step === 1) { // stepper is going from step 1 to step 2
 					vm.showBusyText = false;
 					stepData.completed = true;
 					vm.enableNextStep();
-					$scope.$broadcast('bindEmbedlyNow', $scope.cardImg);
-					console.log('bindEmbedlyNow - 1' + $scope.cardImg);
+					$scope.$broadcast('bindEmbedlyNow', CreateDataService.cardImage);
+					console.log('bindEmbedlyNow - 1' + CreateDataService.cardImage);
 				} else if (stepData.step === 2) { // stepper is going from step 2 to step 3
-					$scope.$broadcast('bindEmbedlyNow', $scope.cardImg);
-					console.log('bindEmbedlyNow - 2' + $scope.cardImg);
+					$scope.$broadcast('bindEmbedlyNow', CreateDataService.cardImage);
+					console.log('bindEmbedlyNow - 2' + CreateDataService.cardImage);
 					if (vm.stepData[1].data.price) {
 						//$scope.$broadcast('create-bitly-link');
 						var base_url = 'https://www.giftstarter.com/create?product_url=',
 							product_url = $scope.originalUrl,
 							title = $scope.cardTitle, //update once embedly bind is finished.
 							price = parseFloat($filter('number')(vm.stepData[1].data.price*100, 2).replace(/,/g, '')),
-							img_url = $scope.cardImg,
+							img_url = CreateDataService.cardImage,
 							source = $scope.providerName, //update once embedly bind is finished. Need to bind "source" from embedly returned data.
 							urlToShorten = base_url + product_url + '&title=' + title +'&price=' + price + '&img_url=' + img_url + '&source=' + source;
 
@@ -172,12 +176,6 @@
 			vm.startCampaignFromLink = function startCampaignFromLink() {
 				$window.open(vm.campaignCreateShortLink);
 			};
-			
-			$scope.$on('bindEmbedlyNow', function (data) {
-				CreateDataService.cardImage = data;
-				$scope.mdCardImg = data;
-				$scope.cardImg = data;
-			});
 
 			$scope.setUploadedImage = function (fpfile) {
 				CreateDataService.cardImage = fpfile.url;

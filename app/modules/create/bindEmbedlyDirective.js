@@ -89,7 +89,7 @@
                     twoWayImg();
                 } else {
                     embedly.prepend(params.cardImage);
-                    mdCardImg = document.querySelectorAll(params.cardImageSelector)[0];
+                    mdCardImg = CreateDataService.cardImage;
                     twoWayImg();
                 }
             });
