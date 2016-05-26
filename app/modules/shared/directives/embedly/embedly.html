@@ -12,7 +12,7 @@
             </span>
         </md-card-header-text>
     </md-card-header>
-    <img ng-src="{{embedCode.images[0].url}}" class="md-card-image" alt="{{embedCode.title}}" ng-show="embedCode.images.length > 0">
+    <img ng-src="{{cardImage}}" class="md-card-image" alt="{{embedCode.title}}" ng-show="embedCode.images.length > 0 && !hideimage">
     <md-card-title ng-show="embedCode.title">
         <md-card-title-text>
             <span class="md-headline">{{embedCode.title}}</span>

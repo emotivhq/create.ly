@@ -11,11 +11,13 @@
 
 	angular
 		.module('create')
-		.factory('CreateService', Create);
+		.factory('CreateService', Create)
+		.service('CreateDataService', Data);
 		// Inject your dependencies as .$inject = ['$http', 'someSevide'];
 		// function Name ($http, someSevide) {...}
 
 		Create.$inject = ['$http', 'EmbedlyService'];
+		Data.$inject = ['$rootScope'];
 
 		function Create ($http, EmbedlyService) {
 			function getEmbedlyRes (url) {
@@ -24,6 +26,12 @@
 			return {
 				getEmbedlyRes: getEmbedlyRes
 			};
+			
+		}
+		
+		function Data ($rootScope) {
+			var vm = this;
+			vm.cardImage = '';
 		}
 
 })();

@@ -13,9 +13,9 @@
         .module('gsConcierge')
         .directive('embedly', embedly);
         
-    embedly.$inject = ['embedlyService', '$timeout'];
+    embedly.$inject = ['embedlyService', 'CreateDataService', '$timeout'];
 
-    function embedly(embedlyService, $timeout) {
+    function embedly(embedlyService, CreateDataService, $timeout) {
 
         var directive = {
             link: link,
@@ -25,6 +25,7 @@
                 urlsearch: '@',
                 maxwidth: '@',
                 scheme: '@',
+                hideimage: '@',
                 onempty: '&'
             },
             templateUrl: '/app/modules/shared/directives/embedly/embedly.html'
@@ -53,6 +54,14 @@
                                 switch (data.data.type) {
                                 case 'html':
                                     scope.embedCode = data.data;
+                                    if (CreateDataService.cardImage) {
+                                        scope.cardImage = CreateDataService.cardImage;
+                                        console.log('CreateDataService: ' + scope.cardImage);
+                                    } else if (!CreateDataService.cardImage && scope.embedCode.images[0].url){
+                                        CreateDataService.cardImage = scope.embedCode.images[0].url;
+                                        scope.cardImage = scope.embedCode.images[0].url;
+                                        console.log('embedCode.images[0].url: ' + scope.cardImage);
+                                    }
                                     break;
                                 case 'video':
                                 case 'rich':

@@ -20,7 +20,7 @@
                                             <div layout="row" layout-xs="column" flex>
                                                 <md-input-container flex class="md-block">
                                                     <input name="product_url" ng-model="vm.stepData[0].data.product_url" ng-disabled="vm.showBusyText" md-select-on-focus ng-pattern="vm.urlPattern" ng-model-options="{ updateOn: 'default blur', debounce: { default: 300, blur: 300 } }" required aria-label="Enter Url"/>
-                                                    <div class="hint hide" ng-show="vm.showProductUrlHint">Example: <span>{{vm.productUrlHint}}</span></div>
+                                                    <div class="hint" ng-show="vm.showProductUrlHint">Example: <span>{{vm.productUrlHint}}</span></div>
                                                     <div ng-messages="step1.product_url.$error" role="alert">
                                                         <div ng-message-exp="['required','pattern']">
                                                             That doesn't look like a valid url... are you sure you pasted the right thing?
@@ -48,7 +48,7 @@
                                  <div flex layout="row" layout-align="start top">
                                     <md-button ng-hide="vm.showBusyText || loading_embedly || !showPreview" ng-disabled="vm.showBusyText || loading_embedly || !showPreview" ng-click="vm.showUrlEducationDialog($event)">
                                         <md-icon md-svg-icon="md-toggle-arrow"></md-icon> This doesn't look right
-                                         <md-tooltip md-direction="left">
+                                         <md-tooltip md-direction="top">
                                             Did you expect a different site?
                                         </md-tooltip>
                                     </md-button>
@@ -111,7 +111,7 @@
                                  <div flex layout="row" layout-align="start top">
                                     <md-button ng-disabled="vm.showBusyText" ng-click="vm.moveToPreviousStep()">
                                         <md-icon class="material-icons">chevron_left</md-icon>Go back
-                                         <md-tooltip md-direction="left">
+                                         <md-tooltip md-direction="top">
                                             Did you change your mind?
                                         </md-tooltip>
                                     </md-button>
@@ -132,36 +132,13 @@
                                         allow ability to update ng-src for this to work,
                                         then add to step 2 as well instead of embedly directive
                                     -->
-                                    <md-card>
-                                        <md-card-header ng-show="faviconUrl || providerName || providerDisplay">
-                                            <md-card-avatar ng-show="faviconUrl">
-                                                <img ng-src="{{faviconUrl}}" alt="{{providerName}}" />
-                                            </md-card-avatar>
-                                            <md-card-header-text>
-                                                <span class="md-title" ng-show="providerName">{{providerName}}</span>
-                                                <span class="md-subhead" ng-show="providerDisplay">
-                                                    <span hide-xs>See more at </span>{{providerDisplay}}
-                                                </span>
-                                            </md-card-header-text>
-                                        </md-card-header>
-                                        <img ng-src="{{cardImg}}" class="md-card-image" alt="{{cardTitle}}" ng-show="cardImg">
-                                        <md-card-title ng-show="cardTitle">
-                                            <md-card-title-text>
-                                                <span class="md-headline">{{cardTitle}}</span>
-                                            </md-card-title-text>
-                                        </md-card-title>
-                                        <md-card-content ng-show="cardDescription">
-                                            <p>
-                                                {{cardDescription}}
-                                            </p>
-                                        </md-card-content>
-                                    </md-card>
+                                    <embedly hideimage="true" urlsearch="{{vm.urlSearch}}"></embedly>
                                 </div>
                                 <div flex="100" flex-gt-sm="50" flex-order="0" flex-order-gt-sm="1" layout-padding layout-margin>
                                     <md-button flex style="width:100%" flex="100" class="md-primary md-raised md-hue-2" ng-disabled="vm.showBusyText" ng-click="vm.startCampaignFromLink()" aria-label="Create campaign now">
                                         <md-icon class="material-icons">open_in_new</md-icon>
                                         Create <span hide-xs>this campaign</span> now
-                                        <md-tooltip md-direction="bottom">
+                                        <md-tooltip md-direction="top">
                                             If you're ready now, let's do this.
                                         </md-tooltip>
                                     </md-button>
@@ -174,7 +151,7 @@
                                         <div>
                                             <md-button ng-show="!vm.showClipboardTooltip && !vm.showFallbackClipboardTooltip" type="button" class="md-fab md-no-ink md-accent md-hue-1 md-mini" md-no-ink aria-label="Copy URL" ngclipboard data-clipboard-target="#shortLink" ngclipboard-success="vm.clipboardCopySuccess($event);" ngclipboard-error="vm.clipboardCopyError($event);">
                                                 <md-icon class="material-icons">content_copy</md-icon>
-                                                <md-tooltip md-direction="bottom">
+                                                <md-tooltip md-direction="top">
                                                     Copy url
                                                 </md-tooltip>
                                             </md-button>
