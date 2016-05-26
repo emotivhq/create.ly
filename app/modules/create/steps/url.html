@@ -1,0 +1,49 @@
+                        <md-step-body>
+                            <div layout="column">
+                                <div layout="row" layout-padding layout-align="center start" layout-wrap>
+                                    <div flex="90" flex-sm="90" flex-xs="100">
+                                        <span class="md-title">
+                                            Paste any non-profit url
+                                        </span>
+                                        <form name="step1" ng-submit="vm.getUrlInfo(vm.stepData[0].data.product_url)">
+                                            <div layout="row" layout-xs="column" flex>
+                                                <md-input-container flex class="md-block">
+                                                    <input name="product_url" ng-model="vm.stepData[0].data.product_url" ng-disabled="vm.showBusyText" md-select-on-focus ng-pattern="vm.urlPattern" ng-model-options="{ updateOn: 'default blur', debounce: { default: 300, blur: 300 } }" required aria-label="Enter Url"/>
+                                                    <div class="hint" ng-show="vm.showProductUrlHint">{{vm.productUrlHint}}</div>
+                                                    <div ng-messages="step1.product_url.$error" role="alert">
+                                                        <div ng-message-exp="['required','pattern']">
+                                                            That doesn't look like a valid url... are you sure you pasted the right thing?
+                                                        </div>
+                                                    </div>
+                                                </md-input-container>
+                                                <div>
+                                                    <md-button type="submit" class="md-raised" ng-disabled="!vm.stepData[0].data.product_url || loading_embedly || vm.showBusyText" aria-label="Get URL Info"  ng-click="vm.getUrlInfo(vm.stepData[0].data.product_url)">
+                                                        <md-icon class="material-icons">search</md-icon>
+                                                        Find Cause
+                                                    </md-button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <md-progress-linear md-mode="indeterminate" ng-show="loading_embedly"></md-progress-linear>
+                                    </div>
+                                    <div flex="60" flex-sm="90" flex-xs="100">
+                                        <div ng-show="showPreview">
+                                            <embedly urlsearch="{{vm.urlSearch}}" onempty="tryAgain()"></embedly>
+                                            <md-toolbar class="md-accent">
+                                                <div class="md-toolbar-tools">
+                                                    <md-icon class="material-icons" hide-xs style="margin-right:10px">arrow_upward</md-icon>
+                                                    <h2>Does this look right?</h2>
+                                                    <span flex></span>
+                                                    <md-button hide-xs class="md-accent md-hue-3 md-mini" ng-disabled="vm.showBusyText || loading_embedly || !showPreview" ng-click="vm.showUrlEducationDialog($event)" aria-label="No, but why?">
+                                                        No
+                                                    </md-button>
+                                                    <md-button class="md-primary md-raised" ng-disabled="vm.showBusyText || loading_embedly || !showPreview" ng-click="vm.submitCurrentStep(vm.stepData[0])" aria-label="Yep, let's move on!">
+                                                        Yes<span hide-xs>, let's move on!</span>
+                                                    </md-button>
+                                                </div>
+                                            </md-toolbar>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </md-step-body>

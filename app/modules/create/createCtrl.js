@@ -48,7 +48,7 @@
 			vm.maxStep = 3;
 			vm.showBusyText = false;
 			vm.cardImg = '';
-			$scope.cardImg;
+			$scope.cardImg = '';
 			// Setup the initial step data
 			vm.stepData = [
 				{ step: 1, completed: false, optional: false, data: {product_url: 'https://'}},
@@ -74,13 +74,12 @@
 				}
 			};
 
-			$scope.cardTitle;
-			$scope.embedlyImages;
-			$scope.originalUrl;
-			$scope.providerName;
-			$scope.faviconUrl;
-			$scope.providerDisplay;
-			$scope.cardDescription;
+			$scope.cardTitle = '';
+			$scope.originalUrl = '';
+			$scope.providerName = '';
+			$scope.faviconUrl = '';
+			$scope.providerDisplay = '';
+			$scope.cardDescription = '';
 			vm.urlSearch = '';
 			
 			vm.getUrlInfo = function getUrlInfo(url) {
@@ -107,11 +106,13 @@
 			$scope.showPreview = false;
 			$scope.$on('embedly-fetch-success', function() {
 				$scope.showPreview = true;
+				console.log('embedly-fetch-success');
 				//$scope.$digest();
 			});
 
 			$scope.$on('embedly-fetch-error', function() {
 				$scope.showPreview = false;
+				console.log('embedly-fetch-failure');
 			});
 
 			vm.campaignCreateShortLink = '';
@@ -124,8 +125,8 @@
 					stepData.completed = true;
 					vm.enableNextStep();
 					$scope.$broadcast('secondstep');
-				} else
-					if (stepData.step === 2) { // stepper is going from step 2 to step 3
+				} else if (stepData.step === 2) { // stepper is going from step 2 to step 3
+					if (vm.stepData[1].data.price) {
 						//$scope.$broadcast('create-bitly-link');
 						var base_url = 'https://www.giftstarter.com/create?product_url=',
 							product_url = $scope.originalUrl,
@@ -135,26 +136,30 @@
 							source = $scope.providerName, //update once embedly bind is finished. Need to bind "source" from embedly returned data.
 							urlToShorten = base_url + product_url + '&title=' + title +'&price=' + price + '&img_url=' + img_url + '&source=' + source;
 
-					var bitlyPromise = BitlyService.getShortUrl(urlToShorten);
-					bitlyPromise.then(function (data) {
-						vm.campaignCreateShortLink = data;
-						vm.showBusyText = false;
-						stepData.completed = true;
-						vm.showClipboardTooltip = false;
-						vm.showFallbackClipboardTooltip = false;
-						vm.enableNextStep();
-					}, function (reason) {
-							console.log('Failed: ' + reason);
-							vm.campaignCreateShortLink = '';
+						var bitlyPromise = BitlyService.getShortUrl(urlToShorten);
+						bitlyPromise.then(function (data) {
+							vm.campaignCreateShortLink = data;
 							vm.showBusyText = false;
-							stepData.completed = false;
-							$mdToast.show(
-								$mdToast.simple()
-								.content('There was an issue creating your custom campaign link. Please try again.')
-								.position('bottom left')
-								.hideDelay(3500)
-							);
-						});
+							stepData.completed = true;
+							vm.showClipboardTooltip = false;
+							vm.showFallbackClipboardTooltip = false;
+							vm.enableNextStep();
+						}, function (reason) {
+								console.log('Failed: ' + reason);
+								vm.campaignCreateShortLink = '';
+								vm.showBusyText = false;
+								stepData.completed = false;
+								$mdToast.show(
+									$mdToast.simple()
+									.content('There was an issue creating your custom campaign link. Please try again.')
+									.position('bottom left')
+									.hideDelay(3500)
+								);
+							});
+					} else {
+			            vm.showBusyText = true;
+			            stepData.completed = false;
+					}
 				}
 			};
 
@@ -178,7 +183,8 @@
 						.ariaLabel('How this tool works.')
 						.textContent('This tool does it\'s best to extract content from any url it is given. If the content above looks wonky, first make sure you have the correct url. If you are 100% sure you do, use the next step to customize things to look how you want.')
 						.targetEvent(ev)
-						.ok('Close')
+						.ok
+						.cancel('Start over')
 					);
 				};
 

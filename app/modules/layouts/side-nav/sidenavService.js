@@ -23,7 +23,7 @@
 				
 					{
 						link: 'create',
-						name: 'Create campaign link',
+						name: 'Non profit campaign',
 						icon: 'open_in_browser',
 						hide: false
 					},

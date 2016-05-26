@@ -25,6 +25,8 @@ embedly {
   embedly.ng-leave, embedly.ng-enter.ng-enter-active {
     transition: opacity 0.1s cubic-bezier(0.55, 0, 0.55, 0.2);
     opacity: 1; }
+  embedly .embedly-variation-images {
+    cursor: pointer; }
   embedly md-card-title {
     font-size: 24px;
     line-height: 32px; }

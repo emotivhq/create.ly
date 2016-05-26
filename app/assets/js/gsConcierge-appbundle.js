@@ -1,5 +1,5 @@
 /*!
-* gsConcierge - v0.0.1 - MIT LICENSE 2016-05-24. 
+* gsConcierge - v0.0.2 - MIT LICENSE 2016-05-26. 
 * @author Emotiv
 */
 (function() {
@@ -25,7 +25,6 @@
 		'ngStamplay',
 		'ngMessages',
 		'angular-embedly', //Switch to embedlyServiceProvider within app before removing. Needed to setKey.
-		'angular-filepicker', //Switch to filepickerServiceProvider within app before removing. Needed to setKey.
 		'md-steppers',
 		'ui.router',
 		'home',
@@ -33,6 +32,8 @@
 		'usersync',
 		'embedly',
 		'bitly',
+		'filestack',
+		'ngclipboard'
 	]);
 
 })();
@@ -111,7 +112,6 @@
 		// Service configurations
 		embedlyServiceProvider.setKey('a46a33d99bc642b4aab1dfa58dc11f32');
 		
-		
 		BitlyServiceProvider.cfgBitly({
 			login: 'giftstarter',
 			api: 'R_85bf9d10211f4423b5c3be4a336ad77d',
@@ -183,6 +183,191 @@
 	 */
 
 	angular.module('embedly', []);
+
+})();
+
+(function () {
+	'use strict';
+
+	/**
+	 * @ngdoc function
+	 * @name app.module:filestackModule
+	 * @description
+	 * # filestackModule
+	 * Module of the app
+	 */
+
+	angular.module('filestack',[]);
+	
+	window.filepicker = window.filepicker || {};
+	window.filepicker.plugin = 'angular_js_lib';
+	
+	angular.module('filestack')
+	.directive('filepicker', filepickerDirective);
+	
+	filepickerDirective.$inject = ['$rootScope', 'filepickerService', '$parse'];
+	function filepickerDirective($rootScope, filepickerService, $parse){
+	    return {
+	        restrict: 'A',
+	        scope:{
+	            onSuccess:'&'
+	        },
+	        link: function(scope, element, attrs) {
+	            var key, value;
+	            /*
+	                pass original event
+	            */
+	            element.bind('change', function(event) {
+	                event.preventDefault();
+	                scope.onSuccess({event: event.originalEvent || event});
+	                $rootScope.$apply();
+	            });
+	
+	            element = element.length ? element[0] : element;
+	
+	            for (key in attrs.$attr){
+	                value = attrs.$attr[key];
+	                element.setAttribute(value, attrs[key]);
+	            }
+	
+	            filepickerService.constructWidget(element);
+	        }
+	    };
+	}
+	
+
+	angular.module('filestack')
+	.provider('filepicker', function() {
+	
+	    this.$get = function(){
+	        return window.filepicker;
+	     };
+	
+	    this.setKey = function(key) {
+	        try {
+	            window.filepicker.setKey(key);
+	        } catch(err) {
+	            console.error('Include filepicker.js script');
+	        }
+	    };
+	});
+	
+	filepickerService.$inject = ['$window'];
+	angular.module('filestack')
+	.service('filepickerService',filepickerService);
+	
+	function filepickerService($window){
+	    return $window.filepicker;
+	}
+	
+
+	filepickerPreviewDirective.$inject = ['$rootScope', 'filepickerService'];
+	angular.module('filestack')
+	.directive('filepickerPreview', filepickerPreviewDirective);
+	
+	function filepickerPreviewDirective($rootScope, filepickerService){
+	
+		return {
+	        restrict: 'A',
+	        scope:{
+	            url: '=',
+	        },
+	        link: function(scope, element, attrs) {
+	            var url = scope.url;
+	
+	            var iframe = document.createElement('iframe');
+	            iframe.src = url;
+	
+	            /* Set full size so it gets size from parrent element  */
+	
+	            iframe.width = '100%';
+	            iframe.height = '100%';
+	            angular.element(element).append(iframe);
+	
+	            scope.$watch('url', setUrl);
+	
+	            function setUrl(url){
+	                if (!url) {    
+	                    return; 
+	                } else {
+	                    url = url.replace('api/file/', 'api/preview/');
+	                }
+	                iframe.src = url;
+	            }
+	        }
+	    };
+	}
+	
+	
+
+	angular.module('filestack')
+	.service('fpUtilService', fpUtilService);
+	
+	function fpUtilService(){
+	    return {
+	        toParams: toParams,
+	        serialize: serialize
+	    };
+	
+	    function toParams(obj) {
+	        var pairs = [];
+	        for (var prop in obj) {
+	            if (!obj.hasOwnProperty(prop)) {
+	                continue;
+	            }
+	            if (Object.prototype.toString.call(obj[prop]) === '[object Object]') {
+	                pairs.push(serialize(obj[prop]));
+	                continue;
+	            }
+	            pairs.push(prop + '=' + obj[prop]);
+	        }
+	        return pairs.join('&');
+	    }
+	
+	    // passed data  converted to a URL-encoded string
+	    function serialize(obj) {
+	        var str = [];
+	        for(var p in obj) {
+	            if (obj.hasOwnProperty(p)) {
+	                str.push(encodeURIComponent(p) + '=' + encodeURIComponent(obj[p]));
+	            }
+	        }
+	        return str.join('&');
+	    }
+	}
+	
+
+	filepickerPreviewDirective.$inject = ['$filter', 'fpUtilService'];
+	angular.module('filestack')
+	.filter('fpConvert', fpConvert);
+	
+	function fpConvert($filter, fpUtilService){
+	    return function (value, convertOptions) {
+	        var originalUrl = $filter('fpUrlFilter')(value);
+	        if (!originalUrl || !convertOptions){
+	            return;
+	        }
+	        return originalUrl + '/convert?' + fpUtilService.toParams(convertOptions);
+	    };
+	}
+	angular.module('filestack')
+	.filter('fpUrlFilter', function(){
+	    return function(input){
+	        if (!input){
+	            return '';
+	        }
+	        var endpoints = ['/convert', '/metadata', '?'];
+	        for (var i in endpoints) {
+	            var index = input.indexOf(endpoints[i]);
+	            if (index > -1) {
+	                return input.substr(0, index);
+	            }
+	        }
+	        return input;
+	    };
+	});
+	
+
 
 })();
 
@@ -358,7 +543,7 @@ angular.module('usersync')
 		.module('create')
 		.controller('CreateCtrl', Create);
 
-		Create.$inject = ['$scope', '$q', '$timeout', '$mdToast', '$mdDialog', 'filepicker'];
+		Create.$inject = ['$scope', '$q', '$mdToast', '$mdDialog', '$window', 'BitlyService', 'filepicker', '$filter', 'CreateService'];
 
 		/*
 		* recommend
@@ -366,7 +551,7 @@ angular.module('usersync')
 		* and bindable members up top.
 		*/
 
-		function Create($scope, $q, $timeout, $mdToast, $mdDialog, filepicker) {
+		function Create($scope, $q, $mdToast, $mdDialog, $window, BitlyService, filepicker, $filter, CreateService) {
 			/*jshint validthis: true */
 			var vm = this;
 			window.Intercom("boot", {
@@ -379,28 +564,28 @@ angular.module('usersync')
 			$scope.tryAgain = function() {
 				$mdToast.show(
 					$mdToast.simple()
-					.content('Try again, nothing returned')
-					.position('bottom right')
-					.hideDelay(2000)
+					.content('We didn\'t find anything for that URL. Please try another one.')
+					.position('bottom left')
+					.hideDelay(3500)
 				);
 			};
-			
-			$scope.product_url = '';
-			$scope.productUrlHint = 'http://www.bloodworksnw.org/home/index.htm';
-			$scope.showProductUrlHint = true;
-			$scope.urlPattern = /^(http|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:\/~\+#]*[\w\-\@?^=%&amp;\/~\+#])?/i;
 
+			vm.productUrlHint = 'http://www.bloodworksnw.org/home/index.htm';
+			vm.showProductUrlHint = true;
+			vm.urlPattern = /^(http|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:\/~\+#]*[\w\-\@?^=%&amp;\/~\+#])?/i;
 			vm.selectedStep = 0;
 			vm.stepProgress = 1;
 			vm.maxStep = 3;
 			vm.showBusyText = false;
+			vm.cardImg = '';
+			$scope.cardImg = '';
 			// Setup the initial step data
 			vm.stepData = [
 				{ step: 1, completed: false, optional: false, data: {product_url: 'https://'}},
-				{ step: 2, completed: false, optional: false, data: {title: 'Imagine Saving a Life: Donate Blood Today', price: '250.00'} },
+				{ step: 2, completed: false, optional: false, data: {title: '', price: ''} },
 				{ step: 3, completed: false, optional: false, data: {} },
 			];
-		
+
 			vm.enableNextStep = function nextStep(skip) {
 				//do not exceed into max step
 				if (vm.selectedStep >= vm.maxStep) {
@@ -412,68 +597,139 @@ angular.module('usersync')
 				}
 				vm.selectedStep = vm.selectedStep + 1;
 			};
-		
+
 			vm.moveToPreviousStep = function moveToPreviousStep() {
 				if (vm.selectedStep > 0) {
 					vm.selectedStep = vm.selectedStep - 1;
 				}
 			};
+
+			$scope.cardTitle = '';
+			$scope.embedlyImages = [];
+			$scope.originalUrl = '';
+			$scope.providerName = '';
+			$scope.faviconUrl = '';
+			$scope.providerDisplay = '';
+			$scope.cardDescription = '';
+			vm.urlSearch = '';
 			
-			vm.showPreview = false;
-			
-			$scope.getUrlInfo = function(url) {
-				$scope.urlSearch = url;
+			vm.getUrlInfo = function getUrlInfo(url) {
+				CreateService.getEmbedlyRes(url).then(
+					function (response) {
+						if (response) {
+							$scope.cardTitle  = response.data.title;
+							$scope.embedlyImages = response.data.images;
+							$scope.originalUrl = response.data.original_url;
+							$scope.providerName = response.data.provider_name;
+							$scope.faviconUrl = response.data.favicon_url;
+							$scope.providerDisplay = response.data.provider_display;
+							$scope.cardDescription = response.data.description;
+						}
+					}, function(error) {
+						console.log('Failed request to embedly ' + error);
+					}
+				);
+				$mdToast.hide();
+				vm.urlSearch = url;
+				//look at $scope.$on('embedly-fetch-success') or $scope.$on('embedly-fetch-error') for functionality after embedly call.
+			};
+
+			$scope.showPreview = false;
+			$scope.$on('embedly-fetch-success', function() {
 				$scope.showPreview = true;
-			};
-			
-			$scope.clearUrlInfo = function() {
-				$scope.urlSearch = '';
+				console.log('embedly-fetch-success');
+				//$scope.$digest();
+			});
+
+			$scope.$on('embedly-fetch-error', function() {
 				$scope.showPreview = false;
-			};
+				console.log('embedly-fetch-failure');
+			});
+
+			vm.campaignCreateShortLink = '';
 			
-			vm.submitCurrentStep = function submitCurrentStep(stepData, isSkip) {
-				console.log(stepData);
-				var deferred = $q.defer();
+			vm.submitCurrentStep = function submitCurrentStep(stepData) {
 				vm.showBusyText = true;
-				console.log('On before submit');
-				if (!stepData.completed && !isSkip) {
-					//simulate $http
+
+				if (stepData.step === 1) { // stepper is going from step 1 to step 2
 					vm.showBusyText = false;
-					console.log('Step success, #chaboi style');
-					deferred.resolve({
-						status: 200,
-						statusText: 'success',
-						data: {}
-					});
-					//move to next step when success
 					stepData.completed = true;
 					vm.enableNextStep();
-				} else {
-					vm.showBusyText = false;
-					vm.enableNextStep();
+					$scope.$broadcast('secondstep');
+				} else
+					if (stepData.step === 2) { // stepper is going from step 2 to step 3
+						//$scope.$broadcast('create-bitly-link');
+						var base_url = 'https://www.giftstarter.com/create?product_url=',
+							product_url = $scope.originalUrl,
+							title = $scope.cardTitle, //update once embedly bind is finished.
+							price = parseFloat($filter('number')(vm.stepData[1].data.price*100, 2).replace(/,/g, '')),
+							img_url = $scope.cardImg,
+							source = $scope.providerName, //update once embedly bind is finished. Need to bind "source" from embedly returned data.
+							urlToShorten = base_url + product_url + '&title=' + title +'&price=' + price + '&img_url=' + img_url + '&source=' + source;
+
+					var bitlyPromise = BitlyService.getShortUrl(urlToShorten);
+					bitlyPromise.then(function (data) {
+						vm.campaignCreateShortLink = data;
+						vm.showBusyText = false;
+						stepData.completed = true;
+						vm.showClipboardTooltip = false;
+						vm.showFallbackClipboardTooltip = false;
+						vm.enableNextStep();
+					}, function (reason) {
+							console.log('Failed: ' + reason);
+							vm.campaignCreateShortLink = '';
+							vm.showBusyText = false;
+							stepData.completed = false;
+							$mdToast.show(
+								$mdToast.simple()
+								.content('There was an issue creating your custom campaign link. Please try again.')
+								.position('bottom left')
+								.hideDelay(3500)
+							);
+						});
 				}
 			};
-			$scope.campaignCreateShortLink = 'http://bit.ly/1234567890';
-			
-			$scope.showUrlEducationDialog = function (ev) {
-				var confirm = $mdDialog.confirm()
-					.clickOutsideToClose(true)
-					.title('How this tool works.')
-					.textContent('This tool uses a method of extracting content from any link it is given. If the content above looks wonky, first make sure you have the correct link. If you are 100% sure you do, use the next step to customize the content to look exactly like you want it to.')
-					.ariaLabel('How this tool works')
-					.targetEvent(ev)
-					.ok('This link is correct. Let\'s customize the content.')
-					.cancel('Let\'s double check the link.');
-				$mdDialog.show(confirm).then(function () {
-					//TODO: move to next step two
-					//vm.submitCurrentStep(vm.stepData[0]); <--- this doesn't work...
-				}, function () {
-					//do nothing because they closed the modal.	
-				});
-				
+
+			vm.startCampaignFromLink = function startCampaignFromLink() {
+				$window.open(vm.campaignCreateShortLink);
+			};
+
+				$scope.setUploadedImage = function (fpfile) {
+					$scope.mdCardImg = fpfile.url;
+					$scope.cardImg = fpfile.url;
+					vm.cardImg = fpfile.url;
+					vm.stepData[1].data.cardImg = fpfile.url;
+					console.log(fpfile);
+				};
+
+				vm.showUrlEducationDialog = function showUrlEducationDialog(ev) {
+					$mdDialog.show(
+						$mdDialog.alert()
+						.clickOutsideToClose(true)
+						.title('How this tool works.')
+						.ariaLabel('How this tool works.')
+						.textContent('This tool does it\'s best to extract content from any url it is given. If the content above looks wonky, first make sure you have the correct url. If you are 100% sure you do, use the next step to customize things to look how you want.')
+						.targetEvent(ev)
+						.ok('Close')
+					);
+				};
+
+			vm.clearStepper = function clearStepper() {
+				$window.location.reload();
+			};
+
+			vm.showClipboardTooltip = false;
+			vm.showFallbackClipboardTooltip = false;
+
+			vm.clipboardCopySuccess = function clipboardCopySuccess(ev) {
+				vm.showClipboardTooltip = true;
+				//ev.clearSelection();
+			};
+
+			vm.clipboardCopyError = function clipboardCopyError(ev) {
+				vm.showFallbackClipboardTooltip = true;
 			};
 		}
-
 })();
 
 (function() {
@@ -503,7 +759,6 @@ angular.module('usersync')
 			/*jshint validthis: true */
 			var vm = this;
 			$scope.embedCode = '';
-
 		}
 
 })();
@@ -676,7 +931,7 @@ angular.module('usersync')
 
 	// Injecting Denpendencies
 
-	SidenavCtrl.$inject = ['$mdSidenav', '$state', '$mdBottomSheet', '$mdToast', 'MenuService', '$scope'];
+	SidenavCtrl.$inject = ['$mdSidenav', '$state', '$mdBottomSheet', '$mdToast', 'MenuService', '$scope', '$window'];
 	SettingsCtrl.$inject = ['$mdBottomSheet'];
 
 	/*
@@ -685,7 +940,7 @@ angular.module('usersync')
 	* and bindable members up top.
 	*/
 
-	function SidenavCtrl($mdSidenav, $state, $mdBottomSheet, $mdToast, MenuService, $scope) {
+	function SidenavCtrl($mdSidenav, $state, $mdBottomSheet, $mdToast, MenuService, $scope, $window) {
 		/*jshint validthis: true */
 		var vm = this;
 
@@ -704,11 +959,11 @@ angular.module('usersync')
 		vm.menu = MenuService.listMenu();
 
 		vm.admin = [
-			{
-				link: 'home.dashboard',
-				title: 'Dashboard',
-				icon: 'dashboard'
-			},
+			// {
+			// 	link: 'home.dashboard',
+			// 	title: 'Dashboard',
+			// 	icon: 'dashboard'
+			// },
 			{
 				link: 'home.external',
 				title: 'GiftStarter.com',
@@ -716,12 +971,9 @@ angular.module('usersync')
 			}
 		];
 
-		vm.navigateTo = function (target) {
-
-			var page = target;
-
-			$state.go(page);
-
+		vm.navigateTo = function (link, target) {
+				var page = link;	
+				$state.go(page);
 		};
 
 		vm.showSettingsBottom = function ($event) {
@@ -866,7 +1118,6 @@ angular.module('usersync')
 
 						// API info: http://dev.bitly.com/formats.html
 						getShortUrl: function(url){
-
 							var deferredRequest = $q.defer();
 							var urlEncoded = encodeURIComponent(url);
 
@@ -905,7 +1156,7 @@ angular.module('usersync')
 											deferredRequest.resolve(response.results[url].shortUrl);
 										}
 									}else{
-										//console.info("bitly getShortUrl v"+config.version+" OK with error: ", response);
+										console.info("bitly getShortUrl v"+config.version+" OK with error: ", response);
 										deferredRequest.reject(url);
 									}
 								}).error(function(error){
@@ -921,8 +1172,8 @@ angular.module('usersync')
 
 })();
 
+'use strict';
 (function() {
-	'use strict';
 
 	/**
 	 * @ngdoc function
@@ -938,16 +1189,21 @@ angular.module('usersync')
 		// Inject your dependencies as .$inject = ['$http', 'someSevide'];
 		// function Name ($http, someSevide) {...}
 
-		Create.$inject = ['$http'];
+		Create.$inject = ['$http', 'EmbedlyService'];
 
-		function Create ($http) {
-
+		function Create ($http, EmbedlyService) {
+			function getEmbedlyRes (url) {
+				return EmbedlyService.extract(url, 'a46a33d99bc642b4aab1dfa58dc11f32');
+			}
+			return {
+				getEmbedlyRes: getEmbedlyRes
+			};
 		}
 
 })();
 
+'use strict';
 (function() {
-	'use strict';
 
 	/**
 	 * @ngdoc function
@@ -957,71 +1213,71 @@ angular.module('usersync')
 	 * Service of the app
 	 */
 
-    angular
+	angular
 		.module('embedly')
-		.factory('EmbedlyService', Embedly);
+		.service('EmbedlyService', Embedly);
 		// Inject your dependencies as .$inject = ['$http', 'someSevide'];
 		// function Name ($http, someSevide) {...}
 
 		Embedly.$inject = ['$http'];
 
 		function Embedly($http) {
-		
-		    var key;
-		    var secure;
-		    this.setKey = function (userKey) {
-		        key = userKey;
-		        return key;
-		    };
-		    this.getKey = function () {
-		        return key;
-		    };
-		    this.secure = function (value) {
-		        if (!value) {
-		            return secure;
-		        }
-		        secure = value;
-		    };
-		
-		    function getProtocol() {
-		        return secure ? 'https' : 'https';
-		    }
-		
-		    function embedly($http) {
-		        /*jshint validthis: true */
-		        this.embed = function (inputUrl, maxwidth, scheme) {
-		            var escapedUrl = encodeURIComponent(inputUrl);
-		            var embedlyRequest = getProtocol() + '://api.embedly.com/1/oembed?key=' + key + '&url=' + escapedUrl;
-		
-		            if (typeof maxwidth !== 'undefined') {
-		                embedlyRequest = embedlyRequest + '&maxwidth=' + maxwidth;
-		            }
-		
-		            if (typeof scheme !== 'undefined') {
-		                embedlyRequest = embedlyRequest + '&scheme=' + scheme;
-		            }
-		
-		            return $http({
-		                method: 'GET',
-		                url: embedlyRequest
-		            });
-		        };
-		        /*jshint validthis: true */
-		        this.extract = function (inputUrl) {
-		            var escapedUrl = encodeURIComponent(inputUrl);
-		            var embedlyRequest = getProtocol() + '://api.embedly.com/1/extract?key=' + key + '&url=' + escapedUrl;
-		            return $http({
-		                method: 'GET',
-		                url: embedlyRequest
-		            });
-		        };
-		    }
-		
-		
-		    this.$get = ['$http', function ($http) {
-		        return new embedly($http);
-		    }];
-		
+
+			var key;
+			var secure;
+			this.setKey = function (userKey) {
+				key = userKey;
+				return key;
+			};
+			this.getKey = function () {
+				return key;
+			};
+			this.secure = function (value) {
+				if (!value) {
+					return secure;
+				}
+				secure = value;
+			};
+
+			function getProtocol() {
+				return secure ? 'https' : 'https';
+			}
+
+			function embedly($http) {
+				/*jshint validthis: true */
+				this.embed = function (inputUrl, maxwidth, scheme) {
+					var escapedUrl = encodeURIComponent(inputUrl);
+					var embedlyRequest = getProtocol() + '://api.embedly.com/1/oembed?key=' + key + '&url=' + escapedUrl;
+
+					if (typeof maxwidth !== 'undefined') {
+						embedlyRequest = embedlyRequest + '&maxwidth=' + maxwidth;
+					}
+
+					if (typeof scheme !== 'undefined') {
+						embedlyRequest = embedlyRequest + '&scheme=' + scheme;
+					}
+
+					return $http({
+						method: 'GET',
+						url: embedlyRequest
+					});
+				};
+			}
+
+			/*jshint validthis: true */
+			this.extract = function (inputUrl, key) {
+				var escapedUrl = encodeURIComponent(inputUrl);
+				var embedlyRequest = getProtocol() + '://api.embedly.com/1/extract?key=' + key + '&url=' + escapedUrl;
+				return $http({
+					method: 'GET',
+					url: embedlyRequest
+				});
+			};
+
+			this.$get = ['$http', function ($http) {
+				return new embedly($http);
+			}];
+
 		}
 
 })();
@@ -1187,6 +1443,104 @@ angular.module('usersync')
 
 (function() {
 	'use strict';
+    angular
+        .module('create')
+        .directive('bindEmbedly', bindEmbedly);
+
+    function bindEmbedly() {
+        var directive = {
+            restrict: 'A',
+            scope : true,
+            link: linkBindEmbedly
+        };
+
+        return directive;
+
+        function linkBindEmbedly(scope, elem) {
+
+            var params = {
+                cardTitleTextSelector: 'embedly md-card-title md-card-title-text',
+                cardTitleHtml: '<md-card-title><md-card-title-text>Add title</md-card-title-text></md-card-title>',
+                cardImage: '<img class="md-card-image" ng-src="http://placehold.it/350x150" src="http://placehold.it/350x150" /> ',
+                cardImageSelector: 'embedly .md-card-image',
+                embedlyImagesSelector: '.embedly-variation-images',
+                embedlySelector: 'embedly',
+                causeImgSelector: '.cause-img',
+                causeTitleSelector: '.cause-title'
+            };
+
+            var mdCardTitleVal,
+                causeImg,
+                embedly,
+                embedlyImages,
+                mdCardImg,
+                causeTitle;
+            scope.$on('secondstep', function () {
+                scope.cardImg = scope.$parent.cardImg;
+                scope.cardTitle = scope.$parent.cardTitle;
+                causeTitle = elem.find(params.causeTitleSelector);
+                causeImg = elem.find(params.causeImgSelector);
+                embedly = angular.element(document.querySelectorAll(params.embedlySelector)[0]);
+                embedlyImages = angular.element(document.querySelectorAll(params.embedlyImagesSelector));
+                mdCardTitleVal = angular.element(document.querySelectorAll(params.cardTitleTextSelector)[1]);
+                mdCardImg = document.querySelectorAll(params.cardImageSelector)[1];
+                
+                function clickEmbedlyImageHandler() {
+                    scope.$parent.cardImg = event.currentTarget.src;
+                    mdCardImg.src = event.currentTarget.src;
+                }
+
+                function addHandlersForImages(images) {
+                    images.addEventListener('click', clickEmbedlyImageHandler);
+                }
+
+                angular.forEach(embedlyImages, addHandlersForImages);
+
+                function cardTitleWatch (newValue) {
+                    if (newValue) {
+                        mdCardTitleVal.text(newValue);
+                        scope.$parent.cardTitle = scope.cardTitle;
+                    }
+                }
+
+                function twoWayTitle () {
+                    scope.$watch('cardTitle', cardTitleWatch);
+                }
+
+                function watchImageChange (newValue) {
+                    if (newValue) {
+                        scope.$parent.cardImg = newValue.trim();
+                        mdCardImg.src = newValue.trim();
+                    }
+                }
+
+                function twoWayImg () {
+                    scope.cardImg = mdCardImg.src.toString().trim();
+                    scope.$parent.cardImg = mdCardImg.src.toString().trim();
+                    scope.$watch('cardImg', watchImageChange);
+                }
+
+                if (mdCardTitleVal) {
+                    twoWayTitle();
+                } else {
+                    embedly.prepend(params.cardTitleHtml);
+                    mdCardTitleVal = angular.element(document.querySelectorAll(params.cardTitleTextSelector)[0]);
+                    twoWayTitle();
+                }
+                if (mdCardImg) {
+                    twoWayImg();
+                } else {
+                    embedly.prepend(params.cardImage);
+                    mdCardImg = document.querySelectorAll(params.cardImageSelector)[0];
+                    twoWayImg();
+                }
+            });
+        }
+    }
+})();
+
+(function() {
+	'use strict';
 
 	/**
 	* @ngdoc function
@@ -1246,9 +1600,9 @@ angular.module('usersync')
         .module('gsConcierge')
         .directive('embedly', embedly);
         
-    embedly.$inject = ['embedlyService'];
+    embedly.$inject = ['embedlyService', '$timeout'];
 
-    function embedly(embedlyService) {
+    function embedly(embedlyService, $timeout) {
 
         var directive = {
             link: link,
@@ -1281,60 +1635,135 @@ angular.module('usersync')
                     scope.$parent.loading_embedly = true;
                     embedlyService.extract(newVal, scope.maxwidth, scope.scheme)
                         .then(function (data) {
-                            scope.$parent.loading_embedly = false;
-                            switch (data.data.type) {
-                            case 'video':
-                                if (data.data.html === undefined) {
-                                    handleEmpty();
-                                } else {
-                                    scope.embedCode = data.data.html;
+                            if (previousEmbedCode !== data.data) {
+                                var fetchSuccess = true;
+                                switch (data.data.type) {
+                                case 'html':
+                                    scope.embedCode = data.data;
+                                    break;
+                                case 'video':
+                                case 'rich':
+                                    if (data.data.html === undefined) {
+                                        fetchSuccess = false;
+                                    } else {
+                                        scope.embedCode = data.data;
+                                    }
+                                    break;
+                                case 'photo':
+                                case 'image':
+                                    if (data.data.url === undefined) {
+                                        fetchSuccess = false;
+                                    } else {
+                                        scope.embedCode = data.data;
+                                    }
+                                    break;
+                                default:
+                                    fetchSuccess = false;
+                                    break;
                                 }
-                                break;
-                            case 'rich':
-                                if (data.data.html === undefined) {
+                                if (!fetchSuccess) {
                                     handleEmpty();
+                                    scope.embedCode = '';
+                                    scope.$parent.$broadcast('embedly-fetch-error');
                                 } else {
-                                    scope.embedCode = data.data.html;
+                                    scope.$parent.$broadcast('embedly-fetch-success');
                                 }
-                                break;
-                            case 'photo':
-                                if (data.data.url === undefined) {
-                                    handleEmpty();
-                                } else {
-                                    scope.embedCode = '<img src="' + data.data.url + '">';
-                                }
-                                break;
-                            case 'html':
-                                scope.embedCode = data.data;
-                                break;
-                            default:
-                                // call the dev's handling code, he probably assumed he would get a video 
-                                // or photo (otherwise he'd use a different tool), so for him this result
-                                // is the same as an empty result.
-                                handleEmpty();
-                                scope.embedCode = '';
-                            }
-                            if (previousEmbedCode !== scope.embedCode) { // In the original model, this was used instead of a template.
-                                // embed code was changed from last call and has to be replaced in DOM
-                                //element.html(scope.embedCode);
                             }
                         }, function (error) {
-                            //TODO: Build out error handling better...
-                            console.log("embed error:", error);
                             // promise rejected
-                            scope.$parent.loading_embedly = false;
-                            var previousEmbedCode = scope.embedCode;
                             scope.embedCode = '';
-
-                            if (previousEmbedCode !== scope.embedCode) {
-                                element.html(scope.embedCode);
-                            }
+                            scope.$parent.$broadcast('embedly-fetch-error');
+                            handleEmpty();
+                        }).finally(function() {
+                            scope.$parent.loading_embedly = false;
                         });
                 }
             });
         }
 
     }
+
+})();
+
+(function() {
+	'use strict';
+
+	/**
+	* @ngdoc function
+	* @name app.controller:filestackDirective
+	* @description
+	* # filestackDirective
+	* Directive of the app
+	*/
+
+	angular
+		.module('gsConcierge')
+		.directive('filepickerDirective', filepickerDirective)
+		.directive('filepickerPreview', filepickerPreviewDirective);
+
+	filepickerDirective.$inject = ['$rootScope', 'filepickerService', '$parse'];
+	function filepickerDirective($rootScope, filepickerService, $parse){
+		    return {
+		        restrict: 'A',
+		        scope:{
+		            onSuccess:'&'
+		        },
+		        link: function(scope, element, attrs) {
+		            var key, value;
+		            /*
+		                pass original event
+		            */
+		            element.bind('change', function(event) {
+		                event.preventDefault();
+		                scope.onSuccess({event: event.originalEvent || event});
+		                $rootScope.$apply();
+		            });
+		
+		            element = element.length ? element[0] : element;
+		
+		            for (key in attrs.$attr){
+		                value = attrs.$attr[key];
+		                element.setAttribute(value, attrs[key]);
+		            }
+		
+		            filepickerService.constructWidget(element);
+		        }
+		    };
+		}
+		
+		filepickerPreviewDirective.$inject = ['$rootScope', 'filepickerService'];
+		function filepickerPreviewDirective($rootScope, filepickerService){
+		
+			return {
+		        restrict: 'A',
+		        scope:{
+		            url: '=',
+		        },
+		        link: function(scope, element, attrs) {
+		            var url = scope.url;
+		
+		            var iframe = document.createElement('iframe');
+		            iframe.src = url;
+		
+		            /* Set full size so it gets size from parrent element  */
+		
+		            iframe.width = '100%';
+		            iframe.height = '100%';
+		            angular.element(element).append(iframe);
+		
+		            scope.$watch('url', setUrl);
+		
+		            function setUrl(url){
+		                if (!url) {    
+		                    return; 
+		                } else {
+		                    url = url.replace('api/file/', 'api/preview/');
+		                }
+		                iframe.src = url;
+		            }
+		        }
+		    };
+		}
 
 })();
 

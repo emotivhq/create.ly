@@ -1,0 +1,24 @@
+                            <md-step-actions layout="row" layout-padding>
+                                <div flex layout="row" layout-align="start top">
+                                    <md-button ng-disabled="vm.showBusyText || loading_embedly || !showPreview" ng-click="vm.showUrlEducationDialog($event)">
+                                        No
+                                        <md-tooltip md-direction="left">
+                                            No, but why? Let's try another URL.
+                                        </md-tooltip>
+                                    </md-button>
+                                </div>
+                                <div flex layout="row" layout-align="end top">
+                                    <md-button class="md-warn" ng-disabled="vm.showBusyText || loading_embedly || !showPreview" ng-click="vm.submitCurrentStep(vm.stepData[0])">
+                                        Yes<span hide-xs>, let's move on!</span>
+                                    </md-button>
+                                </div>
+                                <md-card-icon-actions>
+                                    <md-button class="md-icon-button" aria-label="Does this look right?">
+                                        <md-icon md-svg-icon="md-toggle-arrow">
+                                         <md-tooltip md-direction="left">
+                                            Does this look right?
+                                        </md-tooltip>
+                                        </md-icon>
+                                    </md-button>
+                                </md-card-icon-actions>
+                            </md-step-actions>

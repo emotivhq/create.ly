@@ -197,7 +197,7 @@ module.exports = function (grunt) {
                     expand: true,
                     cwd: './app/ui',
                     src: ['**/*.{scss,sass}'],
-                    dest: './app/assets/css',
+                    dest: './app/assets/css/ui',
                     ext: '.css'
                 }]
             }
