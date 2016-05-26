@@ -1,0 +1,85 @@
+                    <md-step label="Finish" md-complete="vm.stepData[2].completed" ng-disabled="vm.stepProgress < 3">
+                        <md-step-body>
+                            <div layout="column" layout-gt-sm="row" layout-align="center start">
+                                <div flex="100" flex-gt-sm="50" flex-order="1" flex-order-gt-sm="0" layout-padding>
+                                    <!-- TODO: @yaboi
+                                        allow ability to update ng-src for this to work,
+                                        then add to step 2 as well instead of embedly directive
+                                    -->
+                                    <md-card>
+                                        <md-card-header ng-show="faviconUrl || providerName || providerDisplay">
+                                            <md-card-avatar ng-show="faviconUrl">
+                                                <img ng-src="{{faviconUrl}}" alt="{{providerName}}" />
+                                            </md-card-avatar>
+                                            <md-card-header-text>
+                                                <span class="md-title" ng-show="providerName">{{providerName}}</span>
+                                                <span class="md-subhead" ng-show="providerDisplay">
+                                                    <span hide-xs>See more at </span>{{providerDisplay}}
+                                                </span>
+                                            </md-card-header-text>
+                                        </md-card-header>
+                                        <img ng-src="{{cardImg}}" class="md-card-image" alt="{{cardTitle}}" ng-show="cardImg">
+                                        <md-card-title ng-show="cardTitle">
+                                            <md-card-title-text>
+                                                <span class="md-headline">{{cardTitle}}</span>
+                                            </md-card-title-text>
+                                        </md-card-title>
+                                        <md-card-content ng-show="cardDescription">
+                                            <p>
+                                                {{cardDescription}}
+                                            </p>
+                                        </md-card-content>
+                                    </md-card>
+                                </div>
+                                <div flex="100" flex-gt-sm="50" flex-order="0" flex-order-gt-sm="1" layout-padding layout-margin>
+                                    <md-toolbar class="md-accent md-hue-1">
+                                        <div class="md-toolbar-tools">
+                                            <md-icon class="material-icons" hide-xs style="margin-right:10px">trending_flat</md-icon>
+                                            <h2 hide-xs hide-sm>Want to create this campaign now?</h2>
+                                            <h2 hide-md hide-lg hide-xl>Create campaign now?</h2>
+                                            <span flex></span>
+                                            <md-button class="md-primary md-raised md-hue-2" ng-disabled="vm.showBusyText" ng-click="vm.startCampaignFromLink()" aria-label="Yes, create now!">
+                                                <md-icon class="material-icons">open_in_new</md-icon>
+                                                Yes<span hide-xs>, create now!</span>
+                                            </md-button>
+                                        </div>
+                                    </md-toolbar>
+                                    <span class="md-title">Copy/paste the link below into a new tab</span>
+                                    <div layout="row" layout-xs="column" flex>
+                                        <md-input-container flex class="md-block">
+                                            <input id="shortLink" ng-model="vm.campaignCreateShortLink" md-select-on-focus ng-readonly="true" aria-label="Campaign Short Link" />
+                                        </md-input-container>
+                                        <div>
+                                            <md-button ng-show="!vm.showClipboardTooltip && !vm.showFallbackClipboardTooltip" type="button" class="md-raised" aria-label="Copy URL" ngclipboard data-clipboard-target="#shortLink" ngclipboard-success="vm.clipboardCopySuccess($event);" ngclipboard-error="vm.clipboardCopyError($event);">
+                                                <md-icon class="material-icons">content_copy</md-icon>
+                                                Copy Url
+                                            </md-button>
+                                            <md-button ng-show="vm.showClipboardTooltip || vm.showFallbackClipboardTooltip" type="button" class="md-raised md-accent md-hue-3" aria-label="URL Copied!" ngclipboard data-clipboard-target="#shortLink" ngclipboard-success="vm.clipboardCopySuccess($event);" ngclipboard-error="vm.clipboardCopyError($event);">
+                                                <span ng-show="vm.showClipboardTooltip">
+                                                    <md-icon class="material-icons">done</md-icon>
+                                                    Url Copied!
+                                                </span>
+                                                <span ng-show="vm.showFallbackClipboardTooltip">
+                                                    <md-icon class="material-icons">done</md-icon>
+                                                    Press Ctrl+C
+                                                </span>
+                                            </md-button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <md-step-actions layout="row" layout-padding>
+                                <div flex layout="row" layout-align="start top">
+                                    <md-button ng-click="vm.moveToPreviousStep()">Go Back</md-button>
+                                </div>
+                                <div flex layout="row" layout-align="end top">
+                                    <md-button class="md-warn" ng-click="vm.clearStepper()">
+                                        Start Over
+                                        <md-tooltip md-direction="left">
+                                            Starting over will lose current progress.
+                                        </md-tooltip>
+                                    </md-button>
+                                </div>
+                            </md-step-actions>
+                        </md-step-body>
+                    </md-step>

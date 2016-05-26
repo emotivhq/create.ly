@@ -107,11 +107,13 @@
 			$scope.showPreview = false;
 			$scope.$on('embedly-fetch-success', function() {
 				$scope.showPreview = true;
+				console.log('embedly-fetch-success');
 				//$scope.$digest();
 			});
 
 			$scope.$on('embedly-fetch-error', function() {
 				$scope.showPreview = false;
+				console.log('embedly-fetch-failure');
 			});
 
 			vm.campaignCreateShortLink = '';

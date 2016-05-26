@@ -1,0 +1,68 @@
+                    <md-step label="Customize" md-complete="vm.stepData[1].completed" ng-disabled="vm.stepProgress < 2">
+                        <md-step-body>
+                            <div layout="column" layout-gt-sm="row" layout-align="center start">
+                                <div flex="100" flex-gt-sm="50" flex-order="1" flex-order-gt-sm="0" layout-padding>
+                                    <embedly urlsearch="{{vm.urlSearch}}"></embedly>
+                                </div>
+                                <div flex="100" flex-gt-sm="50" flex-order="0" flex-order-gt-sm="1" layout-padding layout-margin>
+                                    <span class="md-title">Customize your cause.</span>
+                                    <form name="step2">
+                                        <md-input-container class="md-icon-float md-block">
+                                            <label>Title of cause</label>
+                                            <md-icon class="material-icons">font_download</md-icon>
+                                            <input name="title" class="cause-title" required ng-model="cardTitle" aria-label="Title of cause" />
+                                            <div ng-messages="step2.title.$error" role="alert">
+                                                <div ng-message-exp="['required']">
+                                                    Please add a title to your cause so we know what to call it.
+                                                </div>
+                                            </div>
+                                        </md-input-container>
+                                        <md-input-container class="md-icon-float md-block">
+                                            <label>Total Donation Amount</label>
+                                            <md-icon class="material-icons">attach_money</md-icon>
+                                            <input name="price" type="number" ng-model="vm.stepData[1].data.price" required aria-label="Total donation amount" />
+                                            <div class="hint">Taxes will be added to physical products during campaign creation. Shipping is free.</div>
+                                            <div ng-messages="step2.price.$error" role="alert">
+                                                <div ng-message-exp="['required']">
+                                                    Please add a donation price for your cause so we know how much to help you raise.
+                                                </div>
+                                            </div>
+                                        </md-input-container>
+                                        <md-content>
+                                            <p>Choose campaign image</p>
+                                            <hr/>
+                                            <div layout="row" layout-xs="column" layout-align="start start" layout-wrap>
+                                                <md-card flex="20" ng-repeat="image in embedlyImages track by $index">
+                                                    <img class="embedly-variation-images" ng-src="{{ image.url }}" alt="{{ image.caption}}" />
+                                                </md-card>
+                                            </div>
+                                        </md-content>
+                                        <p>Upload custom campaign image <em>(optional)</em></p>
+                                        <md-content class="filestack-container" layout-padding>
+                                            <input id="filestack-widget" filepicker ng-model="vm.stepData[1].data.cardImg" data-fp-apikey="AVdh2bvkuTYKQI3rdMsZXz" type="filepicker-dragdrop" data-fp-conversions="crop,rotate,filter" data-fp-cropRatio="4/3" data-fp-cropDim="1024, 1024" data-fp-cropMax="1920, 1920" data-fp-services="computer,url,webcam,video,gmail,facebook,instagram,twitter,box,dropbox,googledrive,convert" on-success="setUploadedImage(event.fpfile)" />
+                                        </md-content>
+                                        <md-input-container class="md-block">
+                                              <label>Or paste image URL </label>
+                                              <input name="imageurl" class="cause-img" ng-model="cardImg" />
+                                        </md-input-container>
+                                    </form>
+                                    <div flex>
+                                        <md-toolbar class="md-accent" ng-show="!loading_embedly">
+                                            <div class="md-toolbar-tools">
+                                                <h2 style="margin-left:10px">
+                                                  <span>All set?</span>
+                                                </h2>
+                                                <span flex></span>
+                                                <md-button class="md-primary md-raised" ng-disabled="vm.showBusyText" ng-click="vm.submitCurrentStep(vm.stepData[1], true)" aria-label="Perfect, let's finish!">
+                                                  Perfect, let's finish!
+                                                </md-button>
+                                                <md-button class="md-accent md-hue-2 md-fab md-mini" ng-disabled="vm.showBusyText" ng-click="vm.moveToPreviousStep()" aria-label="No, let's go back">
+                                                  No
+                                                </md-button>
+                                              </div>
+                                        </md-toolbar>
+                                    </div>
+                                </div>
+                            </div>
+                        </md-step-body>
+                    </md-step>
