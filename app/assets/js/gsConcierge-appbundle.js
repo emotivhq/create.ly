@@ -1,5 +1,5 @@
 /*!
-* gsConcierge - v0.0.2 - MIT LICENSE 2016-05-26. 
+* gsConcierge - v0.1.0 - MIT LICENSE 2016-05-26. 
 * @author Emotiv
 */
 (function() {
@@ -605,7 +605,6 @@ angular.module('usersync')
 			};
 
 			$scope.cardTitle = '';
-			$scope.embedlyImages = [];
 			$scope.originalUrl = '';
 			$scope.providerName = '';
 			$scope.faviconUrl = '';
@@ -656,8 +655,8 @@ angular.module('usersync')
 					stepData.completed = true;
 					vm.enableNextStep();
 					$scope.$broadcast('secondstep');
-				} else
-					if (stepData.step === 2) { // stepper is going from step 2 to step 3
+				} else if (stepData.step === 2) { // stepper is going from step 2 to step 3
+					if (vm.stepData[1].data.price) {
 						//$scope.$broadcast('create-bitly-link');
 						var base_url = 'https://www.giftstarter.com/create?product_url=',
 							product_url = $scope.originalUrl,
@@ -667,26 +666,30 @@ angular.module('usersync')
 							source = $scope.providerName, //update once embedly bind is finished. Need to bind "source" from embedly returned data.
 							urlToShorten = base_url + product_url + '&title=' + title +'&price=' + price + '&img_url=' + img_url + '&source=' + source;
 
-					var bitlyPromise = BitlyService.getShortUrl(urlToShorten);
-					bitlyPromise.then(function (data) {
-						vm.campaignCreateShortLink = data;
-						vm.showBusyText = false;
-						stepData.completed = true;
-						vm.showClipboardTooltip = false;
-						vm.showFallbackClipboardTooltip = false;
-						vm.enableNextStep();
-					}, function (reason) {
-							console.log('Failed: ' + reason);
-							vm.campaignCreateShortLink = '';
+						var bitlyPromise = BitlyService.getShortUrl(urlToShorten);
+						bitlyPromise.then(function (data) {
+							vm.campaignCreateShortLink = data;
 							vm.showBusyText = false;
-							stepData.completed = false;
-							$mdToast.show(
-								$mdToast.simple()
-								.content('There was an issue creating your custom campaign link. Please try again.')
-								.position('bottom left')
-								.hideDelay(3500)
-							);
-						});
+							stepData.completed = true;
+							vm.showClipboardTooltip = false;
+							vm.showFallbackClipboardTooltip = false;
+							vm.enableNextStep();
+						}, function (reason) {
+								console.log('Failed: ' + reason);
+								vm.campaignCreateShortLink = '';
+								vm.showBusyText = false;
+								stepData.completed = false;
+								$mdToast.show(
+									$mdToast.simple()
+									.content('There was an issue creating your custom campaign link. Please try again.')
+									.position('bottom left')
+									.hideDelay(3500)
+								);
+							});
+					} else {
+			            vm.showBusyText = true;
+			            stepData.completed = false;
+					}
 				}
 			};
 
@@ -710,7 +713,8 @@ angular.module('usersync')
 						.ariaLabel('How this tool works.')
 						.textContent('This tool does it\'s best to extract content from any url it is given. If the content above looks wonky, first make sure you have the correct url. If you are 100% sure you do, use the next step to customize things to look how you want.')
 						.targetEvent(ev)
-						.ok('Close')
+						.ok
+						.cancel('Start over')
 					);
 				};
 
@@ -1350,7 +1354,7 @@ angular.module('usersync')
 				
 					{
 						link: 'create',
-							name: 'Create link',
+							name: 'Campaign setup',
 							icon: 'create'
 					},
 			    
@@ -1391,7 +1395,7 @@ angular.module('usersync')
 				
 					{
 						link: 'create',
-						name: 'Create campaign link',
+						name: 'Non profit campaign',
 						icon: 'open_in_browser',
 						hide: false
 					},
@@ -1488,6 +1492,7 @@ angular.module('usersync')
                 function clickEmbedlyImageHandler() {
                     scope.$parent.cardImg = event.currentTarget.src;
                     mdCardImg.src = event.currentTarget.src;
+                    console.log(event.currentTarget.src);
                 }
 
                 function addHandlersForImages(images) {

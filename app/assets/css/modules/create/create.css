@@ -10,13 +10,10 @@
      If filepicker generates 3 distinct components in DOM,
      cancel out the fake ones
      ************************
-    .filestack-container {
-        div:nth-child(2), div:nth-child(4) {
-            display:none;
-        }
+     */
+.filestack-container div:nth-child(2), .filestack-container div:nth-child(4) {
+  display: none; }
 
-    }
-    */
 embedly {
   transition: none; }
   embedly.ng-hide, embedly.ng-enter, embedly.ng-leave.ng-leave-active {
