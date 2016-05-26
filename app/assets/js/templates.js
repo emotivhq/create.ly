@@ -1,6 +1,34 @@
 angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
   'use strict';
 
+  $templateCache.put('app/modules/create/create.1.html',
+    "<div layout=\"row\" layout-margin layout=\"column\" data-ng-controller=\"CreateCtrl\" bind-embedly ng-cloak class=\"create\">\n" +
+    "    <div flex>\n" +
+    "        <md-card>\n" +
+    "            <md-toolbar>\n" +
+    "                <div class=\"md-toolbar-tools\">\n" +
+    "                    <h2>Create a non-profit campaign</h2>\n" +
+    "                </div>\n" +
+    "            </md-toolbar>\n" +
+    "            <md-stepper-card-content class=\"md-no-padding\">\n" +
+    "                <md-steppers md-dynamic-height md-stretch-steppers=\"always\" md-selected=\"vm.selectedStep\" md-busy-text=\"'Fetching data & other things...'\" md-busy=\"vm.showBusyText\">\n" +
+    "                    <md-step label=\"Enter Url\" md-complete=\"vm.stepData[0].completed\" ng-disabled=\"vm.stepProgress < 1\">\n" +
+    "                        <section data-ng-include=\" 'app/modules/create/steps/url.html' \"></section>\n" +
+    "                    </md-step>\n" +
+    "                    <md-step label=\"Customize\" md-complete=\"vm.stepData[1].completed\" ng-disabled=\"vm.stepProgress < 2\">\n" +
+    "                        <section data-ng-include=\" 'app/modules/create/steps/customize.html' \"></section>\n" +
+    "                    </md-step>\n" +
+    "                    <md-step label=\"Finish\" md-complete=\"vm.stepData[2].completed\" ng-disabled=\"vm.stepProgress < 3\">\n" +
+    "                        <section data-ng-include=\" 'app/modules/create/steps/finish.html' \"></section>\n" +
+    "                    </md-step>\n" +
+    "                </md-steppers>\n" +
+    "            </md-stepper-card-content>\n" +
+    "        </md-card>\n" +
+    "    </div>\n" +
+    "</div>\n"
+  );
+
+
   $templateCache.put('app/modules/create/create.html',
     "<div layout=\"row\" layout-margin layout=\"column\" data-ng-controller=\"CreateCtrl\" bind-embedly ng-cloak class=\"create\">\n" +
     "    <div flex>\n" +
@@ -12,9 +40,203 @@ angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
     "            </md-toolbar>\n" +
     "            <md-stepper-card-content class=\"md-no-padding\">\n" +
     "                <md-steppers md-dynamic-height md-stretch-steppers=\"always\" md-selected=\"vm.selectedStep\" md-busy-text=\"'Fetching data & other things...'\" md-busy=\"vm.showBusyText\">\n" +
-    "                    <section data-ng-include=\" 'app/modules/create/steps/url.html' \"></section>\n" +
-    "                    <section data-ng-include=\" 'app/modules/create/steps/customize.html' \"></section>\n" +
-    "                    <section data-ng-include=\" 'app/modules/create/steps/finish.html' \"></section>\n" +
+    "                    <md-step label=\"Enter Url\" md-complete=\"vm.stepData[0].completed\" ng-disabled=\"vm.stepProgress < 1\">\n" +
+    "                        <md-step-body>\n" +
+    "                            <div layout=\"column\">\n" +
+    "                                <div layout=\"row\" layout-padding layout-align=\"center start\" layout-wrap>\n" +
+    "                                    <div flex=\"90\" flex-sm=\"90\" flex-xs=\"100\">\n" +
+    "                                        <span class=\"md-title\">\n" +
+    "                                            Paste any non-profit url\n" +
+    "                                        </span>\n" +
+    "                                        <form name=\"step1\" ng-submit=\"vm.getUrlInfo(vm.stepData[0].data.product_url)\">\n" +
+    "                                            <div layout=\"row\" layout-xs=\"column\" flex>\n" +
+    "                                                <md-input-container flex class=\"md-block\">\n" +
+    "                                                    <input name=\"product_url\" ng-model=\"vm.stepData[0].data.product_url\" ng-disabled=\"vm.showBusyText\" md-select-on-focus ng-pattern=\"vm.urlPattern\" ng-model-options=\"{ updateOn: 'default blur', debounce: { default: 300, blur: 300 } }\" required aria-label=\"Enter Url\"/>\n" +
+    "                                                    <div class=\"hint\" ng-show=\"vm.showProductUrlHint\">{{vm.productUrlHint}}</div>\n" +
+    "                                                    <div ng-messages=\"step1.product_url.$error\" role=\"alert\">\n" +
+    "                                                        <div ng-message-exp=\"['required','pattern']\">\n" +
+    "                                                            That doesn't look like a valid url... are you sure you pasted the right thing?\n" +
+    "                                                        </div>\n" +
+    "                                                    </div>\n" +
+    "                                                </md-input-container>\n" +
+    "                                                <div>\n" +
+    "                                                    <md-button type=\"submit\" class=\"md-raised\" ng-disabled=\"!vm.stepData[0].data.product_url || loading_embedly || vm.showBusyText\" aria-label=\"Get URL Info\"  ng-click=\"vm.getUrlInfo(vm.stepData[0].data.product_url)\">\n" +
+    "                                                        <md-icon class=\"material-icons\">search</md-icon>\n" +
+    "                                                        Find Cause\n" +
+    "                                                    </md-button>\n" +
+    "                                                </div>\n" +
+    "                                            </div>\n" +
+    "                                        </form>\n" +
+    "                                        <md-progress-linear md-mode=\"indeterminate\" ng-show=\"loading_embedly\"></md-progress-linear>\n" +
+    "                                    </div>\n" +
+    "                                    <div flex=\"90\" flex-sm=\"90\" flex-xs=\"100\">\n" +
+    "                                        <div ng-show=\"showPreview\">\n" +
+    "                                            <embedly urlsearch=\"{{vm.urlSearch}}\" onempty=\"tryAgain()\"></embedly>\n" +
+    "                                        </div>\n" +
+    "                                    </div>\n" +
+    "                                </div>\n" +
+    "                            </div>\n" +
+    "                            <md-step-actions layout=\"row\" layout-padding>\n" +
+    "                                 <div flex layout=\"row\" layout-align=\"start top\">\n" +
+    "                                    <md-button ng-hide=\"vm.showBusyText || loading_embedly || !showPreview\" ng-disabled=\"vm.showBusyText || loading_embedly || !showPreview\" ng-click=\"vm.showUrlEducationDialog($event)\">\n" +
+    "                                        <md-icon md-svg-icon=\"md-toggle-arrow\"></md-icon> This doesn't look right\n" +
+    "                                         <md-tooltip md-direction=\"left\">\n" +
+    "                                            Did you expect a different site?\n" +
+    "                                        </md-tooltip>\n" +
+    "                                    </md-button>\n" +
+    "                                </div>\n" +
+    "                                <div flex layout=\"row\" layout-align=\"end top\">\n" +
+    "                                    <md-button class=\"md-primary md-raised\" ng-hide=\"vm.showBusyText || loading_embedly || !showPreview\" ng-disabled=\"vm.showBusyText || loading_embedly || !showPreview\" ng-click=\"vm.submitCurrentStep(vm.stepData[0])\">\n" +
+    "                                        That's it<span hide-xs>, let's move on</span>\n" +
+    "                                    </md-button>\n" +
+    "                                </div>\n" +
+    "                            </md-step-actions>\n" +
+    "                        </md-step-body>\n" +
+    "                    </md-step>\n" +
+    "                    <md-step label=\"Customize\" md-complete=\"vm.stepData[1].completed\" ng-disabled=\"vm.stepProgress < 2\">\n" +
+    "                        <md-step-body>\n" +
+    "                            <div layout=\"column\" layout-gt-sm=\"row\" layout-align=\"center start\">\n" +
+    "                                <div flex=\"100\" flex-gt-sm=\"50\" flex-order=\"1\" flex-order-gt-sm=\"0\" layout-padding>\n" +
+    "                                    <embedly urlsearch=\"{{vm.urlSearch}}\"></embedly>\n" +
+    "                                </div>\n" +
+    "                                <div flex=\"100\" flex-gt-sm=\"50\" flex-order=\"0\" flex-order-gt-sm=\"1\" layout-padding layout-margin>\n" +
+    "                                    <span class=\"md-title\">Customize your cause.</span>\n" +
+    "                                    <form name=\"step2\">\n" +
+    "                                        <md-input-container class=\"md-icon-float md-block\">\n" +
+    "                                            <label>Title of cause</label>\n" +
+    "                                            <md-icon class=\"material-icons\">font_download</md-icon>\n" +
+    "                                            <input name=\"title\" class=\"cause-title\" required ng-model=\"cardTitle\" aria-label=\"Title of cause\" />\n" +
+    "                                            <div ng-messages=\"step2.title.$error\" role=\"alert\">\n" +
+    "                                                <div ng-message-exp=\"['required']\">\n" +
+    "                                                    Please add a title to your cause so we know what to call it.\n" +
+    "                                                </div>\n" +
+    "                                            </div>\n" +
+    "                                        </md-input-container>\n" +
+    "                                        <md-input-container class=\"md-icon-float md-block\">\n" +
+    "                                            <label>Total Donation Amount</label>\n" +
+    "                                            <md-icon class=\"material-icons\">attach_money</md-icon>\n" +
+    "                                            <input name=\"price\" type=\"number\" ng-model=\"vm.stepData[1].data.price\" required aria-label=\"Total donation amount\" />\n" +
+    "                                            <div class=\"hint\">Taxes will be added to physical products during campaign creation. Shipping is free.</div>\n" +
+    "                                            <div ng-messages=\"step2.price.$error\" role=\"alert\">\n" +
+    "                                                <div ng-message-exp=\"['required']\">\n" +
+    "                                                    Please add a donation price for your cause so we know how much to help you raise.\n" +
+    "                                                </div>\n" +
+    "                                            </div>\n" +
+    "                                        </md-input-container>\n" +
+    "                                        <md-content>\n" +
+    "                                            <p>Choose a campaign image</p>\n" +
+    "                                            <hr/>\n" +
+    "                                            <div layout=\"row\" layout-xs=\"column\" layout-align=\"start start\" layout-wrap>\n" +
+    "                                                <md-card flex=\"20\" ng-repeat=\"image in embedlyImages track by $index\">\n" +
+    "                                                    <img class=\"md-whiteframe-6dp embedly-variation-images\" ng-src=\"{{ image.url }}\" alt=\"{{ image.caption}}\" style=\"cursor:pointer;\" />\n" +
+    "                                                </md-card>\n" +
+    "                                            </div>\n" +
+    "                                        </md-content>\n" +
+    "                                        <p>Or, upload a custom image</p>\n" +
+    "                                        <md-content class=\"filestack-container\" layout-padding>\n" +
+    "                                            <input id=\"filestack-widget\" filepicker ng-model=\"vm.stepData[1].data.cardImg\" data-fp-apikey=\"AVdh2bvkuTYKQI3rdMsZXz\" type=\"filepicker-dragdrop\" data-fp-conversions=\"crop,rotate,filter\" data-fp-cropRatio=\"4/3\" data-fp-cropDim=\"1024, 1024\" data-fp-cropMax=\"1920, 1920\" data-fp-services=\"computer,url,webcam,video,gmail,facebook,instagram,twitter,box,dropbox,googledrive,convert\" on-success=\"setUploadedImage(event.fpfile)\" />\n" +
+    "                                        </md-content>\n" +
+    "                                    </form>\n" +
+    "                                </div>\n" +
+    "                            </div>\n" +
+    "                            <md-step-actions layout=\"row\" layout-padding>\n" +
+    "                                 <div flex layout=\"row\" layout-align=\"start top\">\n" +
+    "                                    <md-button ng-disabled=\"vm.showBusyText\" ng-click=\"vm.moveToPreviousStep()\">\n" +
+    "                                        <md-icon md-svg-icon=\"md-toggle-chevron-left\"></md-icon> Go back\n" +
+    "                                         <md-tooltip md-direction=\"left\">\n" +
+    "                                            Did you change your mind?\n" +
+    "                                        </md-tooltip>\n" +
+    "                                    </md-button>\n" +
+    "                                </div>\n" +
+    "                                <div flex layout=\"row\" layout-align=\"end top\">\n" +
+    "                                    <md-button class=\"md-primary md-raised\" ng-disabled=\"vm.showBusyText || !vm.stepData[1].data.price\" ng-click=\"vm.submitCurrentStep(vm.stepData[1], true)\">\n" +
+    "                                        All set<span hide-xs>, let's finish</span>\n" +
+    "                                    </md-button>\n" +
+    "                                </div>\n" +
+    "                            </md-step-actions>\n" +
+    "                        </md-step-body>\n" +
+    "                    </md-step>\n" +
+    "                    <md-step label=\"Finish\" md-complete=\"vm.stepData[2].completed\" ng-disabled=\"vm.stepProgress < 3\">\n" +
+    "                        <md-step-body>\n" +
+    "                            <div layout=\"column\" layout-gt-sm=\"row\" layout-align=\"center start\">\n" +
+    "                                <div flex=\"100\" flex-gt-sm=\"50\" flex-order=\"1\" flex-order-gt-sm=\"0\" layout-padding>\n" +
+    "                                    <!-- TODO: @yaboi\n" +
+    "                                        allow ability to update ng-src for this to work,\n" +
+    "                                        then add to step 2 as well instead of embedly directive\n" +
+    "                                    -->\n" +
+    "                                    <md-card>\n" +
+    "                                        <md-card-header ng-show=\"faviconUrl || providerName || providerDisplay\">\n" +
+    "                                            <md-card-avatar ng-show=\"faviconUrl\">\n" +
+    "                                                <img ng-src=\"{{faviconUrl}}\" alt=\"{{providerName}}\" />\n" +
+    "                                            </md-card-avatar>\n" +
+    "                                            <md-card-header-text>\n" +
+    "                                                <span class=\"md-title\" ng-show=\"providerName\">{{providerName}}</span>\n" +
+    "                                                <span class=\"md-subhead\" ng-show=\"providerDisplay\">\n" +
+    "                                                    <span hide-xs>See more at </span>{{providerDisplay}}\n" +
+    "                                                </span>\n" +
+    "                                            </md-card-header-text>\n" +
+    "                                        </md-card-header>\n" +
+    "                                        <img ng-src=\"{{cardImg}}\" class=\"md-card-image\" alt=\"{{cardTitle}}\" ng-show=\"cardImg\">\n" +
+    "                                        <md-card-title ng-show=\"cardTitle\">\n" +
+    "                                            <md-card-title-text>\n" +
+    "                                                <span class=\"md-headline\">{{cardTitle}}</span>\n" +
+    "                                            </md-card-title-text>\n" +
+    "                                        </md-card-title>\n" +
+    "                                        <md-card-content ng-show=\"cardDescription\">\n" +
+    "                                            <p>\n" +
+    "                                                {{cardDescription}}\n" +
+    "                                            </p>\n" +
+    "                                        </md-card-content>\n" +
+    "                                    </md-card>\n" +
+    "                                </div>\n" +
+    "                                <div flex=\"100\" flex-gt-sm=\"50\" flex-order=\"0\" flex-order-gt-sm=\"1\" layout-padding layout-margin>\n" +
+    "                                    <md-button flex style=\"width:100%\" flex=\"100\" class=\"md-primary md-raised md-hue-2\" ng-disabled=\"vm.showBusyText\" ng-click=\"vm.startCampaignFromLink()\" aria-label=\"Create campaign now\">\n" +
+    "                                        <md-icon class=\"material-icons\">open_in_new</md-icon>\n" +
+    "                                        Create <span hide-xs>this campaign</span> now\n" +
+    "                                        <md-tooltip md-direction=\"bottom\">\n" +
+    "                                            If you're ready now, let's do this.\n" +
+    "                                        </md-tooltip>\n" +
+    "                                    </md-button>\n" +
+    "                                    <md-divider></md-divider>\n" +
+    "                                    <span class=\"md-title\">Or, copy/paste the link below for later</span>\n" +
+    "                                    <div layout=\"row\" layout-xs=\"column\" flex>\n" +
+    "                                        <md-input-container flex class=\"md-block\">\n" +
+    "                                            <input id=\"shortLink\" ng-model=\"vm.campaignCreateShortLink\" md-select-on-focus ng-readonly=\"true\" aria-label=\"Campaign Short Link\" />\n" +
+    "                                        </md-input-container>\n" +
+    "                                        <div>\n" +
+    "                                            <md-button ng-show=\"!vm.showClipboardTooltip && !vm.showFallbackClipboardTooltip\" type=\"button\" class=\"md-raised\" aria-label=\"Copy URL\" ngclipboard data-clipboard-target=\"#shortLink\" ngclipboard-success=\"vm.clipboardCopySuccess($event);\" ngclipboard-error=\"vm.clipboardCopyError($event);\">\n" +
+    "                                                <md-icon class=\"material-icons\">content_copy</md-icon>\n" +
+    "                                                Copy Url\n" +
+    "                                            </md-button>\n" +
+    "                                            <md-button ng-show=\"vm.showClipboardTooltip || vm.showFallbackClipboardTooltip\" type=\"button\" class=\"md-raised md-accent md-hue-3\" aria-label=\"URL copied\" ngclipboard data-clipboard-target=\"#shortLink\" ngclipboard-success=\"vm.clipboardCopySuccess($event);\" ngclipboard-error=\"vm.clipboardCopyError($event);\">\n" +
+    "                                                <span ng-show=\"vm.showClipboardTooltip\">\n" +
+    "                                                    <md-icon class=\"material-icons\">done</md-icon>\n" +
+    "                                                    Url copied\n" +
+    "                                                </span>\n" +
+    "                                                <span ng-show=\"vm.showFallbackClipboardTooltip\">\n" +
+    "                                                    <md-icon class=\"material-icons\">done</md-icon>\n" +
+    "                                                    Press Ctrl+C\n" +
+    "                                                </span>\n" +
+    "                                            </md-button>\n" +
+    "                                        </div>\n" +
+    "                                    </div>\n" +
+    "                                </div>\n" +
+    "                            </div>\n" +
+    "                            <md-step-actions layout=\"row\" layout-padding>\n" +
+    "                                <div flex layout=\"row\" layout-align=\"start top\">\n" +
+    "                                    <md-button ng-click=\"vm.moveToPreviousStep()\">Go Back</md-button>\n" +
+    "                                </div>\n" +
+    "                                <div flex layout=\"row\" layout-align=\"end top\">\n" +
+    "                                    <md-button class=\"md-warn\" ng-click=\"vm.clearStepper()\">\n" +
+    "                                        Start Over\n" +
+    "                                        <md-tooltip md-direction=\"top\">\n" +
+    "                                            Starting over will lose current progress.\n" +
+    "                                        </md-tooltip>\n" +
+    "                                    </md-button>\n" +
+    "                                </div>\n" +
+    "                            </md-step-actions>\n" +
+    "                        </md-step-body>\n" +
+    "                    </md-step>\n" +
     "                </md-steppers>\n" +
     "            </md-stepper-card-content>\n" +
     "        </md-card>\n" +
@@ -52,7 +274,6 @@ angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('app/modules/create/steps/customize.html',
-    "                    <md-step label=\"Customize\" md-complete=\"vm.stepData[1].completed\" ng-disabled=\"vm.stepProgress < 2\">\n" +
     "                        <md-step-body>\n" +
     "                            <div layout=\"column\" layout-gt-sm=\"row\" layout-align=\"center start\">\n" +
     "                                <div flex=\"100\" flex-gt-sm=\"50\" flex-order=\"1\" flex-order-gt-sm=\"0\" layout-padding>\n" +
@@ -118,13 +339,11 @@ angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
     "                                    </div>\n" +
     "                                </div>\n" +
     "                            </div>\n" +
-    "                        </md-step-body>\n" +
-    "                    </md-step>\n"
+    "                        </md-step-body>\n"
   );
 
 
   $templateCache.put('app/modules/create/steps/finish.html',
-    "                    <md-step label=\"Finish\" md-complete=\"vm.stepData[2].completed\" ng-disabled=\"vm.stepProgress < 3\">\n" +
     "                        <md-step-body>\n" +
     "                            <div layout=\"column\" layout-gt-sm=\"row\" layout-align=\"center start\">\n" +
     "                                <div flex=\"100\" flex-gt-sm=\"50\" flex-order=\"1\" flex-order-gt-sm=\"0\" layout-padding>\n" +
@@ -207,13 +426,11 @@ angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
     "                                    </md-button>\n" +
     "                                </div>\n" +
     "                            </md-step-actions>\n" +
-    "                        </md-step-body>\n" +
-    "                    </md-step>\n"
+    "                        </md-step-body>\n"
   );
 
 
   $templateCache.put('app/modules/create/steps/url.html',
-    "                    <md-step label=\"Enter Url\" md-complete=\"vm.stepData[0].completed\" ng-disabled=\"vm.stepProgress < 1\">\n" +
     "                        <md-step-body>\n" +
     "                            <div layout=\"column\">\n" +
     "                                <div layout=\"row\" layout-padding layout-align=\"center start\" layout-wrap>\n" +
@@ -242,16 +459,27 @@ angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
     "                                        </form>\n" +
     "                                        <md-progress-linear md-mode=\"indeterminate\" ng-show=\"loading_embedly\"></md-progress-linear>\n" +
     "                                    </div>\n" +
-    "                                    <div flex=\"90\" flex-sm=\"90\" flex-xs=\"100\">\n" +
+    "                                    <div flex=\"60\" flex-sm=\"90\" flex-xs=\"100\">\n" +
     "                                        <div ng-show=\"showPreview\">\n" +
     "                                            <embedly urlsearch=\"{{vm.urlSearch}}\" onempty=\"tryAgain()\"></embedly>\n" +
+    "                                            <md-toolbar class=\"md-accent\">\n" +
+    "                                                <div class=\"md-toolbar-tools\">\n" +
+    "                                                    <md-icon class=\"material-icons\" hide-xs style=\"margin-right:10px\">arrow_upward</md-icon>\n" +
+    "                                                    <h2>Does this look right?</h2>\n" +
+    "                                                    <span flex></span>\n" +
+    "                                                    <md-button hide-xs class=\"md-accent md-hue-3 md-mini\" ng-disabled=\"vm.showBusyText || loading_embedly || !showPreview\" ng-click=\"vm.showUrlEducationDialog($event)\" aria-label=\"No, but why?\">\n" +
+    "                                                        No\n" +
+    "                                                    </md-button>\n" +
+    "                                                    <md-button class=\"md-primary md-raised\" ng-disabled=\"vm.showBusyText || loading_embedly || !showPreview\" ng-click=\"vm.submitCurrentStep(vm.stepData[0])\" aria-label=\"Yep, let's move on!\">\n" +
+    "                                                        Yes<span hide-xs>, let's move on!</span>\n" +
+    "                                                    </md-button>\n" +
+    "                                                </div>\n" +
+    "                                            </md-toolbar>\n" +
     "                                        </div>\n" +
     "                                    </div>\n" +
     "                                </div>\n" +
     "                            </div>\n" +
-    "                            <section data-ng-include=\" 'app/modules/create/steps/actions/url.html' \" ></section>\n" +
-    "                          </md-step-body>\n" +
-    "                    </md-step>\n"
+    "                        </md-step-body>\n"
   );
 
 
@@ -366,7 +594,7 @@ angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
     "                <p > {{ item.name }}</p>\n" +
     "            </md-list-item>\n" +
     "            <md-divider></md-divider>\n" +
-    "            <md-subheader>Admin</md-subheader>\n" +
+    "            <md-subheader>Links</md-subheader>\n" +
     "            <md-list-item ng-repeat=\"item in vm.admin\" ng-click=\"vm.navigateTo(item.link)\" >\n" +
     "                <div class=\"inset\">\n" +
     "                    <ng-md-icon icon=\"{{item.icon}}\"></ng-md-icon>\n" +
