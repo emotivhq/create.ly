@@ -45,6 +45,7 @@
                 function clickEmbedlyImageHandler() {
                     scope.$parent.cardImg = event.currentTarget.src;
                     mdCardImg.src = event.currentTarget.src;
+                    mdCardImg.class = 'animated fadeIn';
                     console.log(event.currentTarget.src);
                 }
 
@@ -69,6 +70,7 @@
                     if (newValue) {
                         scope.$parent.cardImg = newValue.trim();
                         mdCardImg.src = newValue.trim();
+                        mdCardImg.class = 'animated fadeIn';
                     }
                 }
 
@@ -76,6 +78,7 @@
                     scope.cardImg = mdCardImg.src.toString().trim();
                     scope.$parent.cardImg = mdCardImg.src.toString().trim();
                     scope.$watch('cardImg', watchImageChange);
+
                 }
 
                 if (mdCardTitleVal) {
