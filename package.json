@@ -1,7 +1,7 @@
 {
   "name": "gsConcierge",
   "description": "A concierge admin app for cool kids.",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "author": "Emotiv",
   "engines": {
     "node": "0.10.x",
