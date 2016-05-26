@@ -23,7 +23,7 @@
 				
 					{
 						link: 'create',
-							name: 'Create link',
+							name: 'Campaign setup',
 							icon: 'create'
 					},
 			    

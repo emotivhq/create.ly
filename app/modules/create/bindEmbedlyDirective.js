@@ -1,4 +1,5 @@
 (function() {
+	'use strict';
     angular
         .module('create')
         .directive('bindEmbedly', bindEmbedly);
@@ -42,8 +43,9 @@
                 mdCardImg = document.querySelectorAll(params.cardImageSelector)[1];
                 
                 function clickEmbedlyImageHandler() {
-                    scope.$parent.cardImg = this.src;
-                    mdCardImg.src = this.src;
+                    scope.$parent.cardImg = event.currentTarget.src;
+                    mdCardImg.src = event.currentTarget.src;
+                    console.log(event.currentTarget.src);
                 }
 
                 function addHandlersForImages(images) {

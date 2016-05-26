@@ -578,7 +578,7 @@ angular.module('usersync')
 			vm.maxStep = 3;
 			vm.showBusyText = false;
 			vm.cardImg = '';
-			$scope.cardImg;
+			$scope.cardImg = '';
 			// Setup the initial step data
 			vm.stepData = [
 				{ step: 1, completed: false, optional: false, data: {product_url: 'https://'}},
@@ -604,13 +604,13 @@ angular.module('usersync')
 				}
 			};
 
-			$scope.cardTitle;
-			$scope.embedlyImages;
-			$scope.originalUrl;
-			$scope.providerName;
-			$scope.faviconUrl;
-			$scope.providerDisplay;
-			$scope.cardDescription;
+			$scope.cardTitle = '';
+			$scope.embedlyImages = [];
+			$scope.originalUrl = '';
+			$scope.providerName = '';
+			$scope.faviconUrl = '';
+			$scope.providerDisplay = '';
+			$scope.cardDescription = '';
 			vm.urlSearch = '';
 			
 			vm.getUrlInfo = function getUrlInfo(url) {
@@ -1442,6 +1442,7 @@ angular.module('usersync')
 })();
 
 (function() {
+	'use strict';
     angular
         .module('create')
         .directive('bindEmbedly', bindEmbedly);
@@ -1485,8 +1486,8 @@ angular.module('usersync')
                 mdCardImg = document.querySelectorAll(params.cardImageSelector)[1];
                 
                 function clickEmbedlyImageHandler() {
-                    scope.$parent.cardImg = this.src;
-                    mdCardImg.src = this.src;
+                    scope.$parent.cardImg = event.currentTarget.src;
+                    mdCardImg.src = event.currentTarget.src;
                 }
 
                 function addHandlersForImages(images) {

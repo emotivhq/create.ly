@@ -36,7 +36,7 @@
     "menu": [
       {
         "link": "create",
-        "title": "Create campaign link",
+        "title": "Campaign setup",
         "icon": "open_in_browser"
       },
       {

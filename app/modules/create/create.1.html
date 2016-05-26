@@ -1,0 +1,24 @@
+<div layout="row" layout-margin layout="column" data-ng-controller="CreateCtrl" bind-embedly ng-cloak class="create">
+    <div flex>
+        <md-card>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2>Create a non-profit campaign</h2>
+                </div>
+            </md-toolbar>
+            <md-stepper-card-content class="md-no-padding">
+                <md-steppers md-dynamic-height md-stretch-steppers="always" md-selected="vm.selectedStep" md-busy-text="'Fetching data & other things...'" md-busy="vm.showBusyText">
+                    <md-step label="Enter Url" md-complete="vm.stepData[0].completed" ng-disabled="vm.stepProgress < 1">
+                        <section data-ng-include=" 'app/modules/create/steps/url.html' "></section>
+                    </md-step>
+                    <md-step label="Customize" md-complete="vm.stepData[1].completed" ng-disabled="vm.stepProgress < 2">
+                        <section data-ng-include=" 'app/modules/create/steps/customize.html' "></section>
+                    </md-step>
+                    <md-step label="Finish" md-complete="vm.stepData[2].completed" ng-disabled="vm.stepProgress < 3">
+                        <section data-ng-include=" 'app/modules/create/steps/finish.html' "></section>
+                    </md-step>
+                </md-steppers>
+            </md-stepper-card-content>
+        </md-card>
+    </div>
+</div>
