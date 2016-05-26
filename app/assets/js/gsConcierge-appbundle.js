@@ -543,7 +543,7 @@ angular.module('usersync')
 		.module('create')
 		.controller('CreateCtrl', Create);
 
-		Create.$inject = ['$scope', '$q', '$mdToast', '$mdDialog', '$window', 'BitlyService', 'filepicker', '$filter', 'CreateService'];
+		Create.$inject = ['$scope', '$q', '$mdToast', '$mdDialog', '$window', 'BitlyService', 'filepicker', '$filter', 'CreateService', 'CreateDataService'];
 
 		/*
 		* recommend
@@ -551,7 +551,7 @@ angular.module('usersync')
 		* and bindable members up top.
 		*/
 
-		function Create($scope, $q, $mdToast, $mdDialog, $window, BitlyService, filepicker, $filter, CreateService) {
+		function Create($scope, $q, $mdToast, $mdDialog, $window, BitlyService, filepicker, $filter, CreateService, CreateDataService) {
 			/*jshint validthis: true */
 			var vm = this;
 			window.Intercom("boot", {
@@ -577,8 +577,8 @@ angular.module('usersync')
 			vm.stepProgress = 1;
 			vm.maxStep = 3;
 			vm.showBusyText = false;
-			vm.cardImg = '';
-			$scope.cardImg = '';
+			vm.cardImg = CreateDataService.cardImage;
+			$scope.cardImg = CreateDataService.cardImage;
 			// Setup the initial step data
 			vm.stepData = [
 				{ step: 1, completed: false, optional: false, data: {product_url: 'https://'}},
@@ -650,12 +650,18 @@ angular.module('usersync')
 			vm.submitCurrentStep = function submitCurrentStep(stepData) {
 				vm.showBusyText = true;
 
-				if (stepData.step === 1) { // stepper is going from step 1 to step 2
+				if (stepData.step === 0) { // stepper is going from step 0 to step 1
+					$scope.$broadcast('bindEmbedlyNow', $scope.cardImg);
+					console.log('bindEmbedlyNow - 0' + $scope.cardImg);
+				} else if (stepData.step === 1) { // stepper is going from step 1 to step 2
 					vm.showBusyText = false;
 					stepData.completed = true;
 					vm.enableNextStep();
-					$scope.$broadcast('secondstep');
+					$scope.$broadcast('bindEmbedlyNow', $scope.cardImg);
+					console.log('bindEmbedlyNow - 1' + $scope.cardImg);
 				} else if (stepData.step === 2) { // stepper is going from step 2 to step 3
+					$scope.$broadcast('bindEmbedlyNow', $scope.cardImg);
+					console.log('bindEmbedlyNow - 2' + $scope.cardImg);
 					if (vm.stepData[1].data.price) {
 						//$scope.$broadcast('create-bitly-link');
 						var base_url = 'https://www.giftstarter.com/create?product_url=',
@@ -696,27 +702,33 @@ angular.module('usersync')
 			vm.startCampaignFromLink = function startCampaignFromLink() {
 				$window.open(vm.campaignCreateShortLink);
 			};
+			
+			$scope.$on('bindEmbedlyNow', function (data) {
+				CreateDataService.cardImage = data;
+				$scope.mdCardImg = data;
+				$scope.cardImg = data;
+			});
 
-				$scope.setUploadedImage = function (fpfile) {
-					$scope.mdCardImg = fpfile.url;
-					$scope.cardImg = fpfile.url;
-					vm.cardImg = fpfile.url;
-					vm.stepData[1].data.cardImg = fpfile.url;
-					console.log(fpfile);
-				};
+			$scope.setUploadedImage = function (fpfile) {
+				CreateDataService.cardImage = fpfile.url;
+				$scope.mdCardImg = fpfile.url;
+				$scope.cardImg = fpfile.url;
+				vm.cardImg = fpfile.url;
+				vm.stepData[1].data.cardImg = fpfile.url;
+				console.log(fpfile);
+			};
 
-				vm.showUrlEducationDialog = function showUrlEducationDialog(ev) {
-					$mdDialog.show(
-						$mdDialog.alert()
-						.clickOutsideToClose(true)
-						.title('How this tool works.')
-						.ariaLabel('How this tool works.')
-						.textContent('This tool does it\'s best to extract content from any url it is given. If the content above looks wonky, first make sure you have the correct url. If you are 100% sure you do, use the next step to customize things to look how you want.')
-						.targetEvent(ev)
-						.ok
-						.cancel('Start over')
-					);
-				};
+			vm.showUrlEducationDialog = function showUrlEducationDialog(ev) {
+				$mdDialog.show(
+					$mdDialog.alert()
+					.clickOutsideToClose(true)
+					.title('How this tool works.')
+					.ariaLabel('How this tool works.')
+					.textContent('This tool does it\'s best to extract content from any url it is given. If the content above looks wonky, first make sure you have the correct url. If you are 100% sure you do, use the next step to customize things to look how you want.')
+					.targetEvent(ev)
+					.ok('Got it')
+				);
+			};
 
 			vm.clearStepper = function clearStepper() {
 				$window.location.reload();
@@ -1189,11 +1201,13 @@ angular.module('usersync')
 
 	angular
 		.module('create')
-		.factory('CreateService', Create);
+		.factory('CreateService', Create)
+		.service('CreateDataService', Data);
 		// Inject your dependencies as .$inject = ['$http', 'someSevide'];
 		// function Name ($http, someSevide) {...}
 
 		Create.$inject = ['$http', 'EmbedlyService'];
+		Data.$inject = ['$rootScope'];
 
 		function Create ($http, EmbedlyService) {
 			function getEmbedlyRes (url) {
@@ -1202,6 +1216,12 @@ angular.module('usersync')
 			return {
 				getEmbedlyRes: getEmbedlyRes
 			};
+			
+		}
+		
+		function Data ($rootScope) {
+			var vm = this;
+			vm.cardImage = '';
 		}
 
 })();
@@ -1460,7 +1480,7 @@ angular.module('usersync')
 
         return directive;
 
-        function linkBindEmbedly(scope, elem) {
+        function linkBindEmbedly(scope, elem, CreateDataService) {
 
             var params = {
                 cardTitleTextSelector: 'embedly md-card-title md-card-title-text',
@@ -1479,8 +1499,8 @@ angular.module('usersync')
                 embedlyImages,
                 mdCardImg,
                 causeTitle;
-            scope.$on('secondstep', function () {
-                scope.cardImg = scope.$parent.cardImg;
+            scope.$on('bindEmbedlyNow', function () {
+                scope.cardImg = CreateDataService.cardImage;
                 scope.cardTitle = scope.$parent.cardTitle;
                 causeTitle = elem.find(params.causeTitleSelector);
                 causeImg = elem.find(params.causeImgSelector);
@@ -1488,11 +1508,11 @@ angular.module('usersync')
                 embedlyImages = angular.element(document.querySelectorAll(params.embedlyImagesSelector));
                 mdCardTitleVal = angular.element(document.querySelectorAll(params.cardTitleTextSelector)[1]);
                 mdCardImg = document.querySelectorAll(params.cardImageSelector)[1];
-                
+
                 function clickEmbedlyImageHandler() {
-                    scope.$parent.cardImg = event.currentTarget.src;
+                    CreateDataService.cardImage = event.currentTarget.src;
                     mdCardImg.src = event.currentTarget.src;
-                    console.log(event.currentTarget.src);
+                    console.log('binding cardImage-' + CreateDataService.cardImage);
                 }
 
                 function addHandlersForImages(images) {
@@ -1514,14 +1534,14 @@ angular.module('usersync')
 
                 function watchImageChange (newValue) {
                     if (newValue) {
-                        scope.$parent.cardImg = newValue.trim();
+                        CreateDataService.cardImage = newValue.trim();
                         mdCardImg.src = newValue.trim();
                     }
                 }
 
                 function twoWayImg () {
                     scope.cardImg = mdCardImg.src.toString().trim();
-                    scope.$parent.cardImg = mdCardImg.src.toString().trim();
+                    CreateDataService.cardImage = mdCardImg.src.toString().trim();
                     scope.$watch('cardImg', watchImageChange);
                 }
 
@@ -1605,9 +1625,9 @@ angular.module('usersync')
         .module('gsConcierge')
         .directive('embedly', embedly);
         
-    embedly.$inject = ['embedlyService', '$timeout'];
+    embedly.$inject = ['embedlyService', 'CreateDataService', '$timeout'];
 
-    function embedly(embedlyService, $timeout) {
+    function embedly(embedlyService, CreateDataService, $timeout) {
 
         var directive = {
             link: link,
@@ -1617,6 +1637,7 @@ angular.module('usersync')
                 urlsearch: '@',
                 maxwidth: '@',
                 scheme: '@',
+                hideimage: '@',
                 onempty: '&'
             },
             templateUrl: '/app/modules/shared/directives/embedly/embedly.html'
@@ -1645,6 +1666,14 @@ angular.module('usersync')
                                 switch (data.data.type) {
                                 case 'html':
                                     scope.embedCode = data.data;
+                                    if (CreateDataService.cardImage) {
+                                        scope.cardImage = CreateDataService.cardImage;
+                                        console.log('CreateDataService: ' + scope.cardImage);
+                                    } else if (!CreateDataService.cardImage && scope.embedCode.images[0].url){
+                                        CreateDataService.cardImage = scope.embedCode.images[0].url;
+                                        scope.cardImage = scope.embedCode.images[0].url;
+                                        console.log('embedCode.images[0].url: ' + scope.cardImage);
+                                    }
                                     break;
                                 case 'video':
                                 case 'rich':
@@ -1704,7 +1733,8 @@ angular.module('usersync')
 	angular
 		.module('gsConcierge')
 		.directive('filepickerDirective', filepickerDirective)
-		.directive('filepickerPreview', filepickerPreviewDirective);
+		.directive('filepickerPreview', filepickerPreviewDirective)
+		.directive('filepickerCustomDirective', filepickerCustomDirective);
 
 	filepickerDirective.$inject = ['$rootScope', 'filepickerService', '$parse'];
 	function filepickerDirective($rootScope, filepickerService, $parse){
@@ -1769,7 +1799,37 @@ angular.module('usersync')
 		        }
 		    };
 		}
+		
+		filepickerCustomDirective.$inject = ['$rootScope', 'filepickerService'];
+		function filepickerCustomDirective($rootScope, filepickerService){
 
+		    return {
+		        scope: {
+		            options: '=',
+		            onSuccess:'&',
+		            onError:'&',
+		        },
+		        template: '<button class="fp__btn" ng-click="openPicker()">Pick</button>',
+		        link: function(scope, elm, attrs) {
+		            scope.openPicker = openPicker;
+		            scope.options = scope.options || {};
+		            function openPicker(){
+		                filepickerService.pick(
+		                    scope.options,
+		                    function(Blob){
+		                        scope.onSuccess({Blob: Blob});
+		                    },
+		                    function(Error){
+		                        scope.onError({Error: Error});
+		                    }
+		                );
+		            }
+		        }
+		    };
+		
+		}
+		
+		
 })();
 
 (function() {

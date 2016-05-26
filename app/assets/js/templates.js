@@ -33,7 +33,7 @@ angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
     "<div layout=\"row\" layout-margin layout=\"column\" data-ng-controller=\"CreateCtrl\" bind-embedly ng-cloak class=\"create\">\n" +
     "    <div flex>\n" +
     "        <md-card>\n" +
-    "            <md-toolbar>\n" +
+    "            <md-toolbar class=\"md-accent md-hue-2\">\n" +
     "                <div class=\"md-toolbar-tools\">\n" +
     "                    <h2>Create a non-profit campaign</h2>\n" +
     "                </div>\n" +
@@ -52,7 +52,7 @@ angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
     "                                            <div layout=\"row\" layout-xs=\"column\" flex>\n" +
     "                                                <md-input-container flex class=\"md-block\">\n" +
     "                                                    <input name=\"product_url\" ng-model=\"vm.stepData[0].data.product_url\" ng-disabled=\"vm.showBusyText\" md-select-on-focus ng-pattern=\"vm.urlPattern\" ng-model-options=\"{ updateOn: 'default blur', debounce: { default: 300, blur: 300 } }\" required aria-label=\"Enter Url\"/>\n" +
-    "                                                    <div class=\"hint\" ng-show=\"vm.showProductUrlHint\">{{vm.productUrlHint}}</div>\n" +
+    "                                                    <div class=\"hint\" ng-show=\"vm.showProductUrlHint\">Example: <span>{{vm.productUrlHint}}</span></div>\n" +
     "                                                    <div ng-messages=\"step1.product_url.$error\" role=\"alert\">\n" +
     "                                                        <div ng-message-exp=\"['required','pattern']\">\n" +
     "                                                            That doesn't look like a valid url... are you sure you pasted the right thing?\n" +
@@ -80,7 +80,7 @@ angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
     "                                 <div flex layout=\"row\" layout-align=\"start top\">\n" +
     "                                    <md-button ng-hide=\"vm.showBusyText || loading_embedly || !showPreview\" ng-disabled=\"vm.showBusyText || loading_embedly || !showPreview\" ng-click=\"vm.showUrlEducationDialog($event)\">\n" +
     "                                        <md-icon md-svg-icon=\"md-toggle-arrow\"></md-icon> This doesn't look right\n" +
-    "                                         <md-tooltip md-direction=\"left\">\n" +
+    "                                         <md-tooltip md-direction=\"top\">\n" +
     "                                            Did you expect a different site?\n" +
     "                                        </md-tooltip>\n" +
     "                                    </md-button>\n" +
@@ -143,7 +143,7 @@ angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
     "                                 <div flex layout=\"row\" layout-align=\"start top\">\n" +
     "                                    <md-button ng-disabled=\"vm.showBusyText\" ng-click=\"vm.moveToPreviousStep()\">\n" +
     "                                        <md-icon class=\"material-icons\">chevron_left</md-icon>Go back\n" +
-    "                                         <md-tooltip md-direction=\"left\">\n" +
+    "                                         <md-tooltip md-direction=\"top\">\n" +
     "                                            Did you change your mind?\n" +
     "                                        </md-tooltip>\n" +
     "                                    </md-button>\n" +
@@ -164,36 +164,13 @@ angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
     "                                        allow ability to update ng-src for this to work,\n" +
     "                                        then add to step 2 as well instead of embedly directive\n" +
     "                                    -->\n" +
-    "                                    <md-card>\n" +
-    "                                        <md-card-header ng-show=\"faviconUrl || providerName || providerDisplay\">\n" +
-    "                                            <md-card-avatar ng-show=\"faviconUrl\">\n" +
-    "                                                <img ng-src=\"{{faviconUrl}}\" alt=\"{{providerName}}\" />\n" +
-    "                                            </md-card-avatar>\n" +
-    "                                            <md-card-header-text>\n" +
-    "                                                <span class=\"md-title\" ng-show=\"providerName\">{{providerName}}</span>\n" +
-    "                                                <span class=\"md-subhead\" ng-show=\"providerDisplay\">\n" +
-    "                                                    <span hide-xs>See more at </span>{{providerDisplay}}\n" +
-    "                                                </span>\n" +
-    "                                            </md-card-header-text>\n" +
-    "                                        </md-card-header>\n" +
-    "                                        <img ng-src=\"{{cardImg}}\" class=\"md-card-image\" alt=\"{{cardTitle}}\" ng-show=\"cardImg\">\n" +
-    "                                        <md-card-title ng-show=\"cardTitle\">\n" +
-    "                                            <md-card-title-text>\n" +
-    "                                                <span class=\"md-headline\">{{cardTitle}}</span>\n" +
-    "                                            </md-card-title-text>\n" +
-    "                                        </md-card-title>\n" +
-    "                                        <md-card-content ng-show=\"cardDescription\">\n" +
-    "                                            <p>\n" +
-    "                                                {{cardDescription}}\n" +
-    "                                            </p>\n" +
-    "                                        </md-card-content>\n" +
-    "                                    </md-card>\n" +
+    "                                    <embedly hideimage=\"true\" urlsearch=\"{{vm.urlSearch}}\"></embedly>\n" +
     "                                </div>\n" +
     "                                <div flex=\"100\" flex-gt-sm=\"50\" flex-order=\"0\" flex-order-gt-sm=\"1\" layout-padding layout-margin>\n" +
     "                                    <md-button flex style=\"width:100%\" flex=\"100\" class=\"md-primary md-raised md-hue-2\" ng-disabled=\"vm.showBusyText\" ng-click=\"vm.startCampaignFromLink()\" aria-label=\"Create campaign now\">\n" +
     "                                        <md-icon class=\"material-icons\">open_in_new</md-icon>\n" +
     "                                        Create <span hide-xs>this campaign</span> now\n" +
-    "                                        <md-tooltip md-direction=\"bottom\">\n" +
+    "                                        <md-tooltip md-direction=\"top\">\n" +
     "                                            If you're ready now, let's do this.\n" +
     "                                        </md-tooltip>\n" +
     "                                    </md-button>\n" +
@@ -204,14 +181,18 @@ angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
     "                                            <input id=\"shortLink\" ng-model=\"vm.campaignCreateShortLink\" md-select-on-focus ng-readonly=\"true\" aria-label=\"Campaign Short Link\" />\n" +
     "                                        </md-input-container>\n" +
     "                                        <div>\n" +
-    "                                            <md-button ng-show=\"!vm.showClipboardTooltip && !vm.showFallbackClipboardTooltip\" type=\"button\" class=\"md-raised\" aria-label=\"Copy URL\" ngclipboard data-clipboard-target=\"#shortLink\" ngclipboard-success=\"vm.clipboardCopySuccess($event);\" ngclipboard-error=\"vm.clipboardCopyError($event);\">\n" +
+    "                                            <md-button ng-show=\"!vm.showClipboardTooltip && !vm.showFallbackClipboardTooltip\" type=\"button\" class=\"md-fab md-no-ink md-accent md-hue-1 md-mini\" md-no-ink aria-label=\"Copy URL\" ngclipboard data-clipboard-target=\"#shortLink\" ngclipboard-success=\"vm.clipboardCopySuccess($event);\" ngclipboard-error=\"vm.clipboardCopyError($event);\">\n" +
     "                                                <md-icon class=\"material-icons\">content_copy</md-icon>\n" +
-    "                                                Copy Url\n" +
+    "                                                <md-tooltip md-direction=\"top\">\n" +
+    "                                                    Copy url\n" +
+    "                                                </md-tooltip>\n" +
     "                                            </md-button>\n" +
-    "                                            <md-button ng-show=\"vm.showClipboardTooltip || vm.showFallbackClipboardTooltip\" type=\"button\" class=\"md-raised md-accent md-hue-3\" aria-label=\"URL copied\" ngclipboard data-clipboard-target=\"#shortLink\" ngclipboard-success=\"vm.clipboardCopySuccess($event);\" ngclipboard-error=\"vm.clipboardCopyError($event);\">\n" +
+    "                                            <md-button ng-show=\"vm.showClipboardTooltip || vm.showFallbackClipboardTooltip\" type=\"button\" class=\"md-fab md-no-ink md-accent md-hue-3 md-mini\" aria-label=\"URL copied\" ngclipboard data-clipboard-target=\"#shortLink\" ngclipboard-success=\"vm.clipboardCopySuccess($event);\" ngclipboard-error=\"vm.clipboardCopyError($event);\">\n" +
     "                                                <span ng-show=\"vm.showClipboardTooltip\">\n" +
     "                                                    <md-icon class=\"material-icons\">done</md-icon>\n" +
+    "                                                    <md-tooltip md-direction=\"bottom\">\n" +
     "                                                    Url copied\n" +
+    "                                                </md-tooltip>\n" +
     "                                                </span>\n" +
     "                                                <span ng-show=\"vm.showFallbackClipboardTooltip\">\n" +
     "                                                    <md-icon class=\"material-icons\">done</md-icon>\n" +
@@ -224,7 +205,7 @@ angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
     "                            </div>\n" +
     "                            <md-step-actions layout=\"row\" layout-padding>\n" +
     "                                <div flex layout=\"row\" layout-align=\"start top\">\n" +
-    "                                    <md-button ng-click=\"vm.moveToPreviousStep()\">Go Back</md-button>\n" +
+    "                                    <md-button ng-click=\"vm.moveToPreviousStep()\"><md-icon class=\"material-icons\">chevron_left</md-icon>Go Back</md-button>\n" +
     "                                </div>\n" +
     "                                <div flex layout=\"row\" layout-align=\"end top\">\n" +
     "                                    <md-button class=\"md-warn\" ng-click=\"vm.clearStepper()\">\n" +
@@ -777,7 +758,7 @@ angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
     "            </span>\n" +
     "        </md-card-header-text>\n" +
     "    </md-card-header>\n" +
-    "    <img ng-src=\"{{embedCode.images[0].url}}\" class=\"md-card-image\" alt=\"{{embedCode.title}}\" ng-show=\"embedCode.images.length > 0\">\n" +
+    "    <img ng-src=\"{{cardImage}}\" class=\"md-card-image\" alt=\"{{embedCode.title}}\" ng-show=\"embedCode.images.length > 0 && !hideimage\">\n" +
     "    <md-card-title ng-show=\"embedCode.title\">\n" +
     "        <md-card-title-text>\n" +
     "            <span class=\"md-headline\">{{embedCode.title}}</span>\n" +
