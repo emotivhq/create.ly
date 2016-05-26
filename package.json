@@ -1,7 +1,7 @@
 {
   "name": "gsConcierge",
   "description": "A concierge admin app for cool kids.",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "Emotiv",
   "engines": {
     "node": "0.10.x",
@@ -17,6 +17,7 @@
     "bower": "~1.3.8",
     "chalk": "~0.5",
     "glob": "~4.0.5",
+    "grunt-bump": "^0.8.0",
     "grunt-cli": "~0.1.13"
   },
   "devDependencies": {

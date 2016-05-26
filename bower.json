@@ -1,7 +1,7 @@
 {
   "name": "gsConcierge",
   "description": "A concierge admin app for cool kids.",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "install": {
     "path": {
       "js": "app/assets/libs",
