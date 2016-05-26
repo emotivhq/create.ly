@@ -13,7 +13,7 @@
 		.module('create')
 		.controller('CreateCtrl', Create);
 
-		Create.$inject = ['$scope', '$q', '$mdToast', '$mdDialog', '$window', 'BitlyService', 'filepicker', '$filter', 'CreateService', 'CreateDataService'];
+		Create.$inject = ['$scope', '$q', '$mdToast', '$mdDialog', '$window', 'BitlyService', 'filepicker', '$filter', 'CreateService'];
 
 		/*
 		* recommend
@@ -21,7 +21,7 @@
 		* and bindable members up top.
 		*/
 
-		function Create($scope, $q, $mdToast, $mdDialog, $window, BitlyService, filepicker, $filter, CreateService, CreateDataService) {
+		function Create($scope, $q, $mdToast, $mdDialog, $window, BitlyService, filepicker, $filter, CreateService) {
 			/*jshint validthis: true */
 			var vm = this;
 			window.Intercom("boot", {
@@ -47,8 +47,8 @@
 			vm.stepProgress = 1;
 			vm.maxStep = 3;
 			vm.showBusyText = false;
-			vm.cardImg = CreateDataService.cardImage;
-			$scope.cardImg = CreateDataService.cardImage;
+			vm.cardImg = '';
+			$scope.cardImg = '';
 			// Setup the initial step data
 			vm.stepData = [
 				{ step: 1, completed: false, optional: false, data: {product_url: 'https://'}},
@@ -66,15 +66,11 @@
 					vm.stepProgress = vm.stepProgress + 1;
 				}
 				vm.selectedStep = vm.selectedStep + 1;
-				$scope.$broadcast('bindEmbedlyNow', CreateDataService.cardImage);
-				console.log('bindEmbedlyNow - next step' + CreateDataService.cardImage);
 			};
 
 			vm.moveToPreviousStep = function moveToPreviousStep() {
 				if (vm.selectedStep > 0) {
 					vm.selectedStep = vm.selectedStep - 1;
-					$scope.$broadcast('bindEmbedlyNow', CreateDataService.cardImage);
-					console.log('bindEmbedlyNow - previous step' + CreateDataService.cardImage);
 				}
 			};
 
@@ -124,25 +120,19 @@
 			vm.submitCurrentStep = function submitCurrentStep(stepData) {
 				vm.showBusyText = true;
 
-				if (stepData.step === 0) { // stepper is going from step 0 to step 1
-					$scope.$broadcast('bindEmbedlyNow', CreateDataService.cardImage);
-					console.log('bindEmbedlyNow - 0' + CreateDataService.cardImage);
-				} else if (stepData.step === 1) { // stepper is going from step 1 to step 2
+				if (stepData.step === 1) { // stepper is going from step 1 to step 2
 					vm.showBusyText = false;
 					stepData.completed = true;
 					vm.enableNextStep();
-					$scope.$broadcast('bindEmbedlyNow', CreateDataService.cardImage);
-					console.log('bindEmbedlyNow - 1' + CreateDataService.cardImage);
+					$scope.$broadcast('secondstep');
 				} else if (stepData.step === 2) { // stepper is going from step 2 to step 3
-					$scope.$broadcast('bindEmbedlyNow', CreateDataService.cardImage);
-					console.log('bindEmbedlyNow - 2' + CreateDataService.cardImage);
 					if (vm.stepData[1].data.price) {
 						//$scope.$broadcast('create-bitly-link');
 						var base_url = 'https://www.giftstarter.com/create?product_url=',
 							product_url = $scope.originalUrl,
 							title = $scope.cardTitle, //update once embedly bind is finished.
 							price = parseFloat($filter('number')(vm.stepData[1].data.price*100, 2).replace(/,/g, '')),
-							img_url = CreateDataService.cardImage,
+							img_url = $scope.cardImg,
 							source = $scope.providerName, //update once embedly bind is finished. Need to bind "source" from embedly returned data.
 							urlToShorten = base_url + product_url + '&title=' + title +'&price=' + price + '&img_url=' + img_url + '&source=' + source;
 
@@ -177,26 +167,25 @@
 				$window.open(vm.campaignCreateShortLink);
 			};
 
-			$scope.setUploadedImage = function (fpfile) {
-				CreateDataService.cardImage = fpfile.url;
-				$scope.mdCardImg = fpfile.url;
-				$scope.cardImg = fpfile.url;
-				vm.cardImg = fpfile.url;
-				vm.stepData[1].data.cardImg = fpfile.url;
-				console.log(fpfile);
-			};
+				$scope.setUploadedImage = function (fpfile) {
+					$scope.mdCardImg = fpfile.url;
+					$scope.cardImg = fpfile.url;
+					vm.cardImg = fpfile.url;
+					vm.stepData[1].data.cardImg = fpfile.url;
+					console.log(fpfile);
+				};
 
-			vm.showUrlEducationDialog = function showUrlEducationDialog(ev) {
-				$mdDialog.show(
-					$mdDialog.alert()
-					.clickOutsideToClose(true)
-					.title('How this tool works.')
-					.ariaLabel('How this tool works.')
-					.textContent('This tool does it\'s best to extract content from any url it is given. If the content above looks wonky, first make sure you have the correct url. If you are 100% sure you do, use the next step to customize things to look how you want.')
-					.targetEvent(ev)
-					.ok('Got it')
-				);
-			};
+				vm.showUrlEducationDialog = function showUrlEducationDialog(ev) {
+					$mdDialog.show(
+						$mdDialog.alert()
+						.clickOutsideToClose(true)
+						.title('How this tool works.')
+						.ariaLabel('How this tool works.')
+						.textContent('This tool does it\'s best to extract content from any url it is given. If the content above looks wonky, first make sure you have the correct url. If you are 100% sure you do, use the next step to customize things to look how you want.')
+						.targetEvent(ev)
+						.ok('Got it')
+					);
+				};
 
 			vm.clearStepper = function clearStepper() {
 				$window.location.reload();

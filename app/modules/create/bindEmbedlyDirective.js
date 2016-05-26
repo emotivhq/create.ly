@@ -13,7 +13,7 @@
 
         return directive;
 
-        function linkBindEmbedly(scope, elem, CreateDataService) {
+        function linkBindEmbedly(scope, elem) {
 
             var params = {
                 cardTitleTextSelector: 'embedly md-card-title md-card-title-text',
@@ -32,8 +32,8 @@
                 embedlyImages,
                 mdCardImg,
                 causeTitle;
-            scope.$on('bindEmbedlyNow', function () {
-                scope.cardImg = CreateDataService.cardImage;
+            scope.$on('secondstep', function () {
+                scope.cardImg = scope.$parent.cardImg;
                 scope.cardTitle = scope.$parent.cardTitle;
                 causeTitle = elem.find(params.causeTitleSelector);
                 causeImg = elem.find(params.causeImgSelector);
@@ -41,11 +41,11 @@
                 embedlyImages = angular.element(document.querySelectorAll(params.embedlyImagesSelector));
                 mdCardTitleVal = angular.element(document.querySelectorAll(params.cardTitleTextSelector)[1]);
                 mdCardImg = document.querySelectorAll(params.cardImageSelector)[1];
-
+                
                 function clickEmbedlyImageHandler() {
-                    CreateDataService.cardImage = event.currentTarget.src;
+                    scope.$parent.cardImg = event.currentTarget.src;
                     mdCardImg.src = event.currentTarget.src;
-                    console.log('binding cardImage-' + CreateDataService.cardImage);
+                    console.log(event.currentTarget.src);
                 }
 
                 function addHandlersForImages(images) {
@@ -67,14 +67,14 @@
 
                 function watchImageChange (newValue) {
                     if (newValue) {
-                        CreateDataService.cardImage = newValue.trim();
+                        scope.$parent.cardImg = newValue.trim();
                         mdCardImg.src = newValue.trim();
                     }
                 }
 
                 function twoWayImg () {
                     scope.cardImg = mdCardImg.src.toString().trim();
-                    CreateDataService.cardImage = mdCardImg.src.toString().trim();
+                    scope.$parent.cardImg = mdCardImg.src.toString().trim();
                     scope.$watch('cardImg', watchImageChange);
                 }
 
@@ -89,7 +89,7 @@
                     twoWayImg();
                 } else {
                     embedly.prepend(params.cardImage);
-                    mdCardImg = CreateDataService.cardImage;
+                    mdCardImg = document.querySelectorAll(params.cardImageSelector)[0];
                     twoWayImg();
                 }
             });
