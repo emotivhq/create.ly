@@ -77,9 +77,6 @@
                                 if (!fetchSuccess) {
                                     handleEmpty();
                                     scope.embedCode = '';
-                                    scope.$parent.$broadcast('embedly-fetch-error');
-                                } else {
-                                    scope.$parent.$broadcast('embedly-fetch-success');
                                 }
                             }
                         }, function (error) {

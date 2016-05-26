@@ -38,7 +38,7 @@
                                         <md-progress-linear md-mode="indeterminate" ng-show="loading_embedly"></md-progress-linear>
                                     </div>
                                     <div flex="90" flex-sm="90" flex-xs="100">
-                                        <div ng-show="showPreview">
+                                        <div ng-show="vm.showPreview">
                                             <embedly urlsearch="{{vm.urlSearch}}" onempty="tryAgain()"></embedly>
                                         </div>
                                     </div>
@@ -46,15 +46,15 @@
                             </div>
                             <md-step-actions layout="row" layout-padding>
                                  <div flex layout="row" layout-align="start top">
-                                    <md-button ng-hide="vm.showBusyText || loading_embedly || !showPreview" ng-disabled="vm.showBusyText || loading_embedly || !showPreview" ng-click="vm.showUrlEducationDialog($event)">
+                                    <md-button ng-hide="vm.showBusyText || loading_embedly || !vm.showPreview" ng-disabled="vm.showBusyText || loading_embedly || !vm.showPreview" ng-click="vm.showUrlEducationDialog($event)">
                                         <md-icon md-svg-icon="md-toggle-arrow"></md-icon> This doesn't look right
-                                         <md-tooltip md-direction="left">
+                                        <md-tooltip md-direction="right">
                                             Did you expect a different site?
                                         </md-tooltip>
                                     </md-button>
                                 </div>
                                 <div flex layout="row" layout-align="end top">
-                                    <md-button class="md-primary md-raised" ng-hide="vm.showBusyText || loading_embedly || !showPreview" ng-disabled="vm.showBusyText || loading_embedly || !showPreview" ng-click="vm.submitCurrentStep(vm.stepData[0])">
+                                    <md-button class="md-primary md-raised" ng-hide="vm.showBusyText || loading_embedly || !vm.showPreview" ng-disabled="vm.showBusyText || loading_embedly || !vm.showPreview" ng-click="vm.submitCurrentStep(vm.stepData[0])">
                                         That's it<span hide-xs>, let's move on</span>
                                     </md-button>
                                 </div>
@@ -111,7 +111,7 @@
                                  <div flex layout="row" layout-align="start top">
                                     <md-button ng-disabled="vm.showBusyText" ng-click="vm.moveToPreviousStep()">
                                         <md-icon md-svg-icon="md-toggle-chevron-left"></md-icon> Go back
-                                         <md-tooltip md-direction="left">
+                                         <md-tooltip md-direction="right">
                                             Did you change your mind?
                                         </md-tooltip>
                                     </md-button>
@@ -126,8 +126,8 @@
                     </md-step>
                     <md-step label="Finish" md-complete="vm.stepData[2].completed" ng-disabled="vm.stepProgress < 3">
                         <md-step-body>
-                            <div layout="column" layout-gt-sm="row" layout-align="center start">
-                                <div flex="100" flex-gt-sm="50" flex-order="1" flex-order-gt-sm="0" layout-padding>
+                            <div layout="column" layout-gt-sm="row" layout-align="center start" layout-padding>
+                                <div flex="100" flex-gt-sm="50" flex-order="1" flex-order-gt-sm="0" >
                                     <!-- TODO: @yaboi
                                         allow ability to update ng-src for this to work,
                                         then add to step 2 as well instead of embedly directive
@@ -157,19 +157,22 @@
                                         </md-card-content>
                                     </md-card>
                                 </div>
-                                <div flex="100" flex-gt-sm="50" flex-order="0" flex-order-gt-sm="1" layout-padding layout-margin>
-                                    <md-button flex style="width:100%" flex="100" class="md-primary md-raised md-hue-2" ng-disabled="vm.showBusyText" ng-click="vm.startCampaignFromLink()" aria-label="Create campaign now">
-                                        <md-icon class="material-icons">open_in_new</md-icon>
-                                        Create <span hide-xs>this campaign</span> now
-                                        <md-tooltip md-direction="bottom">
-                                            If you're ready now, let's do this.
-                                        </md-tooltip>
-                                    </md-button>
+                                <div flex="100" flex-gt-sm="50" flex-order="0" flex-order-gt-sm="1" layout-margin>
+                                    <div flex layout="column" layout-padding>
+                                        <md-button flex flex="100" class="md-primary md-raised md-hue-2" ng-disabled="vm.showBusyText" ng-click="vm.startCampaignFromLink()" aria-label="Create campaign now">
+                                            <md-icon class="material-icons">open_in_new</md-icon>
+                                            Create <span hide-xs>this campaign</span> now
+                                            <md-tooltip md-direction="bottom">
+                                                If you're ready now, let's do this.
+                                            </md-tooltip>
+                                        </md-button>
+                                    </div>
                                     <md-divider></md-divider>
-                                    <span class="md-title">Or, copy/paste the link below for later</span>
+                                    <span class="md-title">Save for later</span>
                                     <div layout="row" layout-xs="column" flex>
                                         <md-input-container flex class="md-block">
                                             <input id="shortLink" ng-model="vm.campaignCreateShortLink" md-select-on-focus ng-readonly="true" aria-label="Campaign Short Link" />
+                                            <div class="hint">Copy/paste this URL for later</div>
                                         </md-input-container>
                                         <div>
                                             <md-button ng-show="!vm.showClipboardTooltip && !vm.showFallbackClipboardTooltip" type="button" class="md-raised" aria-label="Copy URL" ngclipboard data-clipboard-target="#shortLink" ngclipboard-success="vm.clipboardCopySuccess($event);" ngclipboard-error="vm.clipboardCopyError($event);">
@@ -197,7 +200,7 @@
                                 <div flex layout="row" layout-align="end top">
                                     <md-button class="md-warn" ng-click="vm.clearStepper()">
                                         Start Over
-                                        <md-tooltip md-direction="top">
+                                        <md-tooltip md-direction="left">
                                             Starting over will lose current progress.
                                         </md-tooltip>
                                     </md-button>

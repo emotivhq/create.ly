@@ -35,7 +35,7 @@
 				$mdToast.show(
 					$mdToast.simple()
 					.content('We didn\'t find anything for that URL. Please try another one.')
-					.position('bottom left')
+					.position('bottom right')
 					.hideDelay(3500)
 				);
 			};
@@ -82,6 +82,7 @@
 			$scope.cardDescription = '';
 			vm.urlSearch = '';
 			
+			vm.showPreview = false;
 			vm.getUrlInfo = function getUrlInfo(url) {
 				CreateService.getEmbedlyRes(url).then(
 					function (response) {
@@ -93,27 +94,18 @@
 							$scope.faviconUrl = response.data.favicon_url;
 							$scope.providerDisplay = response.data.provider_display;
 							$scope.cardDescription = response.data.description;
+							vm.showPreview = true;
+						} else {
+							vm.showPreview = false;
 						}
 					}, function(error) {
 						console.log('Failed request to embedly ' + error);
+						vm.showPreview = false;
 					}
 				);
 				$mdToast.hide();
 				vm.urlSearch = url;
-				//look at $scope.$on('embedly-fetch-success') or $scope.$on('embedly-fetch-error') for functionality after embedly call.
 			};
-
-			$scope.showPreview = false;
-			$scope.$on('embedly-fetch-success', function() {
-				$scope.showPreview = true;
-				console.log('embedly-fetch-success');
-				//$scope.$digest();
-			});
-
-			$scope.$on('embedly-fetch-error', function() {
-				$scope.showPreview = false;
-				console.log('embedly-fetch-failure');
-			});
 
 			vm.campaignCreateShortLink = '';
 			
@@ -127,7 +119,6 @@
 					$scope.$broadcast('secondstep');
 				} else if (stepData.step === 2) { // stepper is going from step 2 to step 3
 					if (vm.stepData[1].data.price) {
-						//$scope.$broadcast('create-bitly-link');
 						var base_url = 'https://www.giftstarter.com/create?product_url=',
 							product_url = $scope.originalUrl,
 							title = $scope.cardTitle, //update once embedly bind is finished.
@@ -152,7 +143,7 @@
 								$mdToast.show(
 									$mdToast.simple()
 									.content('There was an issue creating your custom campaign link. Please try again.')
-									.position('bottom left')
+									.position('bottom right')
 									.hideDelay(3500)
 								);
 							});
@@ -181,10 +172,9 @@
 						.clickOutsideToClose(true)
 						.title('How this tool works.')
 						.ariaLabel('How this tool works.')
-						.textContent('This tool does it\'s best to extract content from any url it is given. If the content above looks wonky, first make sure you have the correct url. If you are 100% sure you do, use the next step to customize things to look how you want.')
+						.textContent('This tool works by extracting content from any url given to it. If the content it returned looks wonky, first make sure you gave it the correct url. If you are 100% sure you did, close this window and use the next step to customize the information.')
 						.targetEvent(ev)
-						.ok
-						.cancel('Start over')
+						.ok('Close')
 					);
 				};
 
@@ -195,12 +185,11 @@
 			vm.showClipboardTooltip = false;
 			vm.showFallbackClipboardTooltip = false;
 
-			vm.clipboardCopySuccess = function clipboardCopySuccess(ev) {
+			vm.clipboardCopySuccess = function clipboardCopySuccess() {
 				vm.showClipboardTooltip = true;
-				//ev.clearSelection();
 			};
 
-			vm.clipboardCopyError = function clipboardCopyError(ev) {
+			vm.clipboardCopyError = function clipboardCopyError() {
 				vm.showFallbackClipboardTooltip = true;
 			};
 		}
