@@ -183,8 +183,7 @@
 						.ariaLabel('How this tool works.')
 						.textContent('This tool does it\'s best to extract content from any url it is given. If the content above looks wonky, first make sure you have the correct url. If you are 100% sure you do, use the next step to customize things to look how you want.')
 						.targetEvent(ev)
-						.ok
-						.cancel('Start over')
+						.ok('Got it')
 					);
 				};
 

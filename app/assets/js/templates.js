@@ -142,7 +142,7 @@ angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
     "                            <md-step-actions layout=\"row\" layout-padding>\n" +
     "                                 <div flex layout=\"row\" layout-align=\"start top\">\n" +
     "                                    <md-button ng-disabled=\"vm.showBusyText\" ng-click=\"vm.moveToPreviousStep()\">\n" +
-    "                                        <md-icon md-svg-icon=\"md-toggle-chevron-left\"></md-icon> Go back\n" +
+    "                                        <md-icon class=\"material-icons\">chevron_left</md-icon>Go back\n" +
     "                                         <md-tooltip md-direction=\"left\">\n" +
     "                                            Did you change your mind?\n" +
     "                                        </md-tooltip>\n" +

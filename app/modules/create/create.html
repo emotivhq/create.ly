@@ -1,7 +1,7 @@
 <div layout="row" layout-margin layout="column" data-ng-controller="CreateCtrl" bind-embedly ng-cloak class="create">
     <div flex>
         <md-card>
-            <md-toolbar>
+            <md-toolbar class="md-accent md-hue-2">
                 <div class="md-toolbar-tools">
                     <h2>Create a non-profit campaign</h2>
                 </div>
@@ -20,7 +20,7 @@
                                             <div layout="row" layout-xs="column" flex>
                                                 <md-input-container flex class="md-block">
                                                     <input name="product_url" ng-model="vm.stepData[0].data.product_url" ng-disabled="vm.showBusyText" md-select-on-focus ng-pattern="vm.urlPattern" ng-model-options="{ updateOn: 'default blur', debounce: { default: 300, blur: 300 } }" required aria-label="Enter Url"/>
-                                                    <div class="hint" ng-show="vm.showProductUrlHint">{{vm.productUrlHint}}</div>
+                                                    <div class="hint hide" ng-show="vm.showProductUrlHint">Example: <span>{{vm.productUrlHint}}</span></div>
                                                     <div ng-messages="step1.product_url.$error" role="alert">
                                                         <div ng-message-exp="['required','pattern']">
                                                             That doesn't look like a valid url... are you sure you pasted the right thing?
@@ -172,14 +172,18 @@
                                             <input id="shortLink" ng-model="vm.campaignCreateShortLink" md-select-on-focus ng-readonly="true" aria-label="Campaign Short Link" />
                                         </md-input-container>
                                         <div>
-                                            <md-button ng-show="!vm.showClipboardTooltip && !vm.showFallbackClipboardTooltip" type="button" class="md-raised" aria-label="Copy URL" ngclipboard data-clipboard-target="#shortLink" ngclipboard-success="vm.clipboardCopySuccess($event);" ngclipboard-error="vm.clipboardCopyError($event);">
+                                            <md-button ng-show="!vm.showClipboardTooltip && !vm.showFallbackClipboardTooltip" type="button" class="md-fab md-no-ink md-accent md-hue-1 md-mini" md-no-ink aria-label="Copy URL" ngclipboard data-clipboard-target="#shortLink" ngclipboard-success="vm.clipboardCopySuccess($event);" ngclipboard-error="vm.clipboardCopyError($event);">
                                                 <md-icon class="material-icons">content_copy</md-icon>
-                                                Copy Url
+                                                <md-tooltip md-direction="bottom">
+                                                    Copy url
+                                                </md-tooltip>
                                             </md-button>
-                                            <md-button ng-show="vm.showClipboardTooltip || vm.showFallbackClipboardTooltip" type="button" class="md-raised md-accent md-hue-3" aria-label="URL copied" ngclipboard data-clipboard-target="#shortLink" ngclipboard-success="vm.clipboardCopySuccess($event);" ngclipboard-error="vm.clipboardCopyError($event);">
+                                            <md-button ng-show="vm.showClipboardTooltip || vm.showFallbackClipboardTooltip" type="button" class="md-fab md-no-ink md-accent md-hue-3 md-mini" aria-label="URL copied" ngclipboard data-clipboard-target="#shortLink" ngclipboard-success="vm.clipboardCopySuccess($event);" ngclipboard-error="vm.clipboardCopyError($event);">
                                                 <span ng-show="vm.showClipboardTooltip">
                                                     <md-icon class="material-icons">done</md-icon>
+                                                    <md-tooltip md-direction="bottom">
                                                     Url copied
+                                                </md-tooltip>
                                                 </span>
                                                 <span ng-show="vm.showFallbackClipboardTooltip">
                                                     <md-icon class="material-icons">done</md-icon>
@@ -192,7 +196,7 @@
                             </div>
                             <md-step-actions layout="row" layout-padding>
                                 <div flex layout="row" layout-align="start top">
-                                    <md-button ng-click="vm.moveToPreviousStep()">Go Back</md-button>
+                                    <md-button ng-click="vm.moveToPreviousStep()"><md-icon class="material-icons">chevron_left</md-icon>Go Back</md-button>
                                 </div>
                                 <div flex layout="row" layout-align="end top">
                                     <md-button class="md-warn" ng-click="vm.clearStepper()">

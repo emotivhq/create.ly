@@ -12,7 +12,8 @@
 	angular
 		.module('gsConcierge')
 		.directive('filepickerDirective', filepickerDirective)
-		.directive('filepickerPreview', filepickerPreviewDirective);
+		.directive('filepickerPreview', filepickerPreviewDirective)
+		.directive('filepickerCustomDirective', filepickerCustomDirective);
 
 	filepickerDirective.$inject = ['$rootScope', 'filepickerService', '$parse'];
 	function filepickerDirective($rootScope, filepickerService, $parse){
@@ -77,5 +78,35 @@
 		        }
 		    };
 		}
+		
+		filepickerCustomDirective.$inject = ['$rootScope', 'filepickerService'];
+		function filepickerCustomDirective($rootScope, filepickerService){
 
+		    return {
+		        scope: {
+		            options: '=',
+		            onSuccess:'&',
+		            onError:'&',
+		        },
+		        template: '<button class="fp__btn" ng-click="openPicker()">Pick</button>',
+		        link: function(scope, elm, attrs) {
+		            scope.openPicker = openPicker;
+		            scope.options = scope.options || {};
+		            function openPicker(){
+		                filepickerService.pick(
+		                    scope.options,
+		                    function(Blob){
+		                        scope.onSuccess({Blob: Blob});
+		                    },
+		                    function(Error){
+		                        scope.onError({Error: Error});
+		                    }
+		                );
+		            }
+		        }
+		    };
+		
+		}
+		
+		
 })();
