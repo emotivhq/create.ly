@@ -65,7 +65,7 @@
                         <md-step-body>
                             <div layout="column" layout-gt-sm="row" layout-align="center start">
                                 <div flex="100" flex-gt-sm="50" flex-order="1" flex-order-gt-sm="0" layout-padding>
-                                    <embedly class="embedly" urlsearch="{{vm.urlSearch}}"></embedly>
+                                    <embedly updateimage="true" urlsearch="{{vm.urlSearch}}"></embedly>
                                 </div>
                                 <div flex="100" flex-gt-sm="50" flex-order="0" flex-order-gt-sm="1" layout-padding layout-margin>
                                     <span class="md-title">Customize your cause.</span>
@@ -128,11 +128,8 @@
                         <md-step-body>
                             <div layout="column" layout-gt-sm="row" layout-align="center start">
                                 <div flex="100" flex-gt-sm="50" flex-order="1" flex-order-gt-sm="0" layout-padding>
-                                    <!-- TODO: @yaboi
-                                        allow ability to update ng-src for this to work,
-                                        then add to step 2 as well instead of embedly directive
-                                    -->
-                                    <embedly hideimage="true" urlsearch="{{vm.urlSearch}}"></embedly>
+                                    <!--<embedly hideimage="true" urlsearch="{{vm.urlSearch}}"></embedly>-->
+                                    <embedly updateimage="true" urlsearch="{{vm.urlSearch}}"></embedly>
                                 </div>
                                 <div flex="100" flex-gt-sm="50" flex-order="0" flex-order-gt-sm="1" layout-padding layout-margin>
                                     <md-button flex style="width:100%" flex="100" class="md-primary md-raised md-hue-2" ng-disabled="vm.showBusyText" ng-click="vm.startCampaignFromLink()" aria-label="Create campaign now">
