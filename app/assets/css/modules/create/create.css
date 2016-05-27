@@ -8,7 +8,8 @@
 /*
      ************************
      If filepicker generates 3 distinct components in DOM,
-     cancel out the fake ones
+     cancel out the fake ones. This only happens in built versions running in prod, 
+     not when using $ grunt dev
      ************************
      */
 .filestack-container div:nth-child(2), .filestack-container div:nth-child(4) {

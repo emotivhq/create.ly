@@ -97,7 +97,7 @@ angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
     "                        <md-step-body>\n" +
     "                            <div layout=\"column\" layout-gt-sm=\"row\" layout-align=\"center start\">\n" +
     "                                <div flex=\"100\" flex-gt-sm=\"50\" flex-order=\"1\" flex-order-gt-sm=\"0\" layout-padding>\n" +
-    "                                    <embedly urlsearch=\"{{vm.urlSearch}}\"></embedly>\n" +
+    "                                    <embedly class=\"embedly\" urlsearch=\"{{vm.urlSearch}}\"></embedly>\n" +
     "                                </div>\n" +
     "                                <div flex=\"100\" flex-gt-sm=\"50\" flex-order=\"0\" flex-order-gt-sm=\"1\" layout-padding layout-margin>\n" +
     "                                    <span class=\"md-title\">Customize your cause.</span>\n" +
@@ -758,7 +758,7 @@ angular.module('gsConcierge').run(['$templateCache', function($templateCache) {
     "            </span>\n" +
     "        </md-card-header-text>\n" +
     "    </md-card-header>\n" +
-    "    <img ng-src=\"{{cardImage}}\" class=\"md-card-image\" alt=\"{{embedCode.title}}\" ng-show=\"embedCode.images.length > 0 && !hideimage\">\n" +
+    "    <img ng-src=\"{{cardImage}}\" class=\"md-card-image animated fadeIn\" alt=\"{{embedCode.title}}\" ng-show=\"embedCode.images.length > 0 && !hideimage\">\n" +
     "    <md-card-title ng-show=\"embedCode.title\">\n" +
     "        <md-card-title-text>\n" +
     "            <span class=\"md-headline\">{{embedCode.title}}</span>\n" +
