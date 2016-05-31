@@ -19,7 +19,7 @@
                 cardTitleTextSelector: 'embedly md-card-title md-card-title-text',
                 cardTitleHtml: '<md-card-title><md-card-title-text>Add title</md-card-title-text></md-card-title>',
                 cardImage: '<img class="md-card-image" ng-src="http://placehold.it/350x150" src="http://placehold.it/350x150" /> ',
-                cardImageSelector: 'embedly .md-card-image',
+                cardImageSelector: 'embedly .md-card-image.update',
                 embedlyImagesSelector: '.embedly-variation-images',
                 embedlySelector: 'embedly',
                 causeImgSelector: '.cause-img',
@@ -30,8 +30,8 @@
                 causeImg,
                 embedly,
                 embedlyImages,
-                mdCardImg,
-                causeTitle;
+                causeTitle,
+                mdCardImgs;
             scope.$on('secondstep', function () {
                 scope.cardImg = scope.$parent.cardImg;
                 scope.cardTitle = scope.$parent.cardTitle;
@@ -40,12 +40,11 @@
                 embedly = angular.element(document.querySelectorAll(params.embedlySelector)[0]);
                 embedlyImages = angular.element(document.querySelectorAll(params.embedlyImagesSelector));
                 mdCardTitleVal = angular.element(document.querySelectorAll(params.cardTitleTextSelector)[1]);
-                mdCardImg = document.querySelectorAll(params.cardImageSelector)[1];
+                mdCardImgs = document.querySelectorAll(params.cardImageSelector);
                 
                 function clickEmbedlyImageHandler() {
                     scope.$parent.cardImg = event.currentTarget.src;
-                    mdCardImg.src = event.currentTarget.src;
-                    mdCardImg.class = 'animated fadeIn';
+                    updateCardImg(event.currentTarget.src, 'animated fadeIn');
                     console.log(event.currentTarget.src);
                 }
 
@@ -69,14 +68,20 @@
                 function watchImageChange (newValue) {
                     if (newValue) {
                         scope.$parent.cardImg = newValue.trim();
-                        mdCardImg.src = newValue.trim();
-                        mdCardImg.class = 'animated fadeIn';
+                        updateCardImg(newValue.trim(), 'animated fadeIn');
                     }
+                }
+                
+                function updateCardImg (src, className) {
+                    angular.forEach(mdCardImgs, function(value, key) {
+                        mdCardImgs[key].src = src;
+                        mdCardImgs[key].class = className;
+                    });
                 }
 
                 function twoWayImg () {
-                    scope.cardImg = mdCardImg.src.toString().trim();
-                    scope.$parent.cardImg = mdCardImg.src.toString().trim();
+                    scope.cardImg = mdCardImgs[0].src.toString().trim();
+                    scope.$parent.cardImg = mdCardImgs[0].src.toString().trim();
                     scope.$watch('cardImg', watchImageChange);
 
                 }
@@ -88,11 +93,11 @@
                     mdCardTitleVal = angular.element(document.querySelectorAll(params.cardTitleTextSelector)[0]);
                     twoWayTitle();
                 }
-                if (mdCardImg) {
+                if (mdCardImgs) {
                     twoWayImg();
                 } else {
-                    embedly.prepend(params.cardImage);
-                    mdCardImg = document.querySelectorAll(params.cardImageSelector)[0];
+                    //embedly.prepend(params.cardImage);
+                    mdCardImgs = document.querySelectorAll(params.cardImageSelector);
                     twoWayImg();
                 }
             });
