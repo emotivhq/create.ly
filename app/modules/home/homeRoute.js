@@ -15,7 +15,7 @@ angular.module('gsConcierge')
 			.state('home', {
 				url: '',
 				abstract: true,
-				templateUrl: 'app/modules/home/home.html',
+				templateUrl: 'app/modules/home/home.processed.html',
 				controller: 'HomeCtrl',
 				controllerAs: 'vm'
 			})

@@ -1,7 +1,7 @@
 {
   "appId": "giftconcierge",
   "apiKey": "2db31156bbe71ab5afff38c3762f47ed6bd44cb37bf585a980e214aa61da8cc3",
-  "public": "./",
+  "public": "./app",
   "ignore": [
     "stamplay.json",
     "**/.*",
