@@ -14,6 +14,18 @@ module.exports = function (grunt) {
 		'* @author <%= pkg.author %>\n' +
 		'*/\n',
 
+		env: {
+			options: {
+				//Shared Options Hash 
+			},
+			dev: {
+				NODE_ENV: 'development',
+			},
+			build: {
+				NODE_ENV: 'production',
+			}
+		},
+		
 		clean: {
 			dist: ['src']
 		},
@@ -141,7 +153,6 @@ module.exports = function (grunt) {
 		},
 
 		injector: {
-			options: {},
 			dev: {
 				files: {
 					'index.html': [
@@ -152,21 +163,37 @@ module.exports = function (grunt) {
 						'app/**/*Route.js',
 						'app/**/*Ctrl.js',
 						'app/**/*Service.js',
-						'app/**/*Directive.js'
+						'app/**/*Directive.js',
+						'app/assets/css/**/*.css',
 					]
 				}
 			},
 			production: {
+				options: {ignorePath: 'app/'},
 				files: {
-					'index.html': [
-						'app/assets/css/**/*.css',
+					'app/app.html': [
+						'app/assets/css/*.css',
 						'app/assets/js/*.js'
 					]
 
 				}
 			}
 		},
-
+		
+		copy: {
+			index: {
+				files: [{
+					expand: true,
+					src: ['index.html'],
+					dest: 'app/',
+					filter: 'isFile',
+					rename: function(dest, src) {
+						return dest + src.replace('index.html', 'app.html');
+					}
+				}, ],
+			},
+		},
+		
 		ngtemplates: {
 			app: {
 				src: 'app/modules/**/*.html',
@@ -202,6 +229,19 @@ module.exports = function (grunt) {
                 }]
             }
         },
+
+		preprocess : {
+		  options: {
+		    context : {
+		      DEBUG: true
+		    }
+		  },
+		  html : {
+		    src : 'app/modules/home/home.html',
+		    dest : 'app/modules/home/home.processed.html'
+		  }
+		},
+		
         bump: {
             options: {
                 files: ['package.json', 'bower.json'],
@@ -219,13 +259,14 @@ module.exports = function (grunt) {
             }
         }
 
-
-
 	});
 
 	grunt.loadNpmTasks('grunt-contrib-sass');
 	grunt.loadNpmTasks('grunt-contrib-concat');
+	grunt.loadNpmTasks('grunt-contrib-copy');
+	grunt.loadNpmTasks('grunt-preprocess');
 	grunt.loadNpmTasks('grunt-bump');
+	grunt.loadNpmTasks('grunt-env');
 	require('time-grunt')(grunt);
 	require('load-grunt-tasks')(grunt);
 
@@ -235,29 +276,35 @@ module.exports = function (grunt) {
 	// Register grunt tasks
 	// build but don't run
 	grunt.registerTask("build", [
+		"env:build",
 		"styles",
 		"jshint",
 		"exec",
 		"concat",
 		"ngtemplates",
-		"injector:production"
+		"copy:index",
+		"injector:production",
+		"preprocess"
 	]);
 
 	// Build and run at port 8080
 	grunt.registerTask("run", [
+		"env:build",
 		"styles",
 		"jshint",
 		"exec",
 		"concat",
 		"ngtemplates",
+		"copy:index",
 		"injector:production",
+		"preprocess",
 		"concurrent",
 		"clean"
 	]);
 	
 
 	// Development task(s).
-	grunt.registerTask('dev', ['styles', 'injector:dev', 'concurrent']);
+	grunt.registerTask('dev', ['env:dev', 'styles', 'injector:dev', 'concurrent']);
 
 	// Sass task(s).
 	grunt.registerTask('styles', ['sass:ui', 'sass:modules', 'concat:modules', 'concat:ui']);

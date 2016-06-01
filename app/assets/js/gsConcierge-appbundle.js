@@ -1,5 +1,5 @@
 /*!
-* gsConcierge - v0.2.5 - MIT LICENSE 2016-05-31. 
+* gsConcierge - v0.2.5 - MIT LICENSE 2016-06-01. 
 * @author Emotiv
 */
 (function() {
@@ -441,7 +441,7 @@ angular.module('gsConcierge')
 			.state('home', {
 				url: '',
 				abstract: true,
-				templateUrl: 'app/modules/home/home.html',
+				templateUrl: 'app/modules/home/home.processed.html',
 				controller: 'HomeCtrl',
 				controllerAs: 'vm'
 			})
