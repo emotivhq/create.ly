@@ -3,7 +3,7 @@
         <md-card>
             <md-toolbar class="md-accent md-hue-2">
                 <div class="md-toolbar-tools">
-                    <h2>Create a non-profit campaign</h2>
+                    <h2>Setup a non-profit campaign</h2>
                 </div>
             </md-toolbar>
             <md-stepper-card-content class="md-no-padding">
@@ -16,6 +16,7 @@
                                         <span class="md-title">
                                             Paste any non-profit url
                                         </span>
+                                        <p><small>Entering the non-profit you'd like to donate to. You will be able to create a campaign once you've completed the next steps.</small></p>
                                         <form name="step1" ng-submit="vm.getUrlInfo(vm.stepData[0].data.product_url)">
                                             <div layout="row" layout-xs="column" flex>
                                                 <md-input-container flex class="md-block">
@@ -84,7 +85,7 @@
                                             <label>Total Donation Amount</label>
                                             <md-icon class="material-icons">attach_money</md-icon>
                                             <input name="price" type="number" ng-model="vm.stepData[1].data.price" required aria-label="Total donation amount" />
-                                            <div class="hint">Taxes will be added to physical products during campaign creation. Shipping is free.</div>
+                                            <div class="hint">A tax receipt will be emailed to contributors at time of contribution.</div>
                                             <div ng-messages="step2.price.$error" role="alert">
                                                 <div ng-message-exp="['required']">
                                                     Please add a donation price for your cause so we know how much to help you raise.

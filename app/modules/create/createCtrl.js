@@ -52,7 +52,7 @@
 			// Setup the initial step data
 			vm.stepData = [
 				{ step: 1, completed: false, optional: false, data: {product_url: 'https://'}},
-				{ step: 2, completed: false, optional: false, data: {title: '', price: ''} },
+				{ step: 2, completed: false, optional: false, data: {title: '', price: 1000} },
 				{ step: 3, completed: false, optional: false, data: {} },
 			];
 

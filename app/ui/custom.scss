@@ -1,5 +1,6 @@
 // injector
-#intercom-container .intercom-launcher {left:20px !important;right:inherit !important;}
+// Remove because intercom popup is off screen when launcher is pulled left.
+// #intercom-container .intercom-launcher {left:20px !important;right:inherit !important;}
 
 .virtualRepeatdemoHorizontalUsage #horizontal-container {
   height: 100px;
