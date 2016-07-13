@@ -1,0 +1,23 @@
+<h1>Hello World!</h1>
+<p>Below is a widget to embed the GiftStarter Concierge app into any application.</p>
+
+<script type="text/javascript" id="concierge_widget_script">
+  (function() {
+      function async_load(){
+          var s = document.createElement('script');
+          s.type = 'text/javascript';
+          s.async = true;
+          var theUrl = 'https://concierge.giftstarter.com/embed/script.js';
+          s.src = theUrl + ( theUrl.indexOf("?") >= 0 ? "&" : "?") + 'ref=' + encodeURIComponent(window.location.href);
+          var embedder = document.getElementById('concierge_widget_script');
+          embedder.parentNode.insertBefore(s, embedder);
+      }
+      if (window.attachEvent)
+          window.attachEvent('onload', async_load);
+      else
+          window.addEventListener('load', async_load, false);
+  })();
+</script>
+<div id="concierge_widget_inline"></div>
+
+<p>It even embeds inline!</p>
