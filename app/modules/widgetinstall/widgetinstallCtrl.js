@@ -24,7 +24,6 @@
 		function Widgetinstall() {
 			/*jshint validthis: true */
 			var vm = this;
-
 		}
 
 })();

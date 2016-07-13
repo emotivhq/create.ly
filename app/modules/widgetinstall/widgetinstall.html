@@ -1,7 +1,34 @@
 <div class="md-padding" flex layout-sm="column">
     <md-card>
         <md-card-content>
-            <h2 class="md-title">Content from: widgetinstall page</h2>
+            <h2 class="md-title">Install The Concierge on your web app.</h2>
+            <p>It only takes a few minutes to install The Concierge on your web app. Once installed, your users will be able to create a GiftStarter Campaign using any link.</p>
+            <h3>Here’s the JavaScript install code</h3>
+            <p>You can quickly grab the code snippet from here and install it in your web app wherever you want The Concierge to be: </p>
+            
+            <pre>
+                <code style="display: block;">
+&lt;script type="text/javascript" id="concierge_widget_script"&gt;
+    (function() {
+        function async_load(){
+            var s = document.createElement('script');
+            s.type = 'text/javascript';
+            s.async = true;
+            var theUrl = 'http://stack-builder-yaboi.c9users.io/embed/script.js';
+            s.src = theUrl + ( theUrl.indexOf("?") >= 0 ? "&" : "?") + 'ref=' + encodeURIComponent(window.location.href);
+            var embedder = document.getElementById('concierge_widget_script');
+            embedder.parentNode.insertBefore(s, embedder);
+        }
+        if (window.attachEvent)
+            window.attachEvent('onload', async_load);
+        else
+            window.addEventListener('load', async_load, false);
+        })();
+&lt;/script&gt
+&lt;div id="concierge_widget_inline">&lt;/div&gt
+              </code>
+            </pre>
+
         </md-card-content>
     </md-card>
 </div>
