@@ -55,6 +55,16 @@ module.exports = function (config) {
 			'app/modules/filestack/filestackRoute.js',
 			'app/modules/filestack/filestackService.js',
 			'app/modules/filestack/filestack-test.js',
+			'app/modules/widgetinstallinstructions/widgetinstallinstructionsModule.js',
+			'app/modules/widgetinstallinstructions/widgetinstallinstructionsCtrl.js',
+			'app/modules/widgetinstallinstructions/widgetinstallinstructionsRoute.js',
+			'app/modules/widgetinstallinstructions/widgetinstallinstructionsService.js',
+			'app/modules/widgetinstallinstructions/widgetinstallinstructions-test.js',
+			'app/modules/widgetinstall/widgetinstallModule.js',
+			'app/modules/widgetinstall/widgetinstallCtrl.js',
+			'app/modules/widgetinstall/widgetinstallRoute.js',
+			'app/modules/widgetinstall/widgetinstallService.js',
+			'app/modules/widgetinstall/widgetinstall-test.js',
 		],
 
 		// Test results reporter to use

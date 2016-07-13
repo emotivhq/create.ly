@@ -27,6 +27,12 @@
 						icon: 'open_in_browser',
 						hide: false
 					},
+					{
+						link: 'widgetinstall',
+						name: 'Install Widget',
+						icon: 'picture_in_picture',
+						hide: false
+					}
 
 			    
 			];

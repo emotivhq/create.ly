@@ -29,7 +29,8 @@
 		'embedly',
 		'bitly',
 		'filestack',
-		'ngclipboard'
+		'ngclipboard',
+		'widgetinstall'
 	]);
 
 })();

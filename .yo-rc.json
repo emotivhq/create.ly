@@ -31,6 +31,12 @@
       },
       {
         "name": "filestack"
+      },
+      {
+        "name": "widgetinstallinstructions"
+      },
+      {
+        "name": "widgetinstall"
       }
     ],
     "menu": [
@@ -54,6 +60,14 @@
       {
         "link": "filestack",
         "title": "Filestack"
+      },
+      {
+        "link": "widgetinstallinstructions",
+        "title": "Widgetinstallinstructions"
+      },
+      {
+        "link": "widgetinstall",
+        "title": "Widgetinstall"
       }
     ]
   }
