@@ -33,9 +33,6 @@
         "name": "filestack"
       },
       {
-        "name": "widgetinstallinstructions"
-      },
-      {
         "name": "widgetinstall"
       }
     ],
@@ -60,11 +57,7 @@
       {
         "link": "filestack",
         "title": "Filestack"
-      },
-      {
-        "link": "widgetinstallinstructions",
-        "title": "Widgetinstallinstructions"
-      },
+      },s
       {
         "link": "widgetinstall",
         "title": "Widgetinstall"
