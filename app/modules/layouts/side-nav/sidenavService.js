@@ -28,7 +28,7 @@
 						hide: false
 					},
 					{
-						link: 'widgetinstall',
+						link: 'install',
 						name: 'Install Widget',
 						icon: 'picture_in_picture',
 						hide: false

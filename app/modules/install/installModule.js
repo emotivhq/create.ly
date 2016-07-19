@@ -3,12 +3,12 @@
 
 	/**
 	 * @ngdoc function
-	 * @name app.module:widgetinstallModule
+	 * @name app.module:installModule
 	 * @description
-	 * # widgetinstallModule
+	 * # installModule
 	 * Module of the app
 	 */
 
-  	angular.module('widgetinstall', []);
+  	angular.module('install', []);
 
 })();

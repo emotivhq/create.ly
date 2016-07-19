@@ -3,21 +3,21 @@
 
 	/**
 	 * @ngdoc function
-	 * @name app.service:widgetinstallService
+	 * @name app.service:installService
 	 * @description
-	 * # widgetinstallService
+	 * # installService
 	 * Service of the app
 	 */
 
   	angular
-		.module('widgetinstall')
-		.factory('WidgetinstallService', Widgetinstall);
+		.module('install')
+		.factory('InstallService', Install);
 		// Inject your dependencies as .$inject = ['$http', 'someSevide'];
 		// function Name ($http, someSevide) {...}
 
-		Widgetinstall.$inject = ['$http'];
+		Install.$inject = ['$http'];
 
-		function Widgetinstall ($http) {
+		function Install ($http) {
 
 		}
 

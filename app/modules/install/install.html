@@ -1,0 +1,77 @@
+<div layout="row" layout-margin layout="column" data-ng-controller="CreateCtrl" bind-embedly ng-cloak class="create">
+    <div flex>
+        <md-card>
+            <md-toolbar class="md-accent md-hue-2">
+                <div class="md-toolbar-tools">
+                    <h2>Install The Concierge Widget for your users</h2>
+                </div>
+            </md-toolbar>
+            <div layout="column">
+                <div layout="row" layout-padding layout-align="center start" layout-wrap>
+                    <div flex="95" flex-sm="95" flex-xs="100">
+                        <md-content style="padding-bottom: 40px;">
+                            <p>Installing The Concierge Widget is easy. It takes just a few minutes to add the code snippet to your app or website.</p>
+                            <p>Once you install The Concierge Widget, your users will be able to create a GiftStarter Campaign using any link directly from your app or website.</p>
+                        </md-content>
+                        <md-tabs md-dynamic-height md-border-bottom>
+                            <md-tab label="Basic Javascript">
+                                <md-content>
+                                    <p>The basic JavaScript method is a good fit for most standard web apps which are characterized by each new screen triggering a full page refresh.</p>
+                                    <p>Copy and paste this code snippet before the <code>&lt;/body&gt</code> tag on every page where you want The Concierge Widget to appear.</p>
+                                    <pre>
+                                        <code style="display: block;">
+&lt;script type="text/javascript" id="concierge_widget_script"&gt;
+    (function() {
+        function async_load(){
+            var s = document.createElement('script');
+            s.type = 'text/javascript';
+            s.async = true;
+            var link = 'http://stack-builder-yaboi.c9users.io/embed/script.js';
+            if (window.location.protocol == "https:") link = link.replace('http://','https://');
+            s.src = link + ( link.indexOf("?") >= 0 ? "&" : "?") + 'ref=' + encodeURIComponent(window.location.href);
+            var embedder = document.getElementById('concierge_widget_script');
+            embedder.parentNode.insertBefore(s, embedder);
+        }
+        if (window.attachEvent)
+            window.attachEvent('onload', async_load);
+        else
+            window.addEventListener('load', async_load, false);
+        })();
+&lt;/script&gt
+&lt;div id="concierge_widget_inline">&lt;/div&gt
+                                        </code>
+                                    </pre>
+                                    <p><strong>To complete this step</strong>, follow the instructions above and then visit a page on your website or app where the script is installed.</p>
+                                </md-content>
+                            </md-tab>
+                            <md-tab label="Single-page web app">
+                                <md-content>
+                                    <p>The single-page web app method is a good fit for JavaScript-heavy client web apps characterized by very few full page refreshes and lots of asynchronous JS. See more options above if you have a more basic server-side web app.</p>
+                                    <p>First, include the GiftStarter JS library by copying and pasting this code before the <code>&lt;/head&gt</code> tag on every page where you want The Concierge to appear.</p>
+                                    <pre>
+                                        <code style="display: block;">
+//coming soon
+                                        </code>
+                                    </pre>
+                                    <p>Once a user is in your app, call the following JavaScript function to embed and activate The Concierge Widget.</p>
+                                    <pre>
+                                        <code style="display: block;">
+//coming soon
+                                        </code>
+                                    </pre>
+                                    <p>Whenever the view and/or URL changes in your application, you should embed The Concierge Widget. This will make sure that your users can create a campaign from any page/view.</p>
+                                    <pre>
+                                        <code style="display: block;">
+//coming soon
+                                        </code>
+                                    </pre>
+                                    <p><strong>To complete this step</strong>, follow the instructions above and then visit a page in your web app that has The Concierge Widget installed.</p>
+                                </md-content>
+                            </md-tab>
+                        </md-tabs>
+                    </div>
+                </div>
+            </div>
+        </md-card>
+    </div>
+</div>

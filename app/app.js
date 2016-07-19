@@ -30,7 +30,7 @@
 		'bitly',
 		'filestack',
 		'ngclipboard',
-		'widgetinstall'
+		'install'
 	]);
 
 })();

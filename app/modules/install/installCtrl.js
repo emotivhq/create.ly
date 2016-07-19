@@ -3,17 +3,17 @@
 
 	/**
 	* @ngdoc function
-	* @name app.controller:widgetinstallCtrl
+	* @name app.controller:installCtrl
 	* @description
-	* # widgetinstallCtrl
+	* # installCtrl
 	* Controller of the app
 	*/
 
   	angular
-		.module('widgetinstall')
-		.controller('WidgetinstallCtrl', Widgetinstall);
+		.module('install')
+		.controller('InstallCtrl', Install);
 
-		Widgetinstall.$inject = [];
+		Install.$inject = [];
 
 		/*
 		* recommend
@@ -21,9 +21,10 @@
 		* and bindable members up top.
 		*/
 
-		function Widgetinstall() {
+		function Install() {
 			/*jshint validthis: true */
 			var vm = this;
+
 		}
 
 })();
