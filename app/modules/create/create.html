@@ -3,7 +3,7 @@
         <md-card>
             <md-toolbar class="md-accent md-hue-2">
                 <div class="md-toolbar-tools">
-                    <h2>Setup a non-profit campaign</h2>
+                    <h2>Setup a campaign for anything online</h2>
                 </div>
             </md-toolbar>
             <md-stepper-card-content class="md-no-padding">
@@ -14,9 +14,9 @@
                                 <div layout="row" layout-padding layout-align="center start" layout-wrap>
                                     <div flex="90" flex-sm="90" flex-xs="100">
                                         <span class="md-title">
-                                            Paste any non-profit url
+                                            Paste any url (website address that begins with http://) to get started
                                         </span>
-                                        <p><small>Entering the non-profit you'd like to donate to. You will be able to create a campaign once you've completed the next steps.</small></p>
+                                        <p><small>Once you enter in the website address, you will be able to create a campaign once you've completed the next steps.</small></p>
                                         <form name="step1" ng-submit="vm.getUrlInfo(vm.stepData[0].data.product_url)">
                                             <div layout="row" layout-xs="column" flex>
                                                 <md-input-container flex class="md-block">
@@ -31,7 +31,7 @@
                                                 <div>
                                                     <md-button type="submit" class="md-raised" ng-disabled="!vm.stepData[0].data.product_url || loading_embedly || vm.showBusyText" aria-label="Get URL Info"  ng-click="vm.getUrlInfo(vm.stepData[0].data.product_url)">
                                                         <md-icon class="material-icons">search</md-icon>
-                                                        Find Cause
+                                                        Find Product
                                                     </md-button>
                                                 </div>
                                             </div>
@@ -69,26 +69,26 @@
                                     <embedly updateimage="true" urlsearch="{{vm.urlSearch}}"></embedly>
                                 </div>
                                 <div flex="100" flex-gt-sm="50" flex-order="0" flex-order-gt-sm="1" layout-padding layout-margin>
-                                    <span class="md-title">Customize your cause.</span>
+                                    <span class="md-title">Customize your Campaign.</span>
                                     <form name="step2">
                                         <md-input-container class="md-icon-float md-block">
-                                            <label>Title of cause</label>
+                                            <label>Title of Campaign</label>
                                             <md-icon class="material-icons">font_download</md-icon>
                                             <input name="title" class="cause-title" required ng-model="cardTitle" aria-label="Title of cause" />
                                             <div ng-messages="step2.title.$error" role="alert">
                                                 <div ng-message-exp="['required']">
-                                                    Please add a title to your cause so we know what to call it.
+                                                    Please add a title to your campaign so we know what to call it.
                                                 </div>
                                             </div>
                                         </md-input-container>
                                         <md-input-container class="md-icon-float md-block">
-                                            <label>Total Donation Amount</label>
+                                            <label>Total Amount to Raise</label>
                                             <md-icon class="material-icons">attach_money</md-icon>
                                             <input name="price" type="number" ng-model="vm.stepData[1].data.price" required aria-label="Total donation amount" />
-                                            <div class="hint">A tax receipt will be emailed to contributors at time of contribution.</div>
+                                            <div class="hint">If this is for a charity, a tax receipt will be emailed to contributors at time of contribution.</div>
                                             <div ng-messages="step2.price.$error" role="alert">
                                                 <div ng-message-exp="['required']">
-                                                    Please add a donation price for your cause so we know how much to help you raise.
+                                                    Please add a price for your campaign so we know how much to help you raise.
                                                 </div>
                                             </div>
                                         </md-input-container>
